@@ -51,10 +51,10 @@ final class Response {
 
 		if ( is_null( $this->meta['count'] ) )
 			$this->meta['count'] = count( $this->items );
-		if ( is_null( $this->meta['max_id'] ) )
-			$this->meta['max_id'] = reset( $this->items )->id;
 		if ( is_null( $this->meta['min_id'] ) )
-			$this->meta['min_id'] = end( $this->items )->id;
+			$this->meta['min_id'] = reset( $this->items )->id;
+		if ( is_null( $this->meta['max_id'] ) )
+			$this->meta['max_id'] = end( $this->items )->id;
 
 		$output = array(
 			'meta'  => $this->meta,

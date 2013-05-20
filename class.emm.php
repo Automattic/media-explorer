@@ -111,15 +111,15 @@ class Extended_Media_Manager extends \EMM\Plugin {
 
 		$request = wp_parse_args( stripslashes_deep( $_POST ), array(
 			'params'  => array(),
-			'before'  => null,
-			'since'   => null,
+			'min_id'  => null,
+			'max_id'  => null,
 			'page'    => 1,
 		) );
 
 		$response = $service->request( array(
 			'params'  => $request['params'],
-			'before'  => $request['before'],
-			'since'   => $request['since'],
+			'min_id'  => $request['min_id'],
+			'max_id'  => $request['max_id'],
 			'page'    => absint( $request['page'] ),
 			'user_id' => absint( get_current_user_id() ),
 		) );

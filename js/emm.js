@@ -80,7 +80,7 @@ jQuery( function( $ ) {
 
 		events: {
 			'click .emm-item-area'       : 'toggleSelectionHandler',
-			'click .emm-item .check'     : 'removeFromSelection',
+			'click .emm-item .check'     : 'removeSelectionHandler',
 			'click .emm-pagination a'    : 'paginate',
 			'change .emm-toolbar :input' : 'updateInput'
 		},
@@ -170,36 +170,56 @@ jQuery( function( $ ) {
 
 		},
 
-		toggleSelectionHandler: function( event ) {
+		removeSelectionHandler: function( event ) {
 
 			var target = $( '#' + event.currentTarget.id );
+			var id     = target.attr( 'data-id' );
+
+			this.removeFromSelection( target, id );
+
+			event.preventDefault();
+
+		},
+		
+		toggleSelectionHandler: function( event ) {
+
+			// @TODO don't trigger selection if the target is an anchor
+
+			var selected = this.model.get( 'selected' ) || {};
+			var target   = $( '#' + event.currentTarget.id );
+			var id       = target.attr( 'data-id' );
+
+			if ( selected[id] )
+				this.removeFromSelection( target, id );
+			else
+				this.addToSelection( target, id );
+
+		},
+		
+		addToSelection: function( target, id ) {
 
 			target.closest( '.emm-item' ).addClass( 'selected details' );
 
 			selected = this.model.get( 'selected' ) || {};
-			selected[target.attr( 'data-id' )] = this.collection._byId[target.attr( 'data-id' )];
+			selected[id] = this.collection._byId[id];
 
 			this.model.set( 'selected', selected );
 			this.trigger( 'change:selected' );
 
 		},
 		
-		removeFromSelection: function( event ) {
-
-			var target = $( '#' + event.currentTarget.id );
+		removeFromSelection: function( target, id ) {
 
 			target.closest( '.emm-item' ).removeClass( 'selected details' );
 
 			selected = this.model.get( 'selected' ) || {};
-			delete selected[target.attr( 'data-id' )];
+			delete selected[id];
 
 			if ( !_.size(selected) )
 				selected = null;
 
 			this.model.set( 'selected', selected );
 			this.trigger( 'change:selected' );
-
-			event.preventDefault();
 
 		},
 		
@@ -214,6 +234,7 @@ jQuery( function( $ ) {
 		clearItems: function() {
 			this.clearSelection();
 			this.$el.find('.emm-items').empty();
+			this.$el.find( '.emm-pagination' ).hide();
 		},
 		
 		loading: function() {
@@ -242,7 +263,6 @@ jQuery( function( $ ) {
 				service : this.service.id,
 				params  : this.model.get( 'params' ),
 				page    : this.model.get( 'page' ),
-				min_id  : this.model.get( 'min_id' ),
 				max_id  : this.model.get( 'max_id' )
 			};
 
@@ -264,7 +284,7 @@ jQuery( function( $ ) {
 					return;
 				}
 
-				this.model.set( 'max_id', response.meta.max_id );
+				this.model.set( 'min_id', response.meta.min_id );
 				this.model.set( 'items',  response.items );
 
 				this.collection.reset( response.items );
@@ -291,7 +311,7 @@ jQuery( function( $ ) {
 
 			this.$el.find( '.emm-pagination' ).show();
 
-			this.model.set( 'min_id', response.meta.min_id );
+			this.model.set( 'max_id', response.meta.max_id );
 
 			this.trigger( 'loaded loaded:success' );
 
@@ -301,8 +321,7 @@ jQuery( function( $ ) {
 
 			this.$el.find( '.emm-empty' ).text( this.service.labels.noresults ).show();
 
-			if ( !this.model.get( 'page' ) )
-				this.$el.find( '.emm-pagination' ).hide();
+			this.$el.find( '.emm-pagination' ).hide();
 
 			this.trigger( 'loaded loaded:noresults' );
 

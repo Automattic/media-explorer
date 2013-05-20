@@ -29,7 +29,7 @@ class Template extends \EMM\Template {
 			<div class="emm-item-main">
 				<div class="emm-item-author">
 					<span class="emm-item-author-name">{{ data.meta.user.name }}</span>
-					<span class="emm-item-author-screen-name">@{{ data.meta.user.screen_name }}</span>
+					<span class="emm-item-author-screen-name"><span class="emm-item-author-at">@</span>{{ data.meta.user.screen_name }}</span>
 				</div>
 				<div class="emm-item-content">
 					{{{ data.content }}}
@@ -53,7 +53,7 @@ class Template extends \EMM\Template {
 	public function search( $id ) {
 		?>
 		<input
-			type="search"
+			type="text"
 			name="q"
 			value="{{ data.params.q }}"
 			class="emm-input-text emm-input-search"
@@ -98,10 +98,10 @@ class Service extends \EMM\Service {
 			'count'       => 20,
 		);
 
-		if ( !empty( $request['max_id'] ) )
-			$args['since_id'] = $request['max_id'];
 		if ( !empty( $request['min_id'] ) )
-			$args['max_id'] = $request['min_id'];
+			$args['since_id'] = $request['min_id'];
+		else if ( !empty( $request['max_id'] ) )
+			$args['max_id'] = $request['max_id'];
 
 		$response = $connection->get( sprintf( '%s/search/tweets.json', untrailingslashit( $connection->host ) ), $args );
 
