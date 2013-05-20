@@ -163,12 +163,13 @@ jQuery( function( $ ) {
 
 			var target = $( '#' + event.currentTarget.id );
 
-			this.$el.find( '.emm-item' ).removeClass( 'selected details' );
 			target.closest( '.emm-item' ).addClass( 'selected details' );
 
-			this.model.set( 'selected', this.collection._byId[target.attr( 'data-id' )] );
+			selected = this.model.get( 'selected' ) || {};
+			selected[target.attr( 'data-id' )] = this.collection._byId[target.attr( 'data-id' )];
 
-			event.preventDefault();
+			this.model.set( 'selected', selected );
+			this.trigger( 'change:selected' );
 
 		},
 		
@@ -178,9 +179,16 @@ jQuery( function( $ ) {
 
 			var target = $( '#' + event.currentTarget.id );
 
-			this.$el.find( '.emm-item' ).removeClass( 'selected details' );
+			target.closest( '.emm-item' ).removeClass( 'selected details' );
 
-			this.model.set( 'selected', null );
+			selected = this.model.get( 'selected' ) || {};
+			delete selected[target.attr( 'data-id' )];
+
+			if ( !_.size(selected) )
+				selected = null;
+
+			this.model.set( 'selected', selected );
+			this.trigger( 'change:selected' );
 
 			event.preventDefault();
 
@@ -301,9 +309,10 @@ jQuery( function( $ ) {
 
 			// triggered when the search parameters are changed
 
-			this.model.set( 'page',   null );
-			this.model.set( 'before', null );
-			this.model.set( 'since',  null );
+		    this.model.set( 'selected', null );
+			this.model.set( 'page',     null );
+			this.model.set( 'before',   null );
+			this.model.set( 'since',    null );
 
 			this.fetchItems();
 
@@ -390,9 +399,10 @@ jQuery( function( $ ) {
 
 		emmInsert: function() {
 
-		    insert = this.props.get('selected').get('url');
+		    _.each( this.props.get( 'selected' ), function( model ) {
+		    	media.editor.insert( '<p>' + model.get( 'url' ) + '</p>' );
+		    }, this );
 
-		    media.editor.insert( '<p>' + insert + '</p>' );
 		    this.frame.close();
 
 		}

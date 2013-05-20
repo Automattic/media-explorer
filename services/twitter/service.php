@@ -39,7 +39,7 @@ class Template extends \EMM\Template {
 				</div>
 			</div>
 		</div>
-		<a href="#" id="emm-check-{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'emm' ); ?>">
+		<a href="#" id="emm-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'emm' ); ?>">
 			<div class="media-modal-icon"></div>
 		</a>
 		<?php
