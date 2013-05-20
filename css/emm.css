@@ -115,3 +115,11 @@ GNU General Public License for more details.
 	color: #bbb;
 }
 
+.media-frame .emm-content-twitter .emm-item .emm-item-content {
+	margin: 8px 0;
+}
+
+.media-frame .emm-content-twitter .emm-item .emm-item-date {
+	color: #bbb;
+	clear: left;
+}

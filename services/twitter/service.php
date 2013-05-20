@@ -90,6 +90,8 @@ class Service extends \EMM\Service {
 		if ( is_wp_error( $connection = $this->get_connection() ) )
 			return $connection;
 
+		# +exclude:retweets
+
 		# when we introduce other fields we'll build $q here
 		# operators: https://dev.twitter.com/docs/using-search
 		$q = $request['params']['q'];
@@ -175,7 +177,7 @@ class Service extends \EMM\Service {
 			$item->set_content( self::status_content( $status ) );
 			$item->set_thumbnail( is_ssl() ? $status->user->profile_image_url_https : $status->user->profile_image_url );
 			$item->set_date( strtotime( $status->created_at ) );
-			$item->set_date_format( 'jS F Y' );
+			$item->set_date_format( 'g:i A - j M y' );
 
 			$item->add_meta( 'user', array(
 				'name'        => $status->user->name,
