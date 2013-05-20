@@ -155,11 +155,16 @@ jQuery( function( $ ) {
 
 			this.clearItems();
 
+			if ( this.model.get( 'items' ) ) {
+
+	        	this.collection = new Backbone.Collection();
+	        	this.collection.reset( this.model.get( 'items' ) );
+
+	        }
+
 		},
 
 		toggleSelectionHandler: function( event ) {
-
-			// @TODO allow multiple selection/deselection
 
 			var target = $( '#' + event.currentTarget.id );
 
@@ -174,8 +179,6 @@ jQuery( function( $ ) {
 		},
 		
 		removeFromSelection: function( event ) {
-
-			// @TODO allow multiple selection/deselection
 
 			var target = $( '#' + event.currentTarget.id );
 
@@ -194,7 +197,16 @@ jQuery( function( $ ) {
 
 		},
 		
+		clearSelection: function() {
+
+			this.$el.find( '.emm-item' ).removeClass( 'selected details' );
+
+			this.model.set( 'selected', null );
+
+		},
+
 		clearItems: function() {
+			this.clearSelection();
 			this.$el.find('.emm-items').empty();
 		},
 		
