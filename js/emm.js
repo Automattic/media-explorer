@@ -145,12 +145,12 @@ jQuery( function( $ ) {
 			this.$el.prepend( html );
 
 			// @TODO this could be a separate view:
-	        html = '<ul class="emm-items"></ul>';
+	        html = '<ul class="emm-items clearfix"></ul>';
 			this.$el.append( html );
 
 			// @TODO this could be a separate view:
 			var toolbar_template = media.template( 'emm-' + this.service.id + '-search' );
-			html = '<div class="emm-toolbar">' + toolbar_template( this.model.toJSON() ) + '</div>';
+			html = '<div class="emm-toolbar clearfix">' + toolbar_template( this.model.toJSON() ) + '</div>';
 			this.$el.prepend( html );
 
 			this.clearItems();
