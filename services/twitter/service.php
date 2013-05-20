@@ -144,12 +144,25 @@ class Service extends \EMM\Service {
 
 	}
 
+	public function get_max_id( $next ) {
+
+		parse_str( ltrim( $next, '?' ), $vars );
+
+		if ( isset( $vars['max_id'] ) )
+			return $vars['max_id'];
+		else
+			return null;
+
+	}
+
 	public function response( $r ) {
 
 		if ( !isset( $r->statuses ) or empty( $r->statuses ) )
 			return false;
 
 		$response = new \EMM\Response;
+
+		$response->add_meta( 'max_id', self::get_max_id( $r->search_metadata->next_results ) );
 
 		foreach ( $r->statuses as $status ) {
 
