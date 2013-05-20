@@ -156,7 +156,7 @@ jQuery( function( $ ) {
 			this.$el.prepend( html );
 
 			// @TODO this could be a separate view:
-			html = '<div class="emm-pagination clearfix"><a href="#" class="button button-secondary">' + this.service.labels.loadmore + '</a><div class="spinner"></div></div>';
+			html = '<div class="emm-pagination clearfix"><a href="#" class="button button-secondary button-large">' + this.service.labels.loadmore + '</a><div class="spinner"></div></div>';
 			this.$el.append( html );
 
 			this.clearItems();

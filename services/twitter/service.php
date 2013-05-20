@@ -22,20 +22,22 @@ class Template extends \EMM\Template {
 
 	public function item( $id ) {
 		?>
-		<div id="emm-item-{{ data.id }}" class="emm-item-area clearfix" data-id="{{ data.id }}">
-			<div class="emm-item-thumb">
-				<img src="{{ data.thumbnail }}">
-			</div>
-			<div class="emm-item-main">
-				<div class="emm-item-author">
-					<span class="emm-item-author-name">{{ data.meta.user.name }}</span>
-					<span class="emm-item-author-screen-name"><span class="emm-item-author-at">@</span>{{ data.meta.user.screen_name }}</span>
+		<div id="emm-item-{{ data.id }}" class="emm-item-area" data-id="{{ data.id }}">
+			<div class="emm-item-container clearfix">
+				<div class="emm-item-thumb">
+					<img src="{{ data.thumbnail }}">
 				</div>
-				<div class="emm-item-content">
-					{{{ data.content }}}
-				</div>
-				<div class="emm-item-date">
-					{{ data.date }}
+				<div class="emm-item-main">
+					<div class="emm-item-author">
+						<span class="emm-item-author-name">{{ data.meta.user.name }}</span>
+						<span class="emm-item-author-screen-name"><span class="emm-item-author-at">@</span>{{ data.meta.user.screen_name }}</span>
+					</div>
+					<div class="emm-item-content">
+						{{{ data.content }}}
+					</div>
+					<div class="emm-item-date">
+						{{ data.date }}
+					</div>
 				</div>
 			</div>
 		</div>

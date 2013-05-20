@@ -82,7 +82,6 @@ GNU General Public License for more details.
 	text-align: left;
 	margin: 6px 10px;
 	border: 1px solid #ddd;
-	padding: 13px;
 	cursor: pointer;
 }
 
@@ -92,6 +91,10 @@ GNU General Public License for more details.
 
 .media-frame .emm-content-twitter .emm-item.selected {
 	border: 1px solid transparent;
+}
+
+.media-frame .emm-content-twitter .emm-item .emm-item-container {
+	padding: 13px;
 }
 
 .media-frame .emm-content-twitter .emm-item .emm-item-thumb {
