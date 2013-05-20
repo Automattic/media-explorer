@@ -33,6 +33,7 @@ abstract class Service {
 		return array_merge( array(
 			'title'     => __( 'Insert Media', 'emm' ),
 			'insert'    => __( 'Insert', 'emm' ),
+			'loadmore'  => __( 'Load More', 'emm' ),
 			'noresults' => __( 'Nothing matched your search query', 'emm' ),
 		), (array) $this->labels() );
 

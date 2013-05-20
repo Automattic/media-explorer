@@ -98,10 +98,10 @@ class Service extends \EMM\Service {
 			'count'       => 20,
 		);
 
-		if ( !empty( $request['since'] ) )
-			$args['since_id'] = $request['since'];
-		if ( !empty( $request['before'] ) )
-			$args['max_id'] = $request['before'];
+		if ( !empty( $request['max_id'] ) )
+			$args['since_id'] = $request['max_id'];
+		if ( !empty( $request['min_id'] ) )
+			$args['max_id'] = $request['min_id'];
 
 		$response = $connection->get( sprintf( '%s/search/tweets.json', untrailingslashit( $connection->host ) ), $args );
 

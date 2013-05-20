@@ -81,6 +81,7 @@ jQuery( function( $ ) {
 		events: {
 			'click .emm-item-area'       : 'toggleSelectionHandler',
 			'click .emm-item .check'     : 'removeFromSelection',
+			'click .emm-pagination a'    : 'paginate',
 			'change .emm-toolbar :input' : 'updateInput'
 		},
 	
@@ -102,6 +103,7 @@ jQuery( function( $ ) {
 		    this.on( 'loading',       this.loading, this );
 		    this.on( 'loaded',        this.loaded, this );
 		    this.on( 'change:params', this.changedParams, this );
+		    this.on( 'change:page',   this.changedPage, this );
 
 		},
 			
@@ -152,6 +154,10 @@ jQuery( function( $ ) {
 			var toolbar_template = media.template( 'emm-' + this.service.id + '-search' );
 			html = '<div class="emm-toolbar clearfix">' + toolbar_template( this.model.toJSON() ) + '</div>';
 			this.$el.prepend( html );
+
+			// @TODO this could be a separate view:
+			html = '<div class="emm-pagination clearfix"><a href="#" class="button button-secondary">' + this.service.labels.loadmore + '</a><div class="spinner"></div></div>';
+			this.$el.append( html );
 
 			this.clearItems();
 
@@ -236,8 +242,8 @@ jQuery( function( $ ) {
 				service : this.service.id,
 				params  : this.model.get( 'params' ),
 				page    : this.model.get( 'page' ),
-				before  : this.model.get( 'before' ),
-				since   : this.model.get( 'since' )
+				min_id  : this.model.get( 'min_id' ),
+				max_id  : this.model.get( 'max_id' )
 			};
 
 			media.ajax( 'emm_request', {
@@ -251,16 +257,12 @@ jQuery( function( $ ) {
 
 		fetchedSuccess: function( response ) {
 
-			if ( !response.items ) {
-				this.fetchedEmpty( response );
-				return;
-			}
+			if ( !this.model.get( 'page' ) ) {
 
-			page = this.model.get( 'page' );
-
-			this.model.set( 'min_id', response.meta.min_id );
-
-			if ( !page || 1 == page ) {
+				if ( !response.items ) {
+					this.fetchedEmpty( response );
+					return;
+				}
 
 				this.model.set( 'max_id', response.meta.max_id );
 				this.model.set( 'items',  response.items );
@@ -269,7 +271,12 @@ jQuery( function( $ ) {
 
 			} else {
 
-				this.model.set( 'items', this.model.get( 'items' ).concat( items ) );
+				if ( !response.items ) {
+					this.moreEmpty( response );
+					return;
+				}
+
+				this.model.set( 'items', this.model.get( 'items' ).concat( response.items ) );
 
 				var collection = new Backbone.Collection( response.items );
 				var that = this;
@@ -282,6 +289,10 @@ jQuery( function( $ ) {
 
 			}
 
+			this.$el.find( '.emm-pagination' ).show();
+
+			this.model.set( 'min_id', response.meta.min_id );
+
 			this.trigger( 'loaded loaded:success' );
 
 		},
@@ -289,6 +300,9 @@ jQuery( function( $ ) {
 		fetchedEmpty: function( response ) {
 
 			this.$el.find( '.emm-empty' ).text( this.service.labels.noresults ).show();
+
+			if ( !this.model.get( 'page' ) )
+				this.$el.find( '.emm-pagination' ).hide();
 
 			this.trigger( 'loaded loaded:noresults' );
 
@@ -317,14 +331,33 @@ jQuery( function( $ ) {
 
 		},
 		
+		paginate : function( event ) {
+
+			var page = this.model.get( 'page' ) || 1;
+
+			this.model.set( 'page', page + 1 );
+		    this.trigger( 'change:page' );
+
+		    event.preventDefault();
+
+		},
+
+		changedPage: function() {
+
+			// triggered when the page is changed
+
+			this.fetchItems();
+
+		},
+
 		changedParams: function() {
 
 			// triggered when the search parameters are changed
 
 		    this.model.set( 'selected', null );
 			this.model.set( 'page',     null );
-			this.model.set( 'before',   null );
-			this.model.set( 'since',    null );
+			this.model.set( 'min_id',   null );
+			this.model.set( 'max_id',    null );
 
 			this.clearItems();
 			this.fetchItems();
@@ -362,9 +395,8 @@ jQuery( function( $ ) {
 		       
 		        frame.on( 'content:render:' + id + '-content', _.bind( frame.emmContentRender, frame, service ) );
 		        frame.on( 'toolbar:create:' + id + '-toolbar', frame.emmToolbarCreate, frame );
-	
+
 			});
-	        
 	        
 	    },
 	    
@@ -376,7 +408,7 @@ jQuery( function( $ ) {
 	            service:    service,
 	            controller: this,
 	            model:      this.state().props,
-	            className:  'emm-content emm-content-' + service.id
+	            className:  'clearfix emm-content emm-content-' + service.id
 	        }) );
 
 	    },
@@ -399,8 +431,8 @@ jQuery( function( $ ) {
 	        	params   : {},
 	        	selected : null,
 	        	page     : null,
-	        	before   : null,
-	        	since    : null
+	        	min_id   : null,
+	        	max_id   : null
 	        });
 	        this.props.on( 'change:selected', this.refresh, this );
 

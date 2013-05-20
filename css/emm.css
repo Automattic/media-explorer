@@ -49,6 +49,20 @@ GNU General Public License for more details.
 	margin: 7px 10px;
 }
 
+.media-frame .emm-content .emm-pagination .spinner {
+	float: left;
+	margin: 3px 10px;
+}
+
+.media-frame .emm-content .emm-pagination {
+	display: none;
+	padding: 10px;
+}
+
+.media-frame .emm-content .emm-pagination a {
+	float: left;
+}
+
 .media-frame .emm-content .clearfix:after {
 	clear: both;
 	content: ".";
