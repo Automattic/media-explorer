@@ -326,6 +326,7 @@ jQuery( function( $ ) {
 			this.model.set( 'before',   null );
 			this.model.set( 'since',    null );
 
+			this.clearItems();
 			this.fetchItems();
 
 		}
