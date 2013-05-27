@@ -18,7 +18,7 @@ class Extended_Media_Manager extends \EMM\Plugin {
 
 	public $services = array();
 
-	public function __construct( $file ) {
+	protected function __construct( $file ) {
 
 		# Filters:
 		add_filter( 'mce_external_plugins',  array( $this, 'filter_mce_plugins' ) );
@@ -70,14 +70,22 @@ class Extended_Media_Manager extends \EMM\Plugin {
 				continue;
 
 			# @TODO this list of templates should be somewhere else. where?
-			foreach ( array( 'search', 'item', 'thumbnail', 'first_time' ) as $t ) {
-				$id = sprintf( 'emm-%s-%s',
-					esc_attr( $service_id ),
-					esc_attr( $t )
-				);
-				$template->before_template( $id );
-				call_user_func( array( $template, $t ), $id );
-				$template->after_template( $id );
+			foreach ( array( 'search', 'item', 'thumbnail' ) as $t ) {
+
+				foreach ( $service->get_tabs() as $tab_id => $tab ) {
+
+					$id = sprintf( 'emm-%s-%s-%s',
+						esc_attr( $service_id ),
+						esc_attr( $t ),
+						esc_attr( $tab_id )
+					);
+
+					$template->before_template( $id, $tab_id );
+					call_user_func( array( $template, $t ), $id, $tab_id );
+					$template->after_template( $id, $tab_id );
+
+				}
+
 			}
 
 		}
@@ -166,9 +174,11 @@ class Extended_Media_Manager extends \EMM\Plugin {
 		);
 
 		foreach ( $this->get_services() as $service_id => $service ) {
+			$service->load();
 			$emm['services'][$service_id] = array(
 				'id'     => $service_id,
-				'labels' => $service->get_labels()
+				'labels' => $service->get_labels(),
+				'tabs'   => $service->get_tabs(),
 			);
 		}
 
@@ -200,5 +210,16 @@ class Extended_Media_Manager extends \EMM\Plugin {
 
 	}
 
-}
+	// Singleton getter:
+	public function init( $file = null ) {
 
+		static $instance = null;
+
+		if ( !$instance )
+			$instance = new Extended_Media_Manager( $file );
+
+		return $instance;
+
+	}
+
+}

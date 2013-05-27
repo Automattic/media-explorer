@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) or die();
 
 class Template extends \EMM\Template {
 
-	public function item( $id ) {
+	public function item( $id, $tab ) {
 		?>
 		<div id="emm-item-{{ data.id }}" class="emm-item-area" data-id="{{ data.id }}">
 			<div class="emm-item-container clearfix">
@@ -47,29 +47,128 @@ class Template extends \EMM\Template {
 		<?php
 	}
 
-	public function thumbnail( $id ) {
+	public function thumbnail( $id, $tab ) {
 		?>
 		<?php
 	}
 
-	public function search( $id ) {
-		?>
-		<input
-			type="text"
-			name="q"
-			value="{{ data.params.q }}"
-			class="emm-input-text emm-input-search"
-			size="30"
-			placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
-		>
-		<div class="spinner"></div>
-		<?php
-	}
+	public function search( $id, $tab ) {
 
-	public function first_time( $id ) {
-		?>
-		<p>Welcome!</p>
-		<?php
+		# @TODO move the spinner out of here and into the base class
+
+		switch ( $tab ) {
+
+			case 'hashtag':
+
+				?>
+				<div class="emm-toolbar-container clearfix">
+					<input
+						type="text"
+						name="hashtag"
+						value="{{ data.params.hashtag }}"
+						class="emm-input-text emm-input-search"
+						size="30"
+						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'emm' ); ?>"
+					>
+					<div class="spinner"></div>
+				</div>
+				<?php
+
+				break;
+
+			case 'by_user':
+
+				?>
+				<div class="emm-toolbar-container clearfix">
+					<input
+						type="text"
+						name="by_user"
+						value="{{ data.params.by_user }}"
+						class="emm-input-text emm-input-search"
+						size="30"
+						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
+					>
+					<div class="spinner"></div>
+				</div>
+				<?php
+
+				break;
+
+			case 'to_user':
+
+				?>
+				<div class="emm-toolbar-container clearfix">
+					<input
+						type="text"
+						name="to_user"
+						value="{{ data.params.to_user }}"
+						class="emm-input-text emm-input-search"
+						size="30"
+						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
+					>
+					<div class="spinner"></div>
+				</div>
+				<?php
+
+				break;
+
+			case 'location':
+
+				?>
+				<div id="emm_twitter_map_canvas"></div>
+				<div class="emm-toolbar-container clearfix">
+					<input
+						id="<?php echo esc_attr( $id ); ?>"
+						type="hidden"
+						name="location"
+						value="{{ data.params.location }}"
+					>
+					<input
+						type="text"
+						name="q"
+						value="{{ data.params.q }}"
+						class="emm-input-text emm-input-search"
+						size="30"
+						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
+					>
+					<select
+						id="<?php echo esc_attr( $id ); ?>-radius"
+						type="text"
+						name="radius"
+						class="emm-input-text emm-input-select"
+						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
+					>
+					<?php foreach ( array( 1, 5, 10, 20, 50, 100, 200 ) as $km ) { ?>
+						<option value="<?php echo absint( $km ); ?>"><?php printf( esc_html__( 'Within %skm', 'emm' ), $km ); ?></option>
+					<?php } ?>
+					</select>
+					<div class="spinner"></div>
+				</div>
+				<?php
+
+				break;
+
+			case 'all':
+			default:
+
+				?>
+				<div class="emm-toolbar-container clearfix">
+					<input
+						type="text"
+						name="q"
+						value="{{ data.params.q }}"
+						class="emm-input-text emm-input-search"
+						size="30"
+						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
+					>
+					<div class="spinner"></div>
+				</div>
+				<?php
+
+				break;
+
+		}
+
 	}
 
 }
@@ -85,6 +184,19 @@ class Service extends \EMM\Service {
 
 	}
 
+	public function load() {
+
+		$emm = \Extended_Media_Manager::init();
+
+		wp_enqueue_script(
+			'emm-service-twitter',
+			$emm->plugin_url( 'services/twitter/js.js' ),
+			array( 'jquery', 'emm' ),
+			$emm->plugin_ver( 'services/twitter/js.js' )
+		);
+
+	}
+
 	public function request( array $request ) {
 
 		if ( is_wp_error( $connection = $this->get_connection() ) )
@@ -92,15 +204,32 @@ class Service extends \EMM\Service {
 
 		# +exclude:retweets
 
-		# when we introduce other fields we'll build $q here
 		# operators: https://dev.twitter.com/docs/using-search
-		$q = $request['params']['q'];
+
+		$params = $request['params'];
+
+		$q = array();
+
+		if ( isset( $params['q'] ) )
+			$q[] = trim( $params['q'] );
+
+		if ( isset( $params['hashtag'] ) )
+			$q[] = sprintf( '#%s', ltrim( $params['hashtag'], '#' ) );
+
+		if ( isset( $params['by_user'] ) )
+			$q[] = sprintf( 'from:%s', ltrim( $params['by_user'], '@' ) );
+
+		if ( isset( $params['to_user'] ) )
+			$q[] = sprintf( '@%s', ltrim( $params['to_user'], '@' ) );
 
 		$args = array(
-			'q'           => trim( $q ),
+			'q'           => implode( ' ', $q ),
 			'result_type' => 'recent',
 			'count'       => 20,
 		);
+
+		if ( isset( $params['location'] ) and isset( $params['radius'] ) )
+			$args['geocode'] = sprintf( '%s,%dkm', $params['location'], $params['radius'] );
 
 		if ( !empty( $request['min_id'] ) )
 			$args['since_id'] = $request['min_id'];
@@ -166,6 +295,7 @@ class Service extends \EMM\Service {
 
 		$response = new \EMM\Response;
 
+		# @TODO $r->search_metadata->next_results isn't always set, causes notice
 		$response->add_meta( 'max_id', self::get_max_id( $r->search_metadata->next_results ) );
 
 		foreach ( $r->statuses as $status ) {
@@ -192,6 +322,33 @@ class Service extends \EMM\Service {
 
 	}
 
+	public function tabs() {
+		return array(
+			#'welcome' => array(
+			#	'text' => _x( 'Welcome', 'Tab title', 'emm'),
+			#),
+			'all' => array(
+				'text'    => _x( 'All', 'Tab title', 'emm'),
+				'default' => true
+			),
+			'hashtag' => array(
+				'text' => _x( 'With Hashtag', 'Tab title', 'emm'),
+			),
+			#'images' => array(
+			#	'text' => _x( 'With Images', 'Tab title', 'emm'),
+			#),
+			'by_user' => array(
+				'text' => _x( 'By User', 'Tab title', 'emm'),
+			),
+			'to_user' => array(
+				'text' => _x( 'To User', 'Tab title', 'emm'),
+			),
+			'location' => array(
+				'text' => _x( 'By Location', 'Tab title', 'emm'),
+			),
+		);
+	}
+
 	public function requires() {
 		return array(
 			'oauth' => '\OAuthConsumer'
@@ -204,6 +361,7 @@ class Service extends \EMM\Service {
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
 			'insert'    => __( 'Insert Tweet', 'emm' ),
 			'noresults' => __( 'No tweets matched your search query', 'emm' ),
+			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' )
 		);
 	}
 

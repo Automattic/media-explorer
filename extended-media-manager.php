@@ -39,4 +39,4 @@ foreach ( array( 'plugin', 'emm', 'service', 'template', 'response' ) as $class 
 foreach ( glob( dirname( __FILE__ ) . '/services/*/service.php' ) as $service )
 	include $service;
 
-new Extended_Media_Manager( __FILE__ );
+Extended_Media_Manager::init( __FILE__ );

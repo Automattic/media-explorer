@@ -24,8 +24,13 @@ abstract class Service {
 
 	abstract function labels();
 
+	abstract function tabs(); # @TODO tabs should be optional
+
 	public function requires() {
 		return array();
+	}
+
+	public function load() {
 	}
 
 	final public function get_labels() {
@@ -36,6 +41,12 @@ abstract class Service {
 			'loadmore'  => __( 'Load More', 'emm' ),
 			'noresults' => __( 'Nothing matched your search query', 'emm' ),
 		), (array) $this->labels() );
+
+	}
+
+	final public function get_tabs() {
+
+		return (array) $this->tabs();
 
 	}
 

@@ -18,21 +18,19 @@ namespace EMM;
 
 abstract class Template {
 
-	abstract public function item( $id );
+	abstract public function item( $id, $tab );
 
-	abstract public function thumbnail( $id );
+	abstract public function thumbnail( $id, $tab );
 
-	abstract public function search( $id );
+	abstract public function search( $id, $tab );
 
-	abstract public function first_time( $id );
-
-	final public function before_template( $id ) {
+	final public function before_template( $id, $tab ) {
 		?>
 		<script type="text/html" id="tmpl-<?php echo esc_attr( $id ); ?>">
 		<?php
 	}
 
-	final public function after_template( $id ) {
+	final public function after_template( $id, $tab ) {
 		?>
 		</script>
 		<?php
