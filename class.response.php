@@ -30,7 +30,7 @@ final class Response {
 		if ( is_array( $key ) ) {
 
 			foreach ( $key as $k => $v )
-				$this->meta[$key] = $value;
+				$this->meta[$k] = $v;
 
 		} else {
 
@@ -107,7 +107,7 @@ final class Response_Item {
 		if ( is_array( $key ) ) {
 
 			foreach ( $key as $k => $v )
-				$this->meta[$key] = $value;
+				$this->meta[$k] = $v;
 
 		} else {
 

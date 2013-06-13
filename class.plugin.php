@@ -35,7 +35,7 @@ abstract class Plugin {
 	 * @author John Blackbourn
 	 **/
 	public function plugin_url( $file = '' ) {
-		return $this->plugin( 'url', $file );
+		return $this->_plugin( 'url', $file );
 	}
 
 	/**
@@ -46,7 +46,7 @@ abstract class Plugin {
 	 * @author John Blackbourn
 	 **/
 	public function plugin_path( $file = '' ) {
-		return $this->plugin( 'path', $file );
+		return $this->_plugin( 'path', $file );
 	}
 
 	/**
@@ -67,7 +67,7 @@ abstract class Plugin {
 	 * @author John Blackbourn
 	 **/
 	public function plugin_base() {
-		return $this->plugin( 'base' );
+		return $this->_plugin( 'base' );
 	}
 
 	/**
@@ -75,7 +75,7 @@ abstract class Plugin {
 	 *
 	 * @author John Blackbourn
 	 **/
-	protected function plugin( $item, $file = '' ) {
+	protected function _plugin( $item, $file = '' ) {
 		if ( !isset( $this->plugin ) ) {
 			$this->plugin = array(
 				'url'  => plugin_dir_url( $this->file ),
