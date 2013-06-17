@@ -1,15 +1,13 @@
 <?php
-
-namespace EMM\Services\Twitter;
-
-# @TODO replace curl stuff with wp http api
-
-/*
- * Soon-to-be-WordPressified version of TwitterOAuth by Abraham Williams (abraham@abrah.am) http://abrah.am
+/**
+ * WordPressified and namespaced version of TwitterOAuth by Abraham Williams
+ * See: https://github.com/abraham/twitteroauth
  *
  * Uses Twitter API v1.1
  *
  */
+
+namespace EMM\Services\Twitter;
 
 /**
  * Twitter OAuth class
@@ -23,8 +21,6 @@ class WP_Twitter_OAuth {
   public $host = 'https://api.twitter.com/1.1/';
   /* Set timeout default. */
   public $timeout = 30;
-  /* Set connect timeout. */
-  public $connecttimeout = 30; 
   /* Verify SSL Cert. */
   public $ssl_verifypeer = FALSE;
   /* Respons format. */
@@ -32,13 +28,11 @@ class WP_Twitter_OAuth {
   /* Decode returned json data. */
   public $decode_json = TRUE;
   /* Contains the last HTTP headers returned. */
-  public $http_info;
+  public $http_headers;
   /* Set the useragnet. */
   public $useragent = 'WP_TwitterOAuth';
   /* Immediately retry the API call if the response was not successful. */
   //public $retry = TRUE;
-
-
 
 
   /**
@@ -48,12 +42,6 @@ class WP_Twitter_OAuth {
   function authenticateURL() { return 'https://api.twitter.com/oauth/authenticate'; }
   function authorizeURL()    { return 'https://api.twitter.com/oauth/authorize'; }
   function requestTokenURL() { return 'https://api.twitter.com/oauth/request_token'; }
-
-  /**
-   * Debug helpers
-   */
-  function lastStatusCode() { return $this->http_status; }
-  function lastAPICall() { return $this->last_api_call; }
 
   /**
    * construct TwitterOAuth object
@@ -191,48 +179,31 @@ class WP_Twitter_OAuth {
   /**
    * Make an HTTP request
    *
-   * @return API results
+   * @return string|WP_Error API results on success or WP_Error object on unsupported HTTP method
    */
-  function http($url, $method, $postfields = NULL) {
-    $this->http_info = array();
-    $ci = curl_init();
-    /* Curl settings */
-    curl_setopt($ci, CURLOPT_USERAGENT, $this->useragent);
-    curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, $this->connecttimeout);
-    curl_setopt($ci, CURLOPT_TIMEOUT, $this->timeout);
-    curl_setopt($ci, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ci, CURLOPT_HTTPHEADER, array('Expect:'));
-    curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
-    curl_setopt($ci, CURLOPT_HEADERFUNCTION, array($this, 'getHeader'));
-    curl_setopt($ci, CURLOPT_HEADER, FALSE);
+	function http($url, $method, $postfields = NULL) {
 
-    if ( defined( 'WP_PROXY_HOST' ) )
-    	curl_setopt( $ci, CURLOPT_PROXY, WP_PROXY_HOST );
-    if ( defined( 'WP_PROXY_PORT' ) )
-    	curl_setopt( $ci, CURLOPT_PROXYPORT, WP_PROXY_PORT );
+	  	$args = array(
+	  		'timeout'    => $this->timeout,
+	  		'sslverify'  => $this->ssl_verifypeer,
+	  		'user-agent' => $this->useragent,
+	  	);
+	    	
+    	switch ( $method ) {
+    		case 'GET' :
+    			$response = wp_remote_get( $url, $args );
+    			break;
+    		# @TODO POST
+    		default:
+    			return new WP_Error( 'unsupported_http_method', sprintf( 'The HTTP method "%s", which you requested, is not supported', esc_html( $method ) ) );
+    	}
 
-    switch ($method) {
-      case 'POST':
-        curl_setopt($ci, CURLOPT_POST, TRUE);
-        if (!empty($postfields)) {
-          curl_setopt($ci, CURLOPT_POSTFIELDS, $postfields);
-        }
-        break;
-      case 'DELETE':
-        curl_setopt($ci, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        if (!empty($postfields)) {
-          $url = "{$url}?{$postfields}";
-        }
+	  	$this->url = $url;
+	   	$this->http_code = wp_remote_retrieve_response_code( $response );
+	  	$this->http_headers = wp_remote_retrieve_headers( $response );
+
+	  	return wp_remote_retrieve_body( $response );
     }
-
-    curl_setopt($ci, CURLOPT_URL, $url);
-    $response = curl_exec($ci);
-    $this->http_code = curl_getinfo($ci, CURLINFO_HTTP_CODE);
-    $this->http_info = array_merge($this->http_info, curl_getinfo($ci));
-    $this->url = $url;
-    curl_close ($ci);
-    return $response;
-  }
 
   /**
    * Get the header info to store.
