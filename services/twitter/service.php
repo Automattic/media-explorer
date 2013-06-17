@@ -18,166 +18,14 @@ namespace EMM\Services\Twitter;
 
 defined( 'ABSPATH' ) or die();
 
-class Template extends \EMM\Template {
-
-	public function item( $id, $tab ) {
-		?>
-		<div id="emm-item-{{ data.id }}" class="emm-item-area" data-id="{{ data.id }}">
-			<div class="emm-item-container clearfix">
-				<div class="emm-item-thumb">
-					<img src="{{ data.thumbnail }}">
-				</div>
-				<div class="emm-item-main">
-					<div class="emm-item-author">
-						<span class="emm-item-author-name">{{ data.meta.user.name }}</span>
-						<span class="emm-item-author-screen-name"><span class="emm-item-author-at">@</span>{{ data.meta.user.screen_name }}</span>
-					</div>
-					<div class="emm-item-content">
-						{{{ data.content }}}
-					</div>
-					<div class="emm-item-date">
-						{{ data.date }}
-					</div>
-				</div>
-			</div>
-		</div>
-		<a href="#" id="emm-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'emm' ); ?>">
-			<div class="media-modal-icon"></div>
-		</a>
-		<?php
-	}
-
-	public function thumbnail( $id, $tab ) {
-		?>
-		<?php
-	}
-
-	public function search( $id, $tab ) {
-
-		# @TODO move the spinner out of here and into the base class
-
-		switch ( $tab ) {
-
-			case 'hashtag':
-
-				?>
-				<div class="emm-toolbar-container clearfix">
-					<input
-						type="text"
-						name="hashtag"
-						value="{{ data.params.hashtag }}"
-						class="emm-input-text emm-input-search"
-						size="30"
-						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'emm' ); ?>"
-					>
-					<div class="spinner"></div>
-				</div>
-				<?php
-
-				break;
-
-			case 'by_user':
-
-				?>
-				<div class="emm-toolbar-container clearfix">
-					<input
-						type="text"
-						name="by_user"
-						value="{{ data.params.by_user }}"
-						class="emm-input-text emm-input-search"
-						size="30"
-						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
-					>
-					<div class="spinner"></div>
-				</div>
-				<?php
-
-				break;
-
-			case 'to_user':
-
-				?>
-				<div class="emm-toolbar-container clearfix">
-					<input
-						type="text"
-						name="to_user"
-						value="{{ data.params.to_user }}"
-						class="emm-input-text emm-input-search"
-						size="30"
-						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
-					>
-					<div class="spinner"></div>
-				</div>
-				<?php
-
-				break;
-
-			case 'location':
-
-				?>
-				<div id="emm_twitter_map_canvas"></div>
-				<div class="emm-toolbar-container clearfix">
-					<input
-						id="<?php echo esc_attr( $id ); ?>"
-						type="hidden"
-						name="location"
-						value="{{ data.params.location }}"
-					>
-					<input
-						type="text"
-						name="q"
-						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
-						size="30"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
-					>
-					<select
-						id="<?php echo esc_attr( $id ); ?>-radius"
-						type="text"
-						name="radius"
-						class="emm-input-text emm-input-select"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
-					>
-					<?php foreach ( array( 1, 5, 10, 20, 50, 100, 200 ) as $km ) { ?>
-						<option value="<?php echo absint( $km ); ?>"><?php printf( esc_html__( 'Within %skm', 'emm' ), $km ); ?></option>
-					<?php } ?>
-					</select>
-					<div class="spinner"></div>
-				</div>
-				<?php
-
-				break;
-
-			case 'all':
-			default:
-
-				?>
-				<div class="emm-toolbar-container clearfix">
-					<input
-						type="text"
-						name="q"
-						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
-						size="30"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
-					>
-					<div class="spinner"></div>
-				</div>
-				<?php
-
-				break;
-
-		}
-
-	}
-
-}
-
 class Service extends \EMM\Service {
 
 	public $credentials = null;
+	public $response_meta = array();
 
 	public function __construct() {
+
+		require_once __DIR__ . '/template.php';
 
 		# Go!
 		$this->set_template( new Template );
@@ -393,7 +241,7 @@ class Service extends \EMM\Service {
 		}
 
 		if ( !class_exists( 'WP_Twitter_OAuth' ) )
-			require_once dirname( __FILE__ ) . '/class.wp-twitter-oauth.php';
+			require_once __DIR__ . '/class.wp-twitter-oauth.php';
 
 		$connection = new WP_Twitter_OAuth(
 			$credentials['consumer_key'],
