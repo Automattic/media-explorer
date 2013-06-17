@@ -70,7 +70,7 @@ class Extended_Media_Manager extends \EMM\Plugin {
 				continue;
 
 			# @TODO this list of templates should be somewhere else. where?
-			foreach ( array( 'search', 'item', 'thumbnail' ) as $t ) {
+			foreach ( array( 'search', 'item' ) as $t ) {
 
 				foreach ( $service->get_tabs() as $tab_id => $tab ) {
 
@@ -85,6 +85,19 @@ class Extended_Media_Manager extends \EMM\Plugin {
 					$template->after_template( $id, $tab_id );
 
 				}
+
+			}
+
+			foreach ( array( 'thumbnail' ) as $t ) {
+
+				$id = sprintf( 'emm-%s-%s',
+					esc_attr( $service_id ),
+					esc_attr( $t )
+				);
+
+				$template->before_template( $id );
+				call_user_func( array( $template, $t ), $id );
+				$template->after_template( $id );
 
 			}
 
@@ -111,7 +124,7 @@ class Extended_Media_Manager extends \EMM\Plugin {
 				continue;
 
 			require_once sprintf( '%s/class.%s.php',
-				dirname( __FILE__ ),
+				__DIR__,
 				$file
 			);
 
@@ -170,7 +183,8 @@ class Extended_Media_Manager extends \EMM\Plugin {
 			'labels'  => array(
 				'insert' => __( 'Insert', 'emm' )
 			),
-			'base_url' => untrailingslashit( $this->plugin_url() )
+			'base_url'  => untrailingslashit( $this->plugin_url() ),
+			'admin_url' => untrailingslashit( admin_url() ),
 		);
 
 		foreach ( $this->get_services() as $service_id => $service ) {
@@ -211,7 +225,7 @@ class Extended_Media_Manager extends \EMM\Plugin {
 	}
 
 	// Singleton getter:
-	public function init( $file = null ) {
+	public static function init( $file = null ) {
 
 		static $instance = null;
 

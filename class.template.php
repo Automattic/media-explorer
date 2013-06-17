@@ -20,17 +20,17 @@ abstract class Template {
 
 	abstract public function item( $id, $tab );
 
-	abstract public function thumbnail( $id, $tab );
+	abstract public function thumbnail( $id );
 
 	abstract public function search( $id, $tab );
 
-	final public function before_template( $id, $tab ) {
+	final public function before_template( $id, $tab = null ) {
 		?>
 		<script type="text/html" id="tmpl-<?php echo esc_attr( $id ); ?>">
 		<?php
 	}
 
-	final public function after_template( $id, $tab ) {
+	final public function after_template( $id, $tab = null ) {
 		?>
 		</script>
 		<?php

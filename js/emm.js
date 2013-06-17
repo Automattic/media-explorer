@@ -77,94 +77,105 @@ media.view.Toolbar.EMM = media.view.Toolbar.extend({
 media.view.EMM = media.View.extend({
 
 	events: {
-		'click .emm-item-area'       : 'toggleSelectionHandler',
-		'click .emm-item .check'     : 'removeSelectionHandler',
-		'click .emm-pagination a'    : 'paginate',
-			'change .emm-toolbar :input' : 'updateInput'
-		},
-	
-		initialize: function() {
+		'click .emm-item-area'     : 'toggleSelectionHandler',
+		'click .emm-item .check'   : 'removeSelectionHandler',
+		'click .emm-pagination a'  : 'paginate',
+		'submit .emm-toolbar form' : 'updateInput'
+	},
 
-       	this.collection = new Backbone.Collection();
-	    this.service = this.options.service;
-	    this.tab = this.options.tab;
+	initialize: function() {
 
-	    this.createToolbar();
+		/* fired when you switch router tabs */
+
+		this.collection = new Backbone.Collection();
+		this.service    = this.options.service;
+		this.tab        = this.options.tab;
+
+		this.createToolbar();
 		this.clearItems();
 
 		if ( this.model.get( 'items' ) ) {
 
-        	this.collection = new Backbone.Collection();
-        	this.collection.reset( this.model.get( 'items' ) );
+			this.collection = new Backbone.Collection();
+			this.collection.reset( this.model.get( 'items' ) );
 
-        }
+		}
 
-	    // @TODO do this somewhere else:
-	    // @TODO this gets reverted anyway when the button model's disabled state changes. look into it.
-	    //jQuery( '#emm-button' ).text( this.service.labels.insert );
+		// @TODO do this somewhere else:
+		// @TODO this gets reverted anyway when the button model's disabled state changes. look into it.
+		//jQuery( '#emm-button' ).text( this.service.labels.insert );
 
-        this.collection.on( 'reset', this.render, this );
+		this.collection.on( 'reset', this.render, this );
 
-	    this.model.on( 'change:params', this.changedParams, this );
+		this.model.on( 'change:params', this.changedParams, this );
 
-	    this.on( 'loading',       this.loading, this );
-	    this.on( 'loaded',        this.loaded, this );
-	    this.on( 'change:params', this.changedParams, this );
-	    this.on( 'change:page',   this.changedPage, this );
+		this.on( 'loading',       this.loading, this );
+		this.on( 'loaded',        this.loaded, this );
+		this.on( 'change:params', this.changedParams, this );
+		this.on( 'change:page',   this.changedPage, this );
 
 	},
-		
-    render: function() {
 
-        var that = this;
+	render: function() {
 
-        if ( this.collection && this.collection.models.length ) {
+		/* fired when you switch router tabs */
 
-	        this.clearItems();
+		var selection = this.getSelection();
 
-	        var container = document.createDocumentFragment();
+		if ( this.collection && this.collection.models.length ) {
 
-	        _.each( this.collection.models, function( model ) {
-	        	container.appendChild( that.renderItem( model ) );
-	        }, this );
+			this.clearItems();
 
-	        this.$el.find( '.emm-items' ).append( container );
+			var container = document.createDocumentFragment();
 
-        }
+			this.collection.each( function( model ) {
+				container.appendChild( this.renderItem( model ) );
+			}, this );
 
-    	if ( this.model.get( 'selected' ) )
-    		jQuery( '#emm-button' ).prop( 'disabled', false );
+			this.$el.find( '.emm-items' ).append( container );
+
+		}
+
+		selection.each( function( model ) {
+			var id = '#emm-item-' + this.service.id + '-' + this.tab + '-' + model.get( 'id' );
+			this.$el.find( id ).closest( '.emm-item' ).addClass( 'selected details' );
+		}, this );
+
+		jQuery( '#emm-button' ).prop( 'disabled', !selection.length );
 
 		return this;
 
-    },
- 
-    renderItem : function( model ) {
-        var view = new media.view.EMMItem({
-            model   : model,
-            service : this.service,
-            tab     : this.tab
-        });
-        return view.render().el;
-    },
-	
+	},
+
+	renderItem : function( model ) {
+
+		var view = new media.view.EMMItem({
+			model   : model,
+			service : this.service,
+			tab     : this.tab
+		});
+
+		return view.render().el;
+
+	},
+
 	createToolbar: function() {
 
 		// @TODO this could be a separate view:
-		html = '<div class="emm-error"></div>';
+		html = '<div class="emm-error attachments"></div>';
 		this.$el.prepend( html );
 
 		// @TODO this could be a separate view:
-		html = '<div class="emm-empty"></div>';
+		html = '<div class="emm-empty attachments"></div>';
 		this.$el.prepend( html );
 
 		// @TODO this could be a separate view:
-        html = '<ul class="emm-items clearfix"></ul>';
+		html = '<ul class="emm-items attachments clearfix"></ul>';
 		this.$el.append( html );
 
 		// @TODO this could be a separate view:
 		var toolbar_template = media.template( 'emm-' + this.service.id + '-search-' + this.tab );
-		html = '<div class="emm-toolbar clearfix">' + toolbar_template( this.model.toJSON() ) + '</div>';
+		html = '<div class="emm-toolbar media-toolbar clearfix">' + toolbar_template( this.model.toJSON() ) + '</div>';
 		this.$el.prepend( html );
 
 		// @TODO this could be a separate view:
@@ -183,63 +194,60 @@ media.view.EMM = media.View.extend({
 		event.preventDefault();
 
 	},
-	
+
 	toggleSelectionHandler: function( event ) {
 
-		// @TODO don't trigger selection if the target is an anchor
+		if ( event.target.href )
+			return;
 
-		var selected = this.model.get( 'selected' ) || {};
-		var target   = jQuery( '#' + event.currentTarget.id );
-		var id       = target.attr( 'data-id' );
+		var target = jQuery( '#' + event.currentTarget.id );
+		var id     = target.attr( 'data-id' );
 
-		if ( selected[id] )
+		if ( this.getSelection().get( id ) )
 			this.removeFromSelection( target, id );
 		else
 			this.addToSelection( target, id );
 
 	},
-	
+
 	addToSelection: function( target, id ) {
 
 		target.closest( '.emm-item' ).addClass( 'selected details' );
 
-		selected = this.model.get( 'selected' ) || {};
-		selected[id] = this.collection._byId[id];
+		this.getSelection().add( this.collection._byId[id] );
 
-		this.model.set( 'selected', selected );
-		this.trigger( 'change:selected' );
+		// @TODO why isn't this triggered by the above line?
+		this.controller.state().props.trigger( 'change:selection' );
 
 	},
-	
+
 	removeFromSelection: function( target, id ) {
 
 		target.closest( '.emm-item' ).removeClass( 'selected details' );
 
-		selected = this.model.get( 'selected' ) || {};
-		delete selected[id];
+		this.getSelection().remove( this.collection._byId[id] );
 
-		if ( !_.size(selected) )
-			selected = null;
-
-		this.model.set( 'selected', selected );
-		this.trigger( 'change:selected' );
+		// @TODO why isn't this triggered by the above line?
+		this.controller.state().props.trigger( 'change:selection' );
 
 	},
-	
+
 	clearSelection: function() {
+		this.getSelection().reset();
+	},
 
-		this.$el.find( '.emm-item' ).removeClass( 'selected details' );
-
-		this.model.set( 'selected', null );
-
+	getSelection : function() {
+		return this.controller.state().props.get( '_all' ).get( 'selection' );
 	},
 
 	clearItems: function() {
-		this.clearSelection();
-		this.$el.find('.emm-items').empty();
+
+		this.$el.find( '.emm-item' ).removeClass( 'selected details' );
+		this.$el.find( '.emm-items' ).empty();
 		this.$el.find( '.emm-pagination' ).hide();
+
 	},
-	
+
 	loading: function() {
 
 		// show spinner
@@ -251,7 +259,7 @@ media.view.EMM = media.View.extend({
 
 	},
 
-	loaded: function() {
+	loaded: function( response ) {
 
 		// hide spinner
 		this.$el.find( '.spinner' ).hide();
@@ -302,14 +310,12 @@ media.view.EMM = media.View.extend({
 			this.model.set( 'items', this.model.get( 'items' ).concat( response.items ) );
 
 			var collection = new Backbone.Collection( response.items );
-			var that = this;
+			var container  = document.createDocumentFragment();
 
 			this.collection.add( collection.models );
 
-			var container = document.createDocumentFragment();
-
-			_.each( collection.models, function( model ) {
-				container.appendChild( that.renderItem( model ) );
+			collection.each( function( model ) {
+				container.appendChild( this.renderItem( model ) );
 			}, this );
 
 			this.$el.find( '.emm-items' ).append( container );
@@ -320,17 +326,16 @@ media.view.EMM = media.View.extend({
 
 		this.model.set( 'max_id', response.meta.max_id );
 
-		this.trigger( 'loaded loaded:success' );
+		this.trigger( 'loaded loaded:success', response );
 
 	},
 
 	fetchedEmpty: function( response ) {
 
 		this.$el.find( '.emm-empty' ).text( this.service.labels.noresults ).show();
-
 		this.$el.find( '.emm-pagination' ).hide();
 
-		this.trigger( 'loaded loaded:noresults' );
+		this.trigger( 'loaded loaded:noresults', response );
 
 	},
 
@@ -338,35 +343,36 @@ media.view.EMM = media.View.extend({
 
 		this.$el.find( '.emm-error' ).text( response.error_message ).show();
 
-		this.trigger( 'loaded loaded:error' );
+		this.trigger( 'loaded loaded:error', response );
 
 	},
 
 	updateInput: function( event ) {
 
-		// triggered when a search input/filter is changed
+		// triggered when a search is submitted
 
-	    //if ( !event.currentTarget.value ) // @TODO <- this might not be desired
-	    //	return;
+		var params = this.model.get( 'params' );
+		var els = this.$el.find( '.emm-toolbar' ).find( ':input' ).each( function( k, el ) {
+			var n = jQuery(this).attr('name');
+			if ( n )
+				params[n] = jQuery(this).val();
+		} );
 
-	    var params = this.model.get( 'params' );
-	    var els = this.$el.find( '.emm-toolbar' ).find( ':input' ).each( function( k, el ) {
-		    params[jQuery(this).attr('name')] = jQuery(this).val();
-	    } );
+		this.model.set( 'params', params );
+		this.trigger( 'change:params' ); // why isn't this triggering automatically? might be because params is an object
 
-	    this.model.set( 'params', params );
-	    this.trigger( 'change:params' ); // why isn't this triggering automatically? might be because params is an object
+		event.preventDefault();
 
 	},
-	
+
 	paginate : function( event ) {
 
 		var page = this.model.get( 'page' ) || 1;
 
 		this.model.set( 'page', page + 1 );
-	    this.trigger( 'change:page' );
+		this.trigger( 'change:page' );
 
-	    event.preventDefault();
+		event.preventDefault();
 
 	},
 
@@ -382,10 +388,9 @@ media.view.EMM = media.View.extend({
 
 		// triggered when the search parameters are changed
 
-	    this.model.set( 'selected', null );
-		this.model.set( 'page',     null );
-		this.model.set( 'min_id',   null );
-		this.model.set( 'max_id',    null );
+		this.model.set( 'page',   null );
+		this.model.set( 'min_id', null );
+		this.model.set( 'max_id', null );
 
 		this.clearItems();
 		this.fetchItems();
@@ -400,87 +405,98 @@ var post_frame = media.view.MediaFrame.Post;
 
 media.view.MediaFrame.Post = post_frame.extend({
 
-    initialize: function() {
+	initialize: function() {
 
-        var frame = this;
+		post_frame.prototype.initialize.apply( this, arguments );
 
-        post_frame.prototype.initialize.apply( this, arguments );
-        
-        _.each(emm.services, function( service, service_id ) {
+		_.each( emm.services, function( service, service_id ) {
 
-        	var id = 'emm-service-' + service.id;
-    		var controller = {
-                id:       id,
-                router:   id + '-router',
-				toolbar:  id + '-toolbar',
-                menu:     'default',
-				title:    service.labels.title,
-				tabs:     service.tabs,
+			var id = 'emm-service-' + service.id;
+			var controller = {
+				id      : id,
+				router  : id + '-router',
+				toolbar : id + '-toolbar',
+				menu    : 'default',
+				title   : service.labels.title,
+				tabs    : service.tabs,
 				priority: 100 // places it above Insert From URL
-            };
+			};
 
-            for ( tab in service.tabs ) {
+			for ( tab in service.tabs ) {
 
-		        // Content
-		        frame.on( 'content:render:' + id + '-content-' + tab, _.bind( frame.emmContentRender, frame, service, tab ) );
+				// Content
+				this.on( 'content:render:' + id + '-content-' + tab, _.bind( this.emmContentRender, this, service, tab ) );
 
-            	// Set the default tab
-            	if ( service.tabs[tab].default )
-	            	controller.content = id + '-content-' + tab;
+				// Set the default tab
+				if ( service.tabs[tab].defaultTab )
+					controller.content = id + '-content-' + tab;
 
-            }
+			}
 
-			frame.states.add([
-	            new media.controller.EMM( controller )
-	        ]);
+			this.states.add([
+				new media.controller.EMM( controller )
+			]);
 
 			// Tabs
-			frame.on( 'router:create:' + id + '-router', frame.createRouter, frame );
-	        frame.on( 'router:render:' + id + '-router', _.bind( frame.emmRouterRender, frame, service ) );
+			this.on( 'router:create:' + id + '-router', this.createRouter, this );
+			this.on( 'router:render:' + id + '-router', _.bind( this.emmRouterRender, this, service ) );
 
-	        // Toolbar
-	        frame.on( 'toolbar:create:' + id + '-toolbar', frame.emmToolbarCreate, frame );
+			// Toolbar
+			this.on( 'toolbar:create:' + id + '-toolbar', this.emmToolbarCreate, this );
+			this.on( 'toolbar:render:' + id + '-toolbar', _.bind( this.emmToolbarRender, this, service ) );
 
-		});
-        
-    },
+		}, this );
 
-    emmRouterRender : function( service, view ) {
+	},
 
-    	var id = 'emm-service-' + service.id;
+	emmRouterRender : function( service, view ) {
 
-        tabs = {};
+		var id   = 'emm-service-' + service.id;
+		var tabs = {};
 
-        for ( tab in service.tabs ) {
-        	tab_id = id + '-content-' + tab;
-        	tabs[tab_id] = {
-        		text : service.tabs[tab].text
-        	};
-        }
+		for ( tab in service.tabs ) {
+			tab_id = id + '-content-' + tab;
+			tabs[tab_id] = {
+				text : service.tabs[tab].text
+			};
+		}
 
-	    view.set( tabs );
+		view.set( tabs );
 
-    },
+	},
 
-    emmContentRender : function( service, tab ) {
+	emmToolbarRender : function( service, view ) {
 
-    	/* called when a tab becomes active */
+		view.set( 'selection', new media.view.Selection.EMM({
+			service    : service,
+			controller : this,
+			collection : this.state().props.get('_all').get('selection'),
+			priority   : -40
+		}).render() );
 
-        this.content.set( new media.view.EMM({
-            service:    service,
-            controller: this,
-            model:      this.state().props.get( tab ),
-            tab:        tab,
-            className:  'clearfix emm-content emm-content-' + service.id
-        }) );
+	},
 
-    },
-    
-    emmToolbarCreate : function( toolbar ) {
-        toolbar.view = new media.view.Toolbar.EMM({
-		    controller: this
-	    });
-    }
+	emmContentRender : function( service, tab ) {
+
+		/* called when a tab becomes active */
+
+		this.content.set( new media.view.EMM( {
+			service    : service,
+			controller : this,
+			model      : this.state().props.get( tab ),
+			tab        : tab,
+			className  : 'clearfix attachments-browser emm-content emm-content-' + service.id + ' emm-content-' + service.id + '-' + tab
+		} ) );
+
+	},
+
+	emmToolbarCreate : function( toolbar ) {
+
+		toolbar.view = new media.view.Toolbar.EMM( {
+			controller : this
+		} );
+
+	}
 
 });
 
@@ -488,43 +504,48 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 media.controller.EMM = media.controller.State.extend({
 
-    initialize: function( options ) {
+	initialize: function( options ) {
 
-        this.props = new Backbone.Collection();
+		this.props = new Backbone.Collection();
 
-        for ( tab in options.tabs ) {
+		for ( tab in options.tabs ) {
 
-	        this.props.add( new Backbone.Model({
-	        	id       : tab,
-	        	params   : {},
-	        	selected : null,
-	        	page     : null,
-	        	min_id   : null,
-	        	max_id   : null
-	        }) );
+			this.props.add( new Backbone.Model({
+				id     : tab,
+				params : {},
+				page   : null,
+				min_id : null,
+				max_id : null
+			}) );
 
-        }
+		}
 
-        this.props.on( 'change:selected', this.refresh, this );
+		this.props.add( new Backbone.Model({
+			id        : '_all',
+			selection : new Backbone.Collection()
+		}) );
 
-    },
+		this.props.on( 'change:selection', this.refresh, this );
 
-    refresh: function() {
-    	this.frame.toolbar.get().refresh();
+	},
+
+	refresh: function() {
+		this.frame.toolbar.get().refresh();
 	},
 
 	emmInsert: function() {
 
-		var insert = '';
+		var insert    = '';
+		var selection = this.frame.content.get().getSelection();
 
-	    _.each( this.frame.content.get().model.get( 'selected' ), function( model ) {
-	    	insert += '<p>' + model.get( 'url' ) + '</p>';
-	    }, this );
+		selection.each( function( model ) {
+			insert += '<p>' + model.get( 'url' ) + '</p>';
+		}, this );
 
-    	media.editor.insert( insert );
-
-	    this.frame.close();
+		media.editor.insert( insert );
+		selection.reset();
+		this.frame.close();
 
 	}
-    
+
 });

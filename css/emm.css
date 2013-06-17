@@ -20,32 +20,61 @@ GNU General Public License for more details.
 .media-frame .emm-content .emm-error {
 	background: #fdd;
 	padding: 12px 16px;
-	margin: 10px 0;
+	margin: 0 0 10px 0;
+	bottom: auto;
 	display: none;
 }
 
 .media-frame .emm-content .emm-empty {
 	background: #ffd;
 	padding: 12px 16px;
-	margin: 10px 0;
+	margin: 0 0 10px 0;
+	bottom: auto;
 	display: none;
 }
 
 .media-frame .emm-content .emm-toolbar {
 	background: #f5f5f5;
+	padding: 0;
+	right: 0;
+}
+body.mp6 .media-frame .emm-content .emm-toolbar {
+	background: #fff;
+	border-bottom: 1px solid #ddd;
+}
+
+/* The below can be removed when MP6 hits 1.6 */
+/* http://wordpress.org/support/topic/cssmedia-viewscss-references-a-non-existent-image */
+body.mp6 .media-frame .emm-content .spinner {
+	background-image: url( '../assets/wpspin_light.gif' );
 }
 
 .media-frame .emm-content .emm-toolbar-container {
-	padding: 10px 16px;
+	padding: 10px 9px;
 }
 
-.media-frame .emm-content .emm-items {
-	clear: both;
+.media-frame .emm-content .attachments {
+	right: 0;
 }
 
+.media-frame .emm-content .emm-toolbar label,
 .media-frame .emm-content .emm-toolbar select,
 .media-frame .emm-content .emm-toolbar input {
 	float: left;
+}
+
+/* WP media manager style tweaks: */
+.media-frame .emm-content .emm-toolbar label{
+	margin: 7px;
+	color: #555;
+}
+.media-frame .emm-content .emm-toolbar select {
+	margin: 1px;
+	padding: 6px 6px 5px;
+	height: 2.5em;
+}
+.media-frame .emm-content .emm-toolbar .button {
+	margin: 1px;
 }
 
 .media-frame .emm-content .emm-toolbar .spinner {
@@ -94,7 +123,10 @@ GNU General Public License for more details.
 }
 
 .media-frame .emm-content-twitter .emm-item.selected {
-	border: 1px solid transparent;
+	border-color: transparent;
+}
+html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
+	border-color: #999;
 }
 
 .media-frame .emm-content-twitter .emm-item .emm-item-container {
@@ -128,7 +160,16 @@ GNU General Public License for more details.
 	clear: left;
 }
 
+.media-frame .emm-content-twitter-location .emm-toolbar {
+	height: 210px;
+}
+
+.media-frame .emm-content-twitter-location .attachments {
+	top: 210px;
+}
+
 #emm_twitter_map_canvas {
 	width: 100%;
-	height: 250px
+	height: 160px;
+	background: transparent no-repeat center center;
 }

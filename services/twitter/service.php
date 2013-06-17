@@ -37,6 +37,12 @@ class Service extends \EMM\Service {
 		$emm = \Extended_Media_Manager::init();
 
 		wp_enqueue_script(
+			'google-jsapi',
+			'https://www.google.com/jsapi',
+			array(),
+			false
+		);
+		wp_enqueue_script(
 			'emm-service-twitter',
 			$emm->plugin_url( 'services/twitter/js.js' ),
 			array( 'jquery', 'emm' ),
@@ -50,11 +56,19 @@ class Service extends \EMM\Service {
 		if ( is_wp_error( $connection = $this->get_connection() ) )
 			return $connection;
 
-		# +exclude:retweets
+		$params = $request['params'];
+
+		if ( isset( $params['location'] ) and empty( $params['coords'] ) ) {
+			if ( is_wp_error( $coords = $this->get_coords( $params['location'] ) ) ) {
+				return $coords;
+			} else {
+				$this->response_meta['coords'] = $coords;
+				$params['coords'] = sprintf( '%s,%s', $coords->lat, $coords->lng );
+			}
+		}
 
 		# operators: https://dev.twitter.com/docs/using-search
-
-		$params = $request['params'];
+		# @TODO +exclude:retweets
 
 		$q = array();
 
@@ -76,8 +90,11 @@ class Service extends \EMM\Service {
 			'count'       => 20,
 		);
 
-		if ( isset( $params['location'] ) and isset( $params['radius'] ) )
-			$args['geocode'] = sprintf( '%s,%dkm', $params['location'], $params['radius'] );
+		if ( isset( $params['coords'] ) and isset( $params['radius'] ) ) {
+			if ( is_array( $params['radius'] ) )
+				$params['radius'] = reset( $params['radius'] );
+			$args['geocode'] = sprintf( '%s,%dkm', $params['coords'], $params['radius'] );
+		}
 
 		if ( !empty( $request['min_id'] ) )
 			$args['since_id'] = $request['min_id'];
@@ -101,6 +118,40 @@ class Service extends \EMM\Service {
 			);
 
 		}
+
+	}
+
+	public function get_coords( $location ) {
+
+		$url = sprintf( 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false',
+			urlencode( trim( $location ) )
+		);
+		$result = wp_remote_get( $url );
+
+		if ( is_wp_error( $result ) )
+			return $result;
+
+		$error = new \WP_Error(
+			'emm_twitter_failed_location',
+			__( 'Could not find your requested location.', 'emm' )
+		);
+
+		if ( 200 != wp_remote_retrieve_response_code( $result ) )
+			return $error;
+		if ( ! $data = wp_remote_retrieve_body( $result ) )
+			return $error;
+
+		$data = json_decode( $data );
+
+		if ( 'OK' != $data->status )
+			return $error;
+
+		$location = reset( $data->results );
+
+		if ( ! isset( $location->geometry->location ) )
+			return $error;
+
+		return $location->geometry->location;
 
 	}
 
@@ -143,8 +194,11 @@ class Service extends \EMM\Service {
 
 		$response = new \EMM\Response;
 
-		# @TODO $r->search_metadata->next_results isn't always set, causes notice
-		$response->add_meta( 'max_id', self::get_max_id( $r->search_metadata->next_results ) );
+		if ( isset( $r->search_metadata->next_results ) )
+			$response->add_meta( 'max_id', self::get_max_id( $r->search_metadata->next_results ) );
+
+		if ( isset( $this->response_meta ) )
+			$response->add_meta( $this->response_meta );
 
 		foreach ( $r->statuses as $status ) {
 
