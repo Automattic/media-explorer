@@ -226,12 +226,9 @@ class Service extends \EMM\Service {
 
 	public function tabs() {
 		return array(
-			#'welcome' => array(
-			#	'text' => _x( 'Welcome', 'Tab title', 'emm'),
-			#),
 			'all' => array(
-				'text'    => _x( 'All', 'Tab title', 'emm'),
-				'default' => true
+				'text'       => _x( 'All', 'Tab title', 'emm'),
+				'defaultTab' => true
 			),
 			'hashtag' => array(
 				'text' => _x( 'With Hashtag', 'Tab title', 'emm'),
