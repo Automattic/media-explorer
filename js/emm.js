@@ -62,9 +62,10 @@ media.view.Toolbar.EMM = media.view.Toolbar.extend({
 
 	refresh: function() {
 
-		var selected = this.controller.state().frame.content.get().model.get( 'selected' );
+		var selection = this.controller.state().props.get( '_all' ).get( 'selection' );
 
-		this.get( 'inserter' ).model.set( 'disabled', !selected );
+		// @TODO i think this is redundant
+		this.get( 'inserter' ).model.set( 'disabled', !selection.length );
 
 		media.view.Toolbar.prototype.refresh.apply( this, arguments );
 
