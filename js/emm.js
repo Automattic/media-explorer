@@ -272,6 +272,7 @@ media.view.EMM = media.View.extend({
 		this.trigger( 'loading' );
 
 		var data = {
+			_nonce  : emm._nonce,
 			service : this.service.id,
 			params  : this.model.get( 'params' ),
 			page    : this.model.get( 'page' ),

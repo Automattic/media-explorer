@@ -107,7 +107,8 @@ class Extended_Media_Manager extends \EMM\Plugin {
 
 	public function ajax_request() {
 
-		# @TODO nonce check to prevent privilege escalation
+		if ( !isset( $_POST['_nonce'] ) or !wp_verify_nonce( $_POST['_nonce'], 'emm_request' ) )
+			die( '-1' );
 
 		$sid = stripslashes( $_POST['service'] );
 
@@ -179,8 +180,8 @@ class Extended_Media_Manager extends \EMM\Plugin {
 	public function action_enqueue_media() {
 
 		$emm = array(
-			# @TODO nonce
-			'labels'  => array(
+			'_nonce'    => wp_create_nonce( 'emm_request' ),
+			'labels'    => array(
 				'insert' => __( 'Insert', 'emm' )
 			),
 			'base_url'  => untrailingslashit( $this->plugin_url() ),
