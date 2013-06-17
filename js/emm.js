@@ -444,7 +444,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 			// Toolbar
 			this.on( 'toolbar:create:' + id + '-toolbar', this.emmToolbarCreate, this );
-			this.on( 'toolbar:render:' + id + '-toolbar', _.bind( this.emmToolbarRender, this, service ) );
+			//this.on( 'toolbar:render:' + id + '-toolbar', _.bind( this.emmToolbarRender, this, service ) );
 
 		}, this );
 
