@@ -2,7 +2,7 @@
 /*
 Plugin Name: Extended Media Manager
 Description: Extends the Media Manager to add support for external media services (currently only Twitter).
-Version:     1.0
+Version:     1.1
 Author:      Code For The People Ltd
 Author URI:  http://codeforthepeople.com/
 Text Domain: emm
@@ -23,16 +23,8 @@ GNU General Public License for more details.
 
 */
 
-/* ************** */
-
-# @TODO remove:
-add_filter( 'wp_get_attachment_url', 'set_url_scheme' );
-
-/* ************** */
-
 defined( 'ABSPATH' ) or die();
 
-# @TODO we could autoload these instead
 foreach ( array( 'plugin', 'emm', 'service', 'template', 'response' ) as $class )
 	require_once sprintf( '%s/class.%s.php', __DIR__, $class );
 

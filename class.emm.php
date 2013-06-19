@@ -16,12 +16,20 @@ GNU General Public License for more details.
 
 class Extended_Media_Manager extends \EMM\Plugin {
 
+	/**
+	 * Array of Service objects.
+	 */
 	public $services = array();
 
+	/**
+	 * Class constructor. Set up some actions and filters.
+	 *
+	 * @return null
+	 */
 	protected function __construct( $file ) {
 
 		# Filters:
-		add_filter( 'mce_external_plugins',  array( $this, 'filter_mce_plugins' ) );
+		# (none)
 
 		# Actions:
 		add_action( 'init',                  array( $this, 'action_init' ) );
@@ -35,12 +43,16 @@ class Extended_Media_Manager extends \EMM\Plugin {
 		parent::__construct( $file );
 
 		# Go!
-		# @TODO populate services on-demand instead
 		$this->load_services();
 
 	}
 
-	public function load_services() {
+	/**
+	 * Populate the array of Service objects.
+	 *
+	 * @return null
+	 */
+	protected function load_services() {
 
 		foreach ( apply_filters( 'emm_services', array() ) as $service_id => $service ) {
 			if ( is_a( $service, '\EMM\Service' ) )
@@ -49,19 +61,39 @@ class Extended_Media_Manager extends \EMM\Plugin {
 
 	}
 
+	/**
+	 * Retrieve a registered Service object by its ID.
+	 *
+	 * @param string $service_id A service ID.
+	 * @return Service|WP_Error A Service object on success, a WP_Error object on failure.
+	 */
 	public function get_service( $service_id ) {
 
 		if ( isset( $this->services[$service_id] ) )
 			return $this->services[$service_id];
-		else
-			return false; # @TODO wp_error
+
+		return new \WP_Error(
+			'invalid_service',
+			sprintf( __( 'Media service "%s" was not found', 'emm' ), esc_html( $service_id ) )
+		);
 
 	}
 
+	/**
+	 * Retrieve all the registered services.
+	 *
+	 * @return array An array of registered Service objects.
+	 */
 	public function get_services() {
 		return $this->services;
 	}
 
+	/**
+	 * Load the Backbone templates for each of our registered services.
+	 *
+	 * @action print_media_templates
+	 * @return null
+	 */
 	public function action_print_media_templates() {
 
 		foreach ( $this->get_services() as $service_id => $service ) {
@@ -105,17 +137,23 @@ class Extended_Media_Manager extends \EMM\Plugin {
 
 	}
 
+	/**
+	 * Process an AJAX request and output the resulting JSON.
+	 *
+	 * @action wp_ajax_emm_request
+	 * @return null
+	 */
 	public function ajax_request() {
 
 		if ( !isset( $_POST['_nonce'] ) or !wp_verify_nonce( $_POST['_nonce'], 'emm_request' ) )
 			die( '-1' );
 
-		$sid = stripslashes( $_POST['service'] );
+		$service = $this->get_service( stripslashes( $_POST['service'] ) );
 
-		if ( ! $service = $this->get_service( $sid ) ) {
+		if ( is_wp_error( $service ) ) {
 			wp_send_json_error( array(
-				'error_code'    => 'invalid_service',
-				'error_message' => sprintf( __( 'Media service "%s" was not found', 'emm' ), esc_html( $sid ) )
+				'error_code'    => $service->get_error_code(),
+				'error_message' => $service->get_error_message()
 			) );
 		}
 
@@ -165,18 +203,12 @@ class Extended_Media_Manager extends \EMM\Plugin {
 
 	}
 
-	public function filter_mce_plugins( $plugins ) {
-
-		foreach ( $this->get_services() as $service_id => $service ) {
-			$f = sprintf( 'services/%s/editor_plugin.js', $service_id );
-			if ( file_exists( $this->plugin_path( $f ) ) )
-				$plugins['emm-' . $service_id] = $this->plugin_url( $f );
-		}
-
-		return $plugins;
-
-	}
-
+	/**
+	 * Enqueue and localise the JS and CSS we need for the media manager.
+	 *
+	 * @action enqueue_media
+	 * @return null
+	 */
 	public function action_enqueue_media() {
 
 		$emm = array(
@@ -219,13 +251,24 @@ class Extended_Media_Manager extends \EMM\Plugin {
 
 	}
 
+	/**
+	 * Load text domain and localisation files.
+	 *
+	 * @action init
+	 * @return null
+	 */
 	public function action_init() {
 
 		load_plugin_textdomain( 'emm', false, dirname( $this->plugin_base() ) . '/languages/' );
 
 	}
 
-	// Singleton getter:
+	/**
+	 * Singleton instantiator.
+	 *
+	 * @param string $file The plugin file (usually __FILE__) (optional)
+	 * @return Extended_Media_Manager
+	 */
 	public static function init( $file = null ) {
 
 		static $instance = null;

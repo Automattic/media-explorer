@@ -16,6 +16,10 @@ GNU General Public License for more details.
 
 namespace EMM;
 
+/**
+ * Response class. A service's request() method should return a Response object. This
+ * is used to populate the AJAX request's JSON response.
+ */
 final class Response {
 
 	public $items = array();
@@ -25,6 +29,13 @@ final class Response {
 		'min_id' => null,
 	);
 
+	/**
+	 * Add a meta value to the response. Accepts a key/value pair or an associative array.
+	 *
+	 * @param string|array $key The meta key, or an associative array of meta keys/values.
+	 * @param mixed $value The meta value.
+	 * @return null
+	 */
 	public function add_meta( $key, $value = null ) {
 
 		if ( is_array( $key ) ) {
@@ -40,10 +51,21 @@ final class Response {
 
 	}
 
+	/**
+	 * Add a response item to the response.
+	 *
+	 * @param Response_Item A response item.
+	 * @return null
+	 */
 	public function add_item( Response_Item $item ) {
 		$this->items[] = $item;
 	}
 
+	/**
+	 * Retrieve the response output.
+	 *
+	 * @return array|bool The response output, or boolean false if there's nothing to output.
+	 */
 	public function output() {
 
 		if ( empty( $this->items ) )
@@ -68,6 +90,9 @@ final class Response {
 
 }
 
+/**
+ * Response Item class. Used within the Response class to populate the items in a response.
+ */
 final class Response_Item {
 
 	public $id          = null;
@@ -78,30 +103,73 @@ final class Response_Item {
 	public $date_format = null;
 	public $meta        = array();
 
+	/**
+	 * Set the ID for the response item.
+	 *
+	 * @param int $id The response item ID.
+	 * @return null
+	 */
 	public function set_id( $id ) {
 		$this->id = $id;
 	}
 
+	/**
+	 * Set the URL for the response item.
+	 *
+	 * @param string $url The response item URL.
+	 * @return null
+	 */
 	public function set_url( $url ) {
 		$this->url = esc_url_raw( $url );
 	}
 
+	/**
+	 * Set the thumbnail URL for the response item.
+	 *
+	 * @param string $thumbnail The response item thumbnail URL.
+	 * @return null
+	 */
 	public function set_thumbnail( $thumbnail ) {
 		$this->thumbnail = esc_url_raw( $thumbnail );
 	}
 
+	/**
+	 * Set the content for the response item.
+	 *
+	 * @param string $content The response item content.
+	 * @return null
+	 */
 	public function set_content( $content ) {
 		$this->content = $content;
 	}
 
+	/**
+	 * Set the date for the response item.
+	 *
+	 * @param int $date The response item date in UNIX timestamp format.
+	 * @return null
+	 */
 	public function set_date( $date ) {
 		$this->date = $date;
 	}
 
+	/**
+	 * Set the date format for the response item date.
+	 *
+	 * @param string $date_format The date format in PHP date() format.
+	 * @return null
+	 */
 	public function set_date_format( $date_format ) {
 		$this->date_format = $date_format;
 	}
 
+	/**
+	 * Add a meta value to the response item. Accepts a key/value pair or an associative array.
+	 *
+	 * @param string|array $key The meta key, or an associative array of meta keys/values.
+	 * @param mixed $value The meta value.
+	 * @return null
+	 */
 	public function add_meta( $key, $value = null ) {
 
 		if ( is_array( $key ) ) {
@@ -117,6 +185,11 @@ final class Response_Item {
 
 	}
 
+	/**
+	 * Retrieve the response item output.
+	 *
+	 * @return array The response item output.
+	 */
 	public function output() {
 
 		if ( is_null( $this->date_format ) )

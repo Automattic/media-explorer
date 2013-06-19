@@ -103,7 +103,6 @@ class Service extends \EMM\Service {
 
 		$response = $connection->get( sprintf( '%s/search/tweets.json', untrailingslashit( $connection->host ) ), $args );
 
-		# @TODO switch the twitter oauth class over to wp http api:
 		if ( 200 == $connection->http_code ) {
 
 			return $this->response( $response );

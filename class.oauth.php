@@ -1,4 +1,7 @@
 <?php
+/**
+ * OAuth class from https://github.com/abraham/twitteroauth
+ */
 
 /* Generic exception class
  */

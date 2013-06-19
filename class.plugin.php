@@ -16,13 +16,17 @@ GNU General Public License for more details.
 
 namespace EMM;
 
+/**
+ * Abstract plugin class. The plugin's main class should extend this to make use of its handy methods.
+ */
 abstract class Plugin {
 
 	/**
 	 * Class constructor
 	 *
+	 * @param string $file The plugin's file path.
 	 * @author John Blackbourn
-	 **/
+	 */
 	protected function __construct( $file ) {
 		$this->file = $file;
 	}
@@ -30,10 +34,10 @@ abstract class Plugin {
 	/**
 	 * Returns the URL for for a file/dir within this plugin.
 	 *
-	 * @param $path string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param string $path The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string URL
 	 * @author John Blackbourn
-	 **/
+	 */
 	public function plugin_url( $file = '' ) {
 		return $this->_plugin( 'url', $file );
 	}
@@ -41,10 +45,10 @@ abstract class Plugin {
 	/**
 	 * Returns the filesystem path for a file/dir within this plugin.
 	 *
-	 * @param $path string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param string $path The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Filesystem path
 	 * @author John Blackbourn
-	 **/
+	 */
 	public function plugin_path( $file = '' ) {
 		return $this->_plugin( 'path', $file );
 	}
@@ -52,10 +56,10 @@ abstract class Plugin {
 	/**
 	 * Returns a version number for the given plugin file.
 	 *
-	 * @param $path string The path within this plugin, e.g. '/js/clever-fx.js'
+	 * @param string $path The path within this plugin, e.g. '/js/clever-fx.js'
 	 * @return string Version
 	 * @author John Blackbourn
-	 **/
+	 */
 	public function plugin_ver( $file ) {
 		return filemtime( $this->plugin_path( $file ) );
 	}
@@ -65,16 +69,19 @@ abstract class Plugin {
 	 *
 	 * @return string Basename
 	 * @author John Blackbourn
-	 **/
+	 */
 	public function plugin_base() {
 		return $this->_plugin( 'base' );
 	}
 
 	/**
-	 * Populates and returns the current plugin info.
+	 * Populates the current plugin info if necessary, and returns the requested item.
 	 *
+	 * @param string $item The name of the requested item. One of 'url', 'path', or 'base'.
+	 * @param string $file The file name to append to the returned value (optional).
+	 * @return string The value of the requested item.
 	 * @author John Blackbourn
-	 **/
+	 */
 	protected function _plugin( $item, $file = '' ) {
 		if ( !isset( $this->plugin ) ) {
 			$this->plugin = array(
@@ -87,4 +94,3 @@ abstract class Plugin {
 	}
 
 }
-
