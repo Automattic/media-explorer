@@ -84,6 +84,9 @@ class Service extends \EMM\Service {
 		if ( isset( $params['to_user'] ) )
 			$q[] = sprintf( '@%s', ltrim( $params['to_user'], '@' ) );
 
+		if ( 'images' == $request['tab'] )
+			$q[] = 'filter:images';
+
 		$args = array(
 			'q'           => implode( ' ', $q ),
 			'result_type' => 'recent',
@@ -232,9 +235,9 @@ class Service extends \EMM\Service {
 			'hashtag' => array(
 				'text' => _x( 'With Hashtag', 'Tab title', 'emm'),
 			),
-			#'images' => array(
-			#	'text' => _x( 'With Images', 'Tab title', 'emm'),
-			#),
+			'images' => array(
+				'text' => _x( 'With Images', 'Tab title', 'emm'),
+			),
 			'by_user' => array(
 				'text' => _x( 'By User', 'Tab title', 'emm'),
 			),

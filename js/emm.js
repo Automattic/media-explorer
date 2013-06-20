@@ -274,6 +274,7 @@ media.view.EMM = media.View.extend({
 		var data = {
 			_nonce  : emm._nonce,
 			service : this.service.id,
+			tab     : this.tab,
 			params  : this.model.get( 'params' ),
 			page    : this.model.get( 'page' ),
 			max_id  : this.model.get( 'max_id' )

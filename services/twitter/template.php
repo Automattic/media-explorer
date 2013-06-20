@@ -161,6 +161,7 @@ class Template extends \EMM\Template {
 
 				break;
 
+			case 'images':
 			case 'all':
 			default:
 
