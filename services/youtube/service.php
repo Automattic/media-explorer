@@ -19,20 +19,29 @@ class Service extends \EMM\Service {
 		$params = $request['params'];
 
 		try {
-			// Make the request to the Youtube API
-			$search_response = $youtube->search->listSearch( 'id,snippet', array(
-				'q'          => $params['q'],
+			$request = array(
+				'q' => $params['q'],
 				'maxResults' => 10,
-				'type'       => 'video',
-			) );
+			);
+
+			if ( isset( $params['type'] ) )
+				$request['type'] = $params['type'];
+
+			// Make the request to the Youtube API
+			$search_response = $youtube->search->listSearch( 'id,snippet', $request );
 
 			// Create the response for the API
 			$response = new \EMM\Response();
 
 			foreach ( $search_response['items'] as $index => $search_item ) {
 				$item = new \EMM\Response_Item();
+				if ( $request['type'] == 'video' ) {
+					$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
+				} else {
+					$item->set_url( esc_url( sprintf( "http://www.youtube.com/playlist?list=%s", $search_item['id']['playlistId'] ) ) );
+				}
+				$item->add_meta( 'user', $search_item['snippet']['channelTitle'] );
 				$item->set_id( $index );
-				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
 				$item->set_content( $search_item['snippet']['title'] );
 				$item->set_thumbnail( $search_item['snippet']['thumbnails']['medium']['url'] );
 				$item->set_date( strtotime( $search_item['snippet']['publishedAt'] ) );
@@ -59,12 +68,6 @@ class Service extends \EMM\Service {
 			'all' => array(
 				'text'       => _x( 'All', 'Tab title', 'emm'),
 				'defaultTab' => true
-			),
-			'by_channel' => array(
-				'text' => _x( 'By Channel', 'Tab title', 'emm'),
-			),
-			'by_freebase_topic' => array(
-				'text' => _x( 'By Freebase Topic', 'Tab title', 'emm'),
 			),
 		);
 	}

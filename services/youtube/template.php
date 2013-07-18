@@ -21,9 +21,13 @@ class Template extends \EMM\Template {
 					<div class="emm-item-content">
 						{{{ data.content }}}
 					</div>
+					<div class="emm-item-channel">
+						<?php _e( 'by', 'emm' ) ?> {{ data.meta.user }}
+					</div>
 					<div class="emm-item-date">
 						{{ data.date }}
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -45,57 +49,23 @@ class Template extends \EMM\Template {
 	 * @param string $tab the tab were the user is right now
 	 */
 	public function search( $id, $tab ) {
-		switch ( $tab ) 
-		{
-			case 'by_channel':
-				?>
-				<form action="#" class="emm-toolbar-container clearfix">
-					<input
-						type="text"
-						name="q"
-						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
-						size="40"
-						placeholder="<?php esc_attr_e( 'Search by channel name', 'emm' ); ?>"
-					>
-					<div class="spinner"></div>
-				</form>
-				<?php
-			break;
-
-			case 'by_freebase_topic':
-				?>
-				<form action="#" class="emm-toolbar-container clearfix">
-					<input
-						type="text"
-						name="q"
-						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
-						size="40"
-						placeholder="<?php esc_attr_e( 'Search by Freebase topic', 'emm' ); ?>"
-					>
-					<div class="spinner"></div>
-				</form>
-				<?php
-			break;
-
-			case 'all':
-			default:
-				?>
-				<form action="#" class="emm-toolbar-container clearfix">
-					<input
-						type="text"
-						name="q"
-						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
-						size="40"
-						placeholder="<?php esc_attr_e( 'Search Youtube', 'emm' ); ?>"
-					>
-					<div class="spinner"></div>
-				</form>
-				<?php
-			break;
-		}
+		?>
+		<form action="#" class="emm-toolbar-container clearfix">
+			<input
+				type="text"
+				name="q"
+				value="{{ data.params.q }}"
+				class="emm-input-text emm-input-search"
+				size="40"
+				placeholder="<?php esc_attr_e( 'Search Youtube', 'emm' ); ?>"
+			>
+			<select name="type" >
+			<option value="video">videos</option>
+			<option value="playlist">playlists</option>
+			</select>
+			<div class="spinner"></div>
+		</form>
+		<?php
 	}
 
 }
