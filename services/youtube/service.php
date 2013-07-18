@@ -15,21 +15,8 @@ class Service extends \EMM\Service {
 	}
 
 	public function request( array $request ) {
-		// Add the Google API classes to the runtime
-		if ( !class_exists( 'Google_Client' ) || !class_exists( 'Google_YoutubeService' ) ) {
-			$google_path = plugin_dir_path( __FILE__ ) . '/google-api-php-client/src/Google_Client.php';
-			$youtube_path = plugin_dir_path( __FILE__ ) . '/google-api-php-client/src/contrib/Google_YoutubeService.php';
-			require_once $google_path;
-			require_once $youtube_path;
-		}
+		$youtube = $this->get_connection();
 		$params = $request['params'];
-
-		// TODO: move to emm-creds.php
-		// Get yours at <https://code.google.com/apis/console/>
-		$DEVELOPER_KEY = '';
-		$client = new \Google_Client();
-		$client->setDeveloperKey($DEVELOPER_KEY);
-		$youtube = new \Google_YoutubeService($client);
 
 		try {
 			// Make the request to the Youtube API
@@ -42,12 +29,12 @@ class Service extends \EMM\Service {
 			// Create the response for the API
 			$response = new \EMM\Response();
 
-			foreach ( $search_response['items'] as $index => $search_item ){
+			foreach ( $search_response['items'] as $index => $search_item ) {
 				$item = new \EMM\Response_Item();
 				$item->set_id( $index );
-				$item->set_url( esc_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) ) );
+				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
 				$item->set_content( $search_item['snippet']['title'] );
-				$item->set_thumbnail( $search_item['snippet']['thumbnails']['default']['url'] );
+				$item->set_thumbnail( $search_item['snippet']['thumbnails']['medium']['url'] );
 				$item->set_date( strtotime( $search_item['snippet']['publishedAt'] ) );
 				$item->set_date_format( 'g:i A - j M y' );
 				$response->add_item($item);
@@ -83,7 +70,17 @@ class Service extends \EMM\Service {
 	}
 
 	private function get_connection() {
-	
+		// Add the Google API classes to the runtime
+		if ( !class_exists( 'Google_Client' ) || !class_exists( 'Google_YoutubeService' ) ) {
+			require_once plugin_dir_path( __FILE__ ) . '/google-api-php-client/src/Google_Client.php';
+			require_once plugin_dir_path( __FILE__ ) . '/google-api-php-client/src/contrib/Google_YoutubeService.php';
+		}
+
+		$developer_key = (string) apply_filters( 'emm_youtube_developer_key', '' ) ;
+		$client = new \Google_Client();
+		$client->setDeveloperKey( $developer_key );
+
+		return new \Google_YoutubeService( $client );
 	}
 
 	public function labels() {

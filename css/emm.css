@@ -173,3 +173,10 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 	height: 160px;
 	background: transparent no-repeat center center;
 }
+
+/* ************************ */
+/* Youtube-specific styles: */
+/* ************************ */
+.emm-item-youtube .emm-item-content {
+    width: 320px;
+}
