@@ -31,7 +31,8 @@ add_filter( 'emm_twitter_credentials', function() {
 
 add_filter( 'emm_youtube_developer_key', function() {
 
-	// Add your developer key here
-	return 'AIzaSyDg5EgjniyIn2YaQbBgUtzM7N8Qn1QN3zA';
+	// Add your developer key here.
+	// Get your developer key at: <https://code.google.com/apis/console>
+	return '';
 
 });
