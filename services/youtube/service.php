@@ -18,49 +18,37 @@ class Service extends \EMM\Service {
 		$youtube = $this->get_connection();
 		$params = $request['params'];
 
-		try {
-			$request = array(
-				'q' => $params['q'],
-				'maxResults' => 10,
-			);
+		$request = array(
+			'q' => $params['q'],
+			'maxResults' => 10,
+		);
 
-			if ( isset( $params['type'] ) )
-				$request['type'] = $params['type'];
+		if ( isset( $params['type'] ) )
+			$request['type'] = $params['type'];
 
-			// Make the request to the Youtube API
-			$search_response = $youtube->search->listSearch( 'id,snippet', $request );
+		// Make the request to the Youtube API
+		$search_response = $youtube->get_videos( $request );
 
-			// Create the response for the API
-			$response = new \EMM\Response();
+		// Create the response for the API
+		$response = new \EMM\Response();
 
-			foreach ( $search_response['items'] as $index => $search_item ) {
-				$item = new \EMM\Response_Item();
-				if ( $request['type'] == 'video' ) {
-					$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
-				} else {
-					$item->set_url( esc_url( sprintf( "http://www.youtube.com/playlist?list=%s", $search_item['id']['playlistId'] ) ) );
-				}
-				$item->add_meta( 'user', $search_item['snippet']['channelTitle'] );
-				$item->set_id( $index );
-				$item->set_content( $search_item['snippet']['title'] );
-				$item->set_thumbnail( $search_item['snippet']['thumbnails']['medium']['url'] );
-				$item->set_date( strtotime( $search_item['snippet']['publishedAt'] ) );
-				$item->set_date_format( 'g:i A - j M y' );
-				$response->add_item($item);
+		foreach ( $search_response['items'] as $index => $search_item ) {
+			$item = new \EMM\Response_Item();
+			if ( $request['type'] == 'video' ) {
+				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
+			} else {
+				$item->set_url( esc_url( sprintf( "http://www.youtube.com/playlist?list=%s", $search_item['id']['playlistId'] ) ) );
 			}
-
-			return $response;
-		} catch (Google_ServiceException $e) {
-			return new \WP_Error(
-				'emm_youtube_failed_request',
-				'Could not connect to Youtube'
-			);
-		} catch (Google_Exception $e) {
-			return new \WP_Error(
-				'emm_youtube_google_error',
-				'something went wrong with the Youtube SDK'
-			);
+			$item->add_meta( 'user', $search_item['snippet']['channelTitle'] );
+			$item->set_id( $index );
+			$item->set_content( $search_item['snippet']['title'] );
+			$item->set_thumbnail( $search_item['snippet']['thumbnails']['medium']['url'] );
+			$item->set_date( strtotime( $search_item['snippet']['publishedAt'] ) );
+			$item->set_date_format( 'g:i A - j M y' );
+			$response->add_item($item);
 		}
+
+		return $response;
 	}
 
 	public function tabs() {
@@ -75,15 +63,12 @@ class Service extends \EMM\Service {
 	private function get_connection() {
 		// Add the Google API classes to the runtime
 		if ( !class_exists( 'Google_Client' ) || !class_exists( 'Google_YoutubeService' ) ) {
-			require_once plugin_dir_path( __FILE__ ) . '/google-api-php-client/src/Google_Client.php';
-			require_once plugin_dir_path( __FILE__ ) . '/google-api-php-client/src/contrib/Google_YoutubeService.php';
+			require_once plugin_dir_path( __FILE__) . '/class.wp-youtube-client.php';
 		}
 
 		$developer_key = (string) apply_filters( 'emm_youtube_developer_key', '' ) ;
-		$client = new \Google_Client();
-		$client->setDeveloperKey( $developer_key );
 
-		return new \Google_YoutubeService( $client );
+		return new Youtube_Client( $developer_key );
 	}
 
 	public function labels() {
