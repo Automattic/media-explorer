@@ -8,8 +8,6 @@ class Youtube_Client {
 
 	private $api_url = 'https://www.googleapis.com/youtube/v3';
 
-	private $api_request;
-
 	public function __construct( $developer_key ) {
 		$this->developer_key = $developer_key;
 	}
@@ -21,13 +19,34 @@ class Youtube_Client {
 	 *  &q=YouTube+Data+API
 	 *  &type=video
 	 *  &videoCaption=closedCaption
-	 *  &key=AIzaSyDg5EgjniyIn2YaQbBgUtzM7N8Qn1QN3zA
 	 *
 	 */
 	public function get_videos( $query ) {
 		$request = $this->create_url( $query );
 		$curl = curl_init();
 		curl_setopt( $curl, CURLOPT_URL, $request );
+		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+		return json_decode( curl_exec( $curl ), true );
+	}
+
+	public function get_videos_from_channel( $channel ) {
+		$channel_endpoint  = $this->api_url . '/channels';
+		$playlist_endpoint = $this->api_url . '/playlistItems';
+		$channel_url_query = $channel_endpoint  .'?forUsername=' . urlencode( $channel ) . '&part=contentDetails&key=' . $this->developer_key;
+
+		// First cURL, in which we are trying to get the uploads playlist id of the user
+		$curl = curl_init();
+		curl_setopt( $curl, CURLOPT_URL, $channel_url_query );
+		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+		$channel_response = json_decode( curl_exec( $curl ), true );
+
+		$uploads_id = $channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
+
+		$playlist_url_query = $playlist_endpoint . '?playlistId=' . $uploads_id . '&part=snippet&key=' . $this->developer_key;
+		
+		// Second cURL, in this one we are to get all the videos inside the uploads playlist of the user
+		$curl = curl_init();
+		curl_setopt( $curl, CURLOPT_URL, $playlist_url_query );
 		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
 		return json_decode( curl_exec( $curl ), true );
 	}
