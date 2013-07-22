@@ -44,12 +44,17 @@ class Service extends \EMM\Service {
 		// Create the response for the API
 		$response = new \EMM\Response();
 
+		if ( !isset( $search_response['items'] ) )
+			return;
+
 		foreach ( $search_response['items'] as $index => $search_item ) {
 			$item = new \EMM\Response_Item();
-			if ( $request['type'] == 'video' ) {
+			if ( $request['type'] == 'video' && isset( $request['q'] ) ) { // For videos searched by query
 				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
-			} else {
+			} elseif( $request['type'] == 'playlist' && isset( $request['q'] ) ) { // For playlists searched by query
 				$item->set_url( esc_url( sprintf( "http://www.youtube.com/playlist?list=%s", $search_item['id']['playlistId'] ) ) );
+			} else { // For videos searched by channel name
+				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['snippet']['resourceId']['videoId'] ) ) );
 			}
 			$item->add_meta( 'user', $search_item['snippet']['channelTitle'] );
 			$item->set_id( $index );

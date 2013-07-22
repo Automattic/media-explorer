@@ -68,7 +68,7 @@ class Youtube_Client {
 
 		// URL for playlists
 		if ( $resource == 'playlistItems' ) {
-			$playlist_url_query = $this->api_url . '/playlistItems' . '?playlistId=' . $query['uploads_id'] . '&part=snippet&key=' . $this->developer_key;
+			$playlist_url_query = $this->api_url . '/playlistItems' . '?maxResults=10&playlistId=' . $query['uploads_id'] . '&part=snippet&key=' . $this->developer_key;
 			return $playlist_url_query;
 		}
 
