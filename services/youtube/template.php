@@ -49,23 +49,49 @@ class Template extends \EMM\Template {
 	 * @param string $tab the tab were the user is right now
 	 */
 	public function search( $id, $tab ) {
-		?>
-		<form action="#" class="emm-toolbar-container clearfix">
-			<input
-				type="text"
-				name="q"
-				value="{{ data.params.q }}"
-				class="emm-input-text emm-input-search"
-				size="40"
-				placeholder="<?php esc_attr_e( 'Search Youtube', 'emm' ); ?>"
-			>
-			<select name="type" >
-			<option value="video">videos</option>
-			<option value="playlist">playlists</option>
-			</select>
-			<div class="spinner"></div>
-		</form>
-		<?php
+		switch ( $tab ) 
+		{
+			case 'all':
+				?>
+				<form action="#" class="emm-toolbar-container clearfix">
+					<input
+						type="text"
+						name="q"
+						value="{{ data.params.q }}"
+						class="emm-input-text emm-input-search"
+						size="40"
+						placeholder="<?php esc_attr_e( 'Search Youtube', 'emm' ); ?>"
+					>
+					<label for="type">Type:</label>
+					<select name="type" >
+						<option value="video">videos</option>
+						<option value="playlist">playlists</option>
+					</select>
+					<div class="spinner"></div>
+				</form>
+				<?php
+			break;
+			
+			case 'by_user':
+				?>
+				<form action="#" class="emm-toolbar-container clearfix">
+					<input
+						type="text"
+						name="channel"
+						value="{{ data.params.q }}"
+						class="emm-input-text emm-input-search"
+						size="40"
+						placeholder="<?php esc_attr_e( 'Enter channel name', 'emm' ); ?>"
+					>
+					<select name="type" >
+					<option value="video">videos</option>
+					<option value="playlist">playlists</option>
+					</select>
+					<div class="spinner"></div>
+				</form>
+				<?php
+			break;
+		}
 	}
 
 }

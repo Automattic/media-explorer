@@ -4,9 +4,6 @@ namespace EMM\Services\Youtube;
 
 class Service extends \EMM\Service {
 
-	public $credentials = null;
-	public $response_meta = array();
-
 	public function __construct() {
 		require_once __DIR__ . '/template.php';
 
@@ -56,6 +53,9 @@ class Service extends \EMM\Service {
 			'all' => array(
 				'text'       => _x( 'All', 'Tab title', 'emm'),
 				'defaultTab' => true
+			),
+			'by_user' => array(
+				'text'       => _x( 'By user', 'Tab title', 'emm'),
 			),
 		);
 	}
