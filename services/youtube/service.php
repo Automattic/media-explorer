@@ -15,16 +15,31 @@ class Service extends \EMM\Service {
 		$youtube = $this->get_connection();
 		$params = $request['params'];
 
-		$request = array(
-			'q' => $params['q'],
-			'maxResults' => 10,
-		);
+		switch ( $params['tab'] ) 
+		{
+			case 'all':
+				$request = array(
+					'q' => $params['q'],
+					'maxResults' => 10,
+				);
 
-		if ( isset( $params['type'] ) )
-			$request['type'] = $params['type'];
+				if ( isset( $params['type'] ) )
+					$request['type'] = $params['type'];
 
-		// Make the request to the Youtube API
-		$search_response = $youtube->get_videos( $request );
+				// Make the request to the Youtube API
+				$search_response = $youtube->get_videos( $request );
+			break;
+			
+			case 'by_user':
+				$request = array(
+					'channel' => $params['channel'],
+					'type' => 'video',
+				);
+
+				// Make the request to the Youtube API
+				$search_response = $youtube->get_videos_from_channel( $request );
+			break;
+		}
 
 		// Create the response for the API
 		$response = new \EMM\Response();

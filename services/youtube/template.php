@@ -62,6 +62,7 @@ class Template extends \EMM\Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Search Youtube', 'emm' ); ?>"
 					>
+					<input type="hidden" name="tab" value="all">
 					<label for="type">Type:</label>
 					<select name="type" >
 						<option value="video">videos</option>
@@ -83,10 +84,7 @@ class Template extends \EMM\Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter channel name', 'emm' ); ?>"
 					>
-					<select name="type" >
-					<option value="video">videos</option>
-					<option value="playlist">playlists</option>
-					</select>
+					<input type="hidden" name="tab" value="by_user">
 					<div class="spinner"></div>
 				</form>
 				<?php
