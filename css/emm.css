@@ -179,4 +179,5 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 /* ************************ */
 .emm-item-youtube .emm-item-content {
     width: 320px;
+	font-weight: bold;
 }
