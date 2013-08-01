@@ -19,7 +19,7 @@ class Template extends \EMM\Template {
 				</div>
 				<div class="emm-item-main">
 					<div class="emm-item-content">
-						{{{ data.content }}}
+						{{ data.content }}
 					</div>
 					<div class="emm-item-channel">
 						<?php _e( 'by', 'emm' ) ?> {{ data.meta.user }}
@@ -27,8 +27,8 @@ class Template extends \EMM\Template {
 					<div class="emm-item-date">
 						{{ data.date }}
 					</div>
-
 				</div>
+				<input type="hidden" name="next_page" id="next-page" value="{{{ ( typeof(data.meta) != "undefined" ) ? data.meta.next_page : 'false' }}}">
 			</div>
 		</div>
 		<a href="#" id="emm-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'emm' ); ?>">
@@ -62,7 +62,7 @@ class Template extends \EMM\Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Search Youtube', 'emm' ); ?>"
 					>
-					<input type="hidden" name="tab" value="all">
+					<input type="hidden" name="tab" value="all" />
 					<label for="type">Type:</label>
 					<select name="type" >
 						<option value="video">videos</option>

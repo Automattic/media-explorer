@@ -4,6 +4,8 @@ namespace EMM\Services\Youtube;
 
 class Service extends \EMM\Service {
 
+	const DEFAULT_MAX_RESULTS = 18;
+
 	public function __construct() {
 		require_once __DIR__ . '/template.php';
 
@@ -11,41 +13,59 @@ class Service extends \EMM\Service {
 		$this->set_template( new Template );
 	}
 
+	public function load() {
+
+		$emm = \Extended_Media_Manager::init();
+
+		wp_enqueue_script(
+			'emm-service-youtube-infinitescroll',
+			$emm->plugin_url( 'services/youtube/js.js' ),
+			array( 'jquery', 'emm' ),
+			$emm->plugin_ver( 'services/youtube/js.js' )
+		);
+
+	}
+
+	/**
+	 * TODO: escape parameters, sanitize_Text_field, for example
+	 */
 	public function request( array $request ) {
 		$youtube = $this->get_connection();
 		$params = $request['params'];
 
 		switch ( $params['tab'] ) 
 		{
-			case 'all':
-				$request = array(
-					'q' => $params['q'],
-					'maxResults' => 10,
-				);
-
-				if ( isset( $params['type'] ) )
-					$request['type'] = $params['type'];
-
-				// Make the request to the Youtube API
-				$search_response = $youtube->get_videos( $request );
-			break;
-			
 			case 'by_user':
 				$request = array(
-					'channel' => $params['channel'],
+					'channel' => sanitize_text_field( $params['channel'] ),
 					'type' => 'video',
 				);
 
 				// Make the request to the Youtube API
 				$search_response = $youtube->get_videos_from_channel( $request );
 			break;
+
+			default:
+			case 'all':
+				$request = array(
+					'q' => sanitize_text_field( $params['q'] ),
+					'maxResults' => self::DEFAULT_MAX_RESULTS,
+				);
+
+				if ( isset( $params['type'] ) )
+					$request['type'] = sanitize_text_field( $params['type'] );
+
+				// Make the request to the Youtube API
+				$search_response = $youtube->get_videos( $request );
+			break;
+			
 		}
 
 		// Create the response for the API
 		$response = new \EMM\Response();
 
 		if ( !isset( $search_response['items'] ) )
-			return;
+			return false;
 
 		foreach ( $search_response['items'] as $index => $search_item ) {
 			$item = new \EMM\Response_Item();
@@ -57,6 +77,7 @@ class Service extends \EMM\Service {
 				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['snippet']['resourceId']['videoId'] ) ) );
 			}
 			$item->add_meta( 'user', $search_item['snippet']['channelTitle'] );
+			$item->add_meta( 'next_page', $search_response['nextPageToken'] );
 			$item->set_id( $index );
 			$item->set_content( $search_item['snippet']['title'] );
 			$item->set_thumbnail( $search_item['snippet']['thumbnails']['medium']['url'] );
@@ -82,9 +103,7 @@ class Service extends \EMM\Service {
 
 	private function get_connection() {
 		// Add the Google API classes to the runtime
-		if ( !class_exists( 'Google_Client' ) || !class_exists( 'Google_YoutubeService' ) ) {
-			require_once plugin_dir_path( __FILE__) . '/class.wp-youtube-client.php';
-		}
+		require_once plugin_dir_path( __FILE__) . '/class.wp-youtube-client.php';
 
 		$developer_key = (string) apply_filters( 'emm_youtube_developer_key', '' ) ;
 
