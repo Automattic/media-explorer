@@ -34,6 +34,8 @@ function callback_scroll_handler() {
 		position = $container.height() + $container.scrollTop();
 
 	// only fires when the position of the scrolled window is at the bottom
+	// This is compared to 15 instead of 0 because of the padding of the
+	// <ul>
 	if( total_height - position == 15 ) {
 		infinite_scroll();
 	}

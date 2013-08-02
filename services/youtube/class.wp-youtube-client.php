@@ -59,7 +59,6 @@ class Youtube_Client {
 	 * @return string
 	 */
 	private function create_url( $query, $resource = 'search' ) {
-
 		// URL for channels
 		if ( $resource == 'channels' ) {
 			$channel_url_query = $this->api_url . '/channels' . '?forUsername=' . urlencode( $query['channel'] ) . '&part=contentDetails&key=' . $this->developer_key;
@@ -105,9 +104,10 @@ class Youtube_Client {
 	 * @return array
 	 */
 	private static function get_json_as_array( $url ) {
-		$curl = curl_init();
-		curl_setopt( $curl, CURLOPT_URL, $url );
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-		return json_decode( curl_exec( $curl ), true );
+		$response = (array) wp_remote_get( $url );
+		if ( 200 != $response['response']['code'] )
+			return false;
+		else
+			return json_decode( $response['body'], true );
 	}
 }
