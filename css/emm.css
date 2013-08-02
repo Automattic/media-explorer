@@ -181,7 +181,12 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
     width: 320px;
 	font-weight: bold;
 }
+
 .emm-item-thumb img {
 	width: 320px;
 	height: 180px;
+}
+
+.emm-items {
+	padding-top: 15px;
 }

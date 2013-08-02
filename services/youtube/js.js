@@ -19,8 +19,6 @@ jQuery( function( $ ) {
 				// make a infinite scroll here...
 				$container.scroll( callback_scroll_handler );
 
-				console.log("a");
-
 			}, this ) );
 
 		}
@@ -36,7 +34,7 @@ function callback_scroll_handler() {
 		position = $container.height() + $container.scrollTop();
 
 	// only fires when the position of the scrolled window is at the bottom
-	if( total_height - position == 0 ) {
+	if( total_height - position == 15 ) {
 		infinite_scroll();
 	}
 
