@@ -190,3 +190,7 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 .emm-items {
 	padding-top: 15px;
 }
+
+.emm-item {
+	height: 250px;
+}
