@@ -119,9 +119,10 @@ class Service extends \EMM\Service {
 	}
 }
 
-add_filter( 'emm_services', 'action_youtube_service' );
-
-function action_youtube_service( $services ) {
-	$services['youtube'] = new Service;
-	return $services;
-}
+add_filter( 
+	'emm_services', 
+	create_function( '$services', 
+		'$services["youtube"] = new \EMM\Services\Youtube\Service;
+		return $services;' 
+	) 
+);
