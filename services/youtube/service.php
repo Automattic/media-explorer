@@ -96,7 +96,7 @@ class Service extends \EMM\Service {
 				'defaultTab' => true
 			),
 			'by_user' => array(
-				'text'       => _x( 'By user', 'Tab title', 'emm'),
+				'text'       => _x( 'By User', 'Tab title', 'emm'),
 			),
 		);
 	}
@@ -119,7 +119,9 @@ class Service extends \EMM\Service {
 	}
 }
 
-add_filter( 'emm_services', function( $services ) {
+add_filter( 'emm_services', 'action_youtube_service' );
+
+function action_youtube_service( $services ) {
 	$services['youtube'] = new Service;
 	return $services;
-} );
+}

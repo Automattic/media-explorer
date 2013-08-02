@@ -82,7 +82,7 @@ class Template extends \EMM\Template {
 						value="{{ data.params.q }}"
 						class="emm-input-text emm-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter channel name', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter Channel Name', 'emm' ); ?>"
 					>
 					<input type="hidden" name="tab" value="by_user">
 					<div class="spinner"></div>
