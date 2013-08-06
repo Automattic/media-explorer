@@ -26,9 +26,6 @@ class Service extends \EMM\Service {
 
 	}
 
-	/**
-	 * TODO: escape parameters, sanitize_Text_field, for example
-	 */
 	public function request( array $request ) {
 		$youtube = $this->get_connection();
 		$params = $request['params'];
@@ -39,7 +36,11 @@ class Service extends \EMM\Service {
 				$request = array(
 					'channel' => sanitize_text_field( $params['channel'] ),
 					'type' => 'video',
+					'page_token' => sanitize_text_field( $params['page_token'] ),
 				);
+
+				//if ( isset( $params['page_token'] ) && '' !== $params['page_token'] )
+					//$request['page_token'] = sanitize_text_field( $params['page_token'] );
 
 				// Make the request to the Youtube API
 				$search_response = $youtube->get_videos_from_channel( $request );
@@ -51,6 +52,9 @@ class Service extends \EMM\Service {
 					'q' => sanitize_text_field( $params['q'] ),
 					'maxResults' => self::DEFAULT_MAX_RESULTS,
 				);
+
+				if ( isset( $params['page_token'] ) && '' !== $params['page_token'] )
+					$request['page_token'] = sanitize_text_field( $params['page_token'] );
 
 				if ( isset( $params['type'] ) )
 					$request['type'] = sanitize_text_field( $params['type'] );
@@ -77,7 +81,6 @@ class Service extends \EMM\Service {
 				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['snippet']['resourceId']['videoId'] ) ) );
 			}
 			$item->add_meta( 'user', $search_item['snippet']['channelTitle'] );
-			$item->add_meta( 'next_page', $search_response['nextPageToken'] );
 			$item->set_id( $index );
 			$item->set_content( $search_item['snippet']['title'] );
 			$item->set_thumbnail( $search_item['snippet']['thumbnails']['medium']['url'] );
@@ -85,6 +88,9 @@ class Service extends \EMM\Service {
 			$item->set_date_format( 'g:i A - j M y' );
 			$response->add_item($item);
 		}
+
+		if ( isset( $search_response['nextPageToken'] ) )
+			$response->add_meta( 'page_token', $search_response['nextPageToken'] );
 
 		return $response;
 	}

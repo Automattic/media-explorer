@@ -3,93 +3,160 @@
  * EMM plugin
  * */
 
+var emmContentView = wp.media.view.EMM
+	flagAjaxExecutions = '';
+
 jQuery( function( $ ) {
 
-	wp.media.view.MediaFrame.Post = pf.extend({
+	wp.media.view.EMM = emmContentView.extend({
 
 		initialize: function() {
+			emmContentView.prototype.initialize.apply( this, arguments );
+		},
 
-			pf.prototype.initialize.apply( this, arguments );
+		render: function() {
+			var selection = this.getSelection(),
+				_this = this;
 
-			this.on( 'content:render:emm-service-youtube-content-all content:render:emm-service-youtube-content-by_user', _.bind( function() {
+			if ( this.collection && this.collection.models.length ) {
 
-				var $container = jQuery( 'ul.emm-items' );
+				var container = document.createDocumentFragment();
 
-				// Handler for the scroll event. We'll have to check here how to
-				// make a infinite scroll here...
-				$container.scroll( callback_scroll_handler );
+				this.collection.each( function( model ) {
+					container.appendChild( this.renderItem( model ) );
+				}, this );
 
-			}, this ) );
+				this.$el.find( '.emm-items' ).append( container );
 
-		}
+			}
 
-	});
+			selection.each( function( model ) {
+				var id = '#emm-item-' + this.service.id + '-' + this.tab + '-' + model.get( 'id' );
+				this.$el.find( id ).closest( '.emm-item' ).addClass( 'selected details' );
+			}, this );
 
-});
+			jQuery( '#emm-button' ).prop( 'disabled', !selection.length );
+			jQuery( 'ul.emm-items' ).scroll( function() {
+				var $container = jQuery( 'ul.emm-items' ),
+					totalHeight = $container.get( 0 ).scrollHeight,
+					position = $container.height() + $container.scrollTop();
 
-function callback_scroll_handler() {
-
-	var $container = jQuery( 'ul.emm-items' ),
-		total_height = $container.get( 0 ).scrollHeight,
-		position = $container.height() + $container.scrollTop();
-
-	// only fires when the position of the scrolled window is at the bottom
-	// This is compared to 15 instead of 0 because of the padding of the
-	// <ul>
-	if( total_height - position == 15 ) {
-		infinite_scroll();
-	}
-
-}
-
-function infinite_scroll() {
-	var params = {
-		q: jQuery( '.emm-toolbar-container .emm-input-search' ).val(),
-		maxResults: 18,
-		key: 'AIzaSyDg5EgjniyIn2YaQbBgUtzM7N8Qn1QN3zA', // Add here your developer key
-		startIndex: jQuery( '.emm-item' ).length,
-		pageToken: jQuery( '#emm-item-youtube-all-0 #next-page' ).val(),
-	};
-
-	// get new data of the Youtube API
-	new_youtube_videos( params );
-}
-
-function new_youtube_videos( params ){
-	var youtube_endpoint  = 'https://www.googleapis.com/youtube/v3/search/?',
-		youtube_video = 'http://www.youtube.com/watch?v=',
-		query_string = [ 'type=video', 'part=snippet' ],
-		base_index = params.startIndex,
-		json_videos = '';
-
-	for (var key in params) {
-		var value = params[key];
-		query_string.push( key + '=' + value );
-	}
-
-	jQuery.getJSON(
-		youtube_endpoint + query_string.join( '&' ),
-		function( data ){
-			var items = jQuery( data.items );
-			items.each( function( i, item ){
-				var html = '<li class="emm-item attachment"><div id="emm-item-youtube-all-' + ( base_index + i ) + '" class="emm-item-area emm-item-youtube" data-id="' + item.id.videoId + '"> <div class="emm-item-container clearfix"> <div class="emm-item-thumb">';
-				html += '<img src="' + item.snippet.thumbnails.medium.url + '">';
-				html += '</div>';
-				html += '<div class="emm-item-main">';
-				html += '<div class="emm-item-content">' + item.snippet.title + '</div>';
-				html += '<div class="emm-item-channel"> by ' + item.snippet.channelTitle + ' </div>';
-				html += '<div class="emm-item-date">' + item.snippet.publishedAt + '</div>';
-				html += '</div>';
-				html += '</div>';
-				html += '</div>';
-				html += '<a href="#" id="emm-check-' + item.id.videoId + '" data-id="' + item.id.videoId + '" class="check" title="Deselect">';
-				html += '<div class="media-modal-icon"></div>';
-				html += '</a></li>';
-
-				jQuery( jQuery( 'ul.emm-items' ) [0] ).append(html);
-
+				// only fires when the position of the scrolled window is at the bottom
+				// This is compared to 15 instead of 0 because of the padding-top of the
+				// <ul>
+				if( totalHeight - position == 15 ) {
+					_this.fetchItems.apply( _this );
+				}
 			} );
-			jQuery('#emm-item-youtube-all-0 #next-page').val( data.nextPageToken );
-		}
-	);
-}
+
+			return this;
+		},
+
+		fetchItems: function() {
+			this.trigger( 'loading' );
+
+			var data = {
+				_nonce  : emm._nonce,
+				service : this.service.id,
+				params  : this.model.get( 'params' ),
+				page    : this.model.get( 'page' ),
+				max_id  : this.model.get( 'max_id' )
+			};
+
+			media.ajax( 'emm_request', {
+				context : this,
+				success : this.fetchedSuccess,
+				error   : this.fetchedError,
+				data    : data
+			} );
+
+		},
+
+		fetchedSuccess: function( response ) {
+			console.log(response);
+			if ( !this.model.get( 'page' ) ) {
+
+				if ( !response.items ) {
+					this.fetchedEmpty( response );
+					return;
+				}
+
+				if ( flagAjaxExecutions !== response.meta.page_token )
+					flagAjaxExecutions = response.meta.page_token;
+				else
+					return;
+
+				if ( response.meta.page_token ) {
+					var params = this.model.get( 'params' );
+
+					if ( this.tab == 'all' )
+						jQuery( '.tab-all #page_token' ).val( response.meta.page_token );
+					if ( this.tab == 'by_user' )
+						jQuery( '.tab-by_user #page_token' ).val( response.meta.page_token );
+
+					if ( params.page_token !== response.meta.page_token ) {
+						params.page_token = response.meta.page_token;
+						this.model.set( 'params', params );
+					}
+				}
+
+				this.model.set( 'min_id', response.meta.min_id );
+				this.model.set( 'items',  response.items );
+
+				this.collection.reset( response.items );
+
+			} else {
+
+				if ( !response.items ) {
+					this.moreEmpty( response );
+					return;
+				}
+
+				if ( response.meta.page_token ) {
+					var params = this.model.get( 'params' );
+
+					if ( this.tab == 'all' )
+						jQuery( '.tab-all #page_token' ).val( response.meta.page_token );
+					if ( this.tab == 'by_user' )
+						jQuery( '.tab-by_user #page_token' ).val( response.meta.page_token );
+
+					if ( params.page_token !== response.meta.page_token ) {
+						params.page_token = response.meta.page_token;
+						this.model.set( 'params', params );
+					}
+				}
+
+				this.model.set( 'items', this.model.get( 'items' ).concat( response.items ) );
+
+				var collection = new Backbone.Collection( response.items );
+				var container  = document.createDocumentFragment();
+
+				this.collection.add( collection.models );
+
+				collection.each( function( model ) {
+					container.appendChild( this.renderItem( model ) );
+				}, this );
+
+				this.$el.find( '.emm-items' ).append( container );
+
+			}
+
+			this.$el.find( '.emm-pagination' ).show();
+
+			this.model.set( 'max_id', response.meta.max_id );
+
+			this.trigger( 'loaded loaded:success', response );
+
+		},
+
+		fetchedError: function(response) {
+			if (response.responseText)
+				console.log(response.responseText);
+			emmContentView.prototype.fetchedError.apply( this, arguments );
+		},
+
+		fetchedEmpty: function() {
+			emmContentView.prototype.fetchedEmpty.apply( this, arguments );
+		},
+	});
+});

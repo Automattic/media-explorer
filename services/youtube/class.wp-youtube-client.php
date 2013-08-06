@@ -37,6 +37,7 @@ class Youtube_Client {
 	 * @return string
 	 */
 	public function get_videos_from_channel( $query ) {
+
 		$channel_url_query = $this->create_url( $query, 'channels' );
 
 		// First cURL, in which we are trying to get the uploads playlist id of the user
@@ -44,6 +45,7 @@ class Youtube_Client {
 
 		// Every Youtube channel has a "uploads" playlist, containing all the uploads of the channel
 		$playlist_params['uploads_id'] = $channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
+		$playlist_params['page_token'] = $query['page_token'];
 
 		$playlist_url_query = $this->create_url( $playlist_params, 'playlistItems' );
 		
@@ -61,17 +63,23 @@ class Youtube_Client {
 	private function create_url( $query, $resource = 'search' ) {
 		// URL for channels
 		if ( $resource == 'channels' ) {
-			$channel_url_query = $this->api_url . '/channels' . '?forUsername=' . urlencode( $query['channel'] ) . '&part=contentDetails&key=' . $this->developer_key;
+			$channel_url_query = sprintf( '%s/channels?forUsername=%s&part=contentDetails&key=%s', $this->api_url, urlencode( $query['channel'] ), $this->developer_key );
 			return $channel_url_query;
 		}
 
 		// URL for playlists
 		if ( $resource == 'playlistItems' ) {
-			$playlist_url_query = $this->api_url . '/playlistItems' . '?maxResults=10&playlistId=' . $query['uploads_id'] . '&part=snippet&key=' . $this->developer_key;
+			$playlist_url_query = sprintf( '%s/playlistItems?maxResults=%s&playlistId=%s&part=snippet&key=%s', $this->api_url, \EMM\Services\Youtube\Service::DEFAULT_MAX_RESULTS, $query['uploads_id'], $this->developer_key );
+			if ( isset( $query['page_token'] ) && '' != $query['page_token'] )
+				$playlist_url_query .= '&pageToken=' . $query['page_token'];
 			return $playlist_url_query;
 		}
 
 		$params = array();
+
+		if ( isset( $query['page_token'] ) && '' !== $query['page_token'] ) {
+			$params[] = 'pageToken=' . $query['page_token'];
+		}
 
 		if ( isset( $query['q'] ) )
 			$params[] = 'q=' . urlencode( $query['q'] );
@@ -86,7 +94,7 @@ class Youtube_Client {
 		if ( isset( $query['maxResults'] ) )
 			$params[] = 'maxResults=' . (int) $query['maxResults'];
 		else
-			$params[] = 'maxResults=10';
+			$params[] = 'maxResults=' . \EMM\Services\Youtube\Service::DEFAULT_MAX_RESULTS;
 
 		// Mandatory field "part"
 		if ( isset( $query['part'] ) )
@@ -98,14 +106,14 @@ class Youtube_Client {
 	}
 
 	/**
-	 * cURLs a url and returns the json parsed as an array
+	 * Fetch an url and returns the json parsed as an array
 	 *
 	 * @param string $url the URL we want to curl
 	 * @return array
 	 */
 	private static function get_json_as_array( $url ) {
 		$response = (array) wp_remote_get( $url );
-		if ( 200 != $response['response']['code'] )
+		if ( !isset( $response['response']['code'] ) || 200 != $response['response']['code'] )
 			return false;
 		else
 			return json_decode( $response['body'], true );

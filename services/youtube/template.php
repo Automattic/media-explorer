@@ -28,7 +28,6 @@ class Template extends \EMM\Template {
 						{{ data.date }}
 					</div>
 				</div>
-				<input type="hidden" name="next_page" id="next-page" value="{{{ ( typeof(data.meta) != "undefined" ) ? data.meta.next_page : 'false' }}}">
 			</div>
 		</div>
 		<a href="#" id="emm-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'emm' ); ?>">
@@ -53,7 +52,7 @@ class Template extends \EMM\Template {
 		{
 			case 'all':
 				?>
-				<form action="#" class="emm-toolbar-container clearfix">
+				<form action="#" class="emm-toolbar-container clearfix tab-all">
 					<input
 						type="text"
 						name="q"
@@ -63,8 +62,9 @@ class Template extends \EMM\Template {
 						placeholder="<?php esc_attr_e( 'Search Youtube', 'emm' ); ?>"
 					>
 					<input type="hidden" name="tab" value="all" />
-					<label for="type">Type:</label>
-					<select name="type" >
+					<input type="hidden" name="page_token" value="" id="page_token" class="all"/>
+					<label for="type" style="display: none">Type:</label>
+					<select name="type" style="display: none">
 						<option value="video">videos</option>
 						<option value="playlist">playlists</option>
 					</select>
@@ -75,7 +75,8 @@ class Template extends \EMM\Template {
 			
 			case 'by_user':
 				?>
-				<form action="#" class="emm-toolbar-container clearfix">
+				<form action="#" class="emm-toolbar-container clearfix
+				tab-by_user">
 					<input
 						type="text"
 						name="channel"
@@ -85,6 +86,7 @@ class Template extends \EMM\Template {
 						placeholder="<?php esc_attr_e( 'Enter Channel Name', 'emm' ); ?>"
 					>
 					<input type="hidden" name="tab" value="by_user">
+					<input type="hidden" name="page_token" value="" id="page_token" class="by_user"/>
 					<div class="spinner"></div>
 				</form>
 				<?php
