@@ -21,7 +21,8 @@ class Service extends \EMM\Service {
 			'emm-service-youtube-infinitescroll',
 			$emm->plugin_url( 'services/youtube/js.js' ),
 			array( 'jquery', 'emm' ),
-			$emm->plugin_ver( 'services/youtube/js.js' )
+			$emm->plugin_ver( 'services/youtube/js.js' ),
+			true
 		);
 
 	}
@@ -81,7 +82,7 @@ class Service extends \EMM\Service {
 				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['snippet']['resourceId']['videoId'] ) ) );
 			}
 			$item->add_meta( 'user', $search_item['snippet']['channelTitle'] );
-			$item->set_id( $index );
+			$item->set_id( (int) $params['startIndex'] + (int) $index );
 			$item->set_content( $search_item['snippet']['title'] );
 			$item->set_thumbnail( $search_item['snippet']['thumbnails']['medium']['url'] );
 			$item->set_date( strtotime( $search_item['snippet']['publishedAt'] ) );
