@@ -177,13 +177,15 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 /* ************************ */
 /* Youtube-specific styles: */
 /* ************************ */
-.emm-item-youtube .emm-item-content {
+.emm-item-youtube {
 	width: 320px;
+}
+
+.emm-item-youtube .emm-item-content {
 	font-weight: bold;
 }
 
 .emm-item-youtube .emm-item-thumb img {
-	width: 320px;
 	height: 180px;
 }
 
