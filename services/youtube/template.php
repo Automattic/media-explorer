@@ -83,7 +83,7 @@ class Template extends \EMM\Template {
 						value="{{ data.params.q }}"
 						class="emm-input-text emm-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter username', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter Username', 'emm' ); ?>"
 					>
 					<input type="hidden" name="tab" value="by_user">
 					<input type="hidden" name="page_token" value="" id="page_token" class="by_user"/>

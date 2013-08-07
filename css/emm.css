@@ -171,21 +171,23 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 /* ************************ */
 /* Youtube-specific styles: */
 /* ************************ */
+.emm-item-youtube {
+	width: 320px;
+}
+
 .emm-item-youtube .emm-item-content {
-    width: 320px;
 	font-weight: bold;
 }
 
-.emm-item-thumb img {
-	width: 320px;
+.emm-item-youtube .emm-item-thumb img {
 	height: 180px;
 }
 
-.emm-items {
+.emm-content-youtube .emm-items {
 	padding-top: 15px;
 }
 
-.emm-item {
+.emm-content-youtube .emm-item {
 	height: 250px;
 }
 
