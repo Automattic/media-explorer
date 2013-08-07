@@ -42,7 +42,7 @@ wp.media.view.EMM = emmContentView.extend({
 			// only fires when the position of the scrolled window is at the bottom
 			// This is compared to 15 instead of 0 because of the padding-top of the
 			// <ul>
-			if( totalHeight - position == 15 ) {
+			if( totalHeight - position <= 500 ) {
 				_this.fetchItems.apply( _this );
 			}
 		} );
