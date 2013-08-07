@@ -37,12 +37,13 @@ wp.media.view.EMM = emmContentView.extend({
 		jQuery( 'ul.emm-items' ).scroll( function() {
 			var $container = jQuery( 'ul.emm-items' ),
 				totalHeight = $container.get( 0 ).scrollHeight,
-				position = $container.height() + $container.scrollTop();
+				position = $container.height() + $container.scrollTop(),
+				offset = ( totalHeight / 100 ) * 30;
 
 			// only fires when the position of the scrolled window is at the bottom
 			// This is compared to 15 instead of 0 because of the padding-top of the
 			// <ul>
-			if( totalHeight - position <= 500 ) {
+			if( totalHeight - position <= offset ) {
 				_this.fetchItems.apply( _this );
 			}
 		} );
