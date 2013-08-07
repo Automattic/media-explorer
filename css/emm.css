@@ -188,3 +188,10 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 .emm-item {
 	height: 250px;
 }
+
+.media-frame .spinner-bottom {
+	bottom: 18px;
+	position: absolute;
+	margin: auto;
+	left: 50%;
+}
