@@ -182,15 +182,15 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 	font-weight: bold;
 }
 
-.emm-item-thumb img {
+.emm-item-youtube .emm-item-thumb img {
 	width: 320px;
 	height: 180px;
 }
 
-.emm-items {
+.emm-content-youtube .emm-items {
 	padding-top: 15px;
 }
 
-.emm-item {
+.emm-content-youtube .emm-item {
 	height: 250px;
 }
