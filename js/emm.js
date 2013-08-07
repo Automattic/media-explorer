@@ -363,7 +363,9 @@ media.view.EMM = media.View.extend({
 			if ( n )
 				params[n] = jQuery(this).val();
 		} );
-
+		
+		this.clearSelection();
+		jQuery( '#emm-button' ).attr( 'disabled', 'disabled' );
 		this.model.set( 'params', params );
 		this.trigger( 'change:params' ); // why isn't this triggering automatically? might be because params is an object
 
