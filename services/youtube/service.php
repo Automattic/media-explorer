@@ -121,7 +121,7 @@ class Service extends \EMM\Service {
 		return array(
 			'title'     => sprintf( __( 'Insert from %s', 'emm' ), 'Youtube' ),
 			'insert'    => __( 'Insert', 'emm' ),
-			'noresults' => __( 'No videos matched your search query', 'emm' ),
+			'noresults' => __( 'No videos matched your search query.', 'emm' ),
 		);
 	}
 }
