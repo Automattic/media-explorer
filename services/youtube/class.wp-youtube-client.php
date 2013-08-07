@@ -40,8 +40,11 @@ class Youtube_Client {
 
 		$channel_url_query = $this->create_url( $query, 'channels' );
 
-		// First cURL, in which we are trying to get the uploads playlist id of the user
+		// First request, in which we are trying to get the uploads playlist id of the user
 		$channel_response = self::get_json_as_array( $channel_url_query );
+
+		if ( $channel_response['pageInfo']['totalResults'] == 0 )
+			return false;
 
 		// Every Youtube channel has a "uploads" playlist, containing all the uploads of the channel
 		$playlist_params['uploads_id'] = $channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
