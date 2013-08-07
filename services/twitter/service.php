@@ -255,7 +255,7 @@ class Service extends \EMM\Service {
 
 	public function labels() {
 		return array(
-			'title'     => sprintf( __( 'Insert from %s', 'emm' ), 'Twitter' ),
+			'title'     => __( 'Insert Tweet', 'emm' ),
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
 			'insert'    => __( 'Insert Tweet', 'emm' ),
 			'noresults' => __( 'No tweets matched your search query', 'emm' ),

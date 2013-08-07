@@ -119,7 +119,7 @@ class Service extends \EMM\Service {
 
 	public function labels() {
 		return array(
-			'title'     => sprintf( __( 'Insert from %s', 'emm' ), 'Youtube' ),
+			'title'     => __( 'Insert Youtube', 'emm' ),
 			'insert'    => __( 'Insert', 'emm' ),
 			'noresults' => __( 'No videos matched your search query', 'emm' ),
 		);
