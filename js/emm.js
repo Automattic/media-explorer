@@ -545,7 +545,7 @@ media.controller.EMM = media.controller.State.extend({
 		var selection = this.frame.content.get().getSelection();
 
 		selection.each( function( model ) {
-			insert += '<p>' + model.get( 'url' ) + '</p>';
+			insert += model.get( 'url' ) + "\n";
 		}, this );
 
 		media.editor.insert( insert );
