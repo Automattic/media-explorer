@@ -197,3 +197,43 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 	margin: auto;
 	left: 50%;
 }
+
+.emm-item-thumb img {
+	width: 95%;
+}
+
+/**
+ * One column layout
+ * */
+@media (max-width: 699px) {
+	.attachment {
+		width: 100%;
+	}
+}
+
+/**
+ * Two column layout
+ * */
+@media (min-width: 700px) and (max-width: 1199px) {
+	.attachment {
+		width: 47%;
+	}
+}
+
+/**
+ * Three column layout
+ * */
+@media (min-width: 1200px) and (max-width: 1499px) {
+	.attachment {
+		width: 31%;
+	}
+}
+
+/**
+ * Four column layout
+ * */
+@media (min-width: 1500px) {
+	.attachment {
+		width: 23%;
+	}
+}
