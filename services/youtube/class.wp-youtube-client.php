@@ -1,8 +1,6 @@
 <?php
 
-namespace EMM\Services\Youtube;
-
-class Youtube_Client {
+class EMM_Youtube_Client {
 
 	private $developer_key='';
 

@@ -14,12 +14,10 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM;
-
 /**
  * Abstract plugin class. The plugin's main class should extend this to make use of its handy methods.
  */
-abstract class Plugin {
+abstract class EMM_Plugin {
 
 	/**
 	 * Class constructor

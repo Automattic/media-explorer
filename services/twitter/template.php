@@ -14,9 +14,7 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM\Services\Twitter;
-
-class Template extends \EMM\Template {
+class EMM_Twitter_Template extends EMM_Template {
 
 	public function item( $id, $tab ) {
 		?>

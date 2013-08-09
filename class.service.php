@@ -14,12 +14,10 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM;
-
 /**
  * Abstract service class. Every service should implement this class.
  */
-abstract class Service {
+abstract class EMM_Service {
 
 	public $template = null;
 
@@ -96,7 +94,7 @@ abstract class Service {
 	 *
 	 * @return null
 	 */
-	final public function set_template( \EMM\Template $template ) {
+	final public function set_template( EMM_Template $template ) {
 
 		$this->template = $template;
 
