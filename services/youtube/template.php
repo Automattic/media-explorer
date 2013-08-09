@@ -1,8 +1,6 @@
 <?php
 
-namespace EMM\Services\Youtube;
-
-class Template extends \EMM\Template {
+class EMM_Youtube_Template extends EMM_Template {
 
 	/**
 	 * Template for single elements returned from the API

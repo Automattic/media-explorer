@@ -1,8 +1,6 @@
 <?php
 
-namespace EMM\Services\Youtube;
-
-class Youtube_Client {
+class EMM_Youtube_Client {
 
 	private $developer_key='';
 
@@ -72,7 +70,7 @@ class Youtube_Client {
 
 		// URL for playlists
 		if ( $resource == 'playlistItems' ) {
-			$playlist_url_query = sprintf( '%s/playlistItems?maxResults=%s&playlistId=%s&part=snippet&key=%s', $this->api_url, \EMM\Services\Youtube\Service::DEFAULT_MAX_RESULTS, $query['uploads_id'], $this->developer_key );
+			$playlist_url_query = sprintf( '%s/playlistItems?maxResults=%s&playlistId=%s&part=snippet&key=%s', $this->api_url, EMM_Youtube_Service::DEFAULT_MAX_RESULTS, $query['uploads_id'], $this->developer_key );
 			if ( isset( $query['page_token'] ) && '' != $query['page_token'] )
 				$playlist_url_query .= '&pageToken=' . $query['page_token'];
 			return $playlist_url_query;
@@ -97,7 +95,7 @@ class Youtube_Client {
 		if ( isset( $query['maxResults'] ) )
 			$params[] = 'maxResults=' . (int) $query['maxResults'];
 		else
-			$params[] = 'maxResults=' . \EMM\Services\Youtube\Service::DEFAULT_MAX_RESULTS;
+			$params[] = 'maxResults=' . EMM_Youtube_Service::DEFAULT_MAX_RESULTS;
 
 		// Mandatory field "part"
 		if ( isset( $query['part'] ) )
