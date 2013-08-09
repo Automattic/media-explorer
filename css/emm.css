@@ -43,12 +43,6 @@ body.mp6 .media-frame .emm-content .emm-toolbar {
 	border-bottom: 1px solid #ddd;
 }
 
-/* The below can be removed when MP6 hits 1.6 */
-/* http://wordpress.org/support/topic/cssmedia-viewscss-references-a-non-existent-image */
-body.mp6 .media-frame .emm-content .spinner {
-	background-image: url( '../assets/wpspin_light.gif' );
-}
-
 .media-frame .emm-content .emm-toolbar-container {
 	padding: 10px 9px;
 }
@@ -172,4 +166,74 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 	width: 100%;
 	height: 160px;
 	background: transparent no-repeat center center;
+}
+
+/* ************************ */
+/* Youtube-specific styles: */
+/* ************************ */
+.emm-item-youtube {
+	width: 320px;
+}
+
+.emm-item-youtube .emm-item-content {
+	font-weight: bold;
+}
+
+.emm-item-youtube .emm-item-thumb img {
+	height: 180px;
+}
+
+.emm-content-youtube .emm-items {
+	padding-top: 15px;
+}
+
+.emm-content-youtube .emm-item {
+	height: 250px;
+}
+
+.media-frame .spinner-bottom {
+	bottom: 18px;
+	position: absolute;
+	margin: auto;
+	left: 50%;
+}
+
+.emm-item-thumb img {
+	width: 95%;
+}
+
+/**
+ * One column layout
+ * */
+@media (max-width: 699px) {
+	.attachment {
+		width: 100%;
+	}
+}
+
+/**
+ * Two column layout
+ * */
+@media (min-width: 700px) and (max-width: 1199px) {
+	.attachment {
+		width: 47%;
+	}
+}
+
+/**
+ * Three column layout
+ * */
+@media (min-width: 1200px) and (max-width: 1499px) {
+	.attachment {
+		width: 31%;
+	}
+}
+
+/**
+ * Four column layout
+ * */
+@media (min-width: 1500px) {
+	.attachment {
+		width: 23%;
+	}
 }
