@@ -175,6 +175,10 @@ media.view.EMM = media.View.extend({
 		this.$el.append( html );
 
 		// @TODO this could be a separate view:
+		html = '<div class="spinner spinner-bottom"></div>';
+		this.$el.append( html );
+
+		// @TODO this could be a separate view:
 		var toolbar_template = media.template( 'emm-' + this.service.id + '-search-' + this.tab );
 		html = '<div class="emm-toolbar media-toolbar clearfix">' + toolbar_template( this.model.toJSON() ) + '</div>';
 		this.$el.prepend( html );
@@ -359,7 +363,9 @@ media.view.EMM = media.View.extend({
 			if ( n )
 				params[n] = jQuery(this).val();
 		} );
-
+		
+		this.clearSelection();
+		jQuery( '#emm-button' ).attr( 'disabled', 'disabled' );
 		this.model.set( 'params', params );
 		this.trigger( 'change:params' ); // why isn't this triggering automatically? might be because params is an object
 
@@ -541,7 +547,7 @@ media.controller.EMM = media.controller.State.extend({
 		var selection = this.frame.content.get().getSelection();
 
 		selection.each( function( model ) {
-			insert += '<p>' + model.get( 'url' ) + '</p>';
+			insert += model.get( 'url' ) + "\n";
 		}, this );
 
 		media.editor.insert( insert );
