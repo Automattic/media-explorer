@@ -23,7 +23,7 @@ class EMM_Twitter_Service extends EMM_Service {
 
 	public function __construct() {
 
-		require_once __DIR__ . '/template.php';
+		require_once dirname( __FILE__ ) . '/template.php';
 
 		# Go!
 		$this->set_template( new EMM_Twitter_Template );
@@ -32,7 +32,7 @@ class EMM_Twitter_Service extends EMM_Service {
 
 	public function load() {
 
-		$emm = \Extended_Media_Manager::init();
+		$emm = Extended_Media_Manager::init();
 
 		wp_enqueue_script(
 			'google-jsapi',
@@ -289,7 +289,7 @@ class EMM_Twitter_Service extends EMM_Service {
 		}
 
 		if ( !class_exists( 'WP_Twitter_OAuth' ) )
-			require_once __DIR__ . '/class.wp-twitter-oauth.php';
+			require_once dirname( __FILE__ ) . '/class.wp-twitter-oauth.php';
 
 		$connection = new WP_Twitter_OAuth(
 			$credentials['consumer_key'],

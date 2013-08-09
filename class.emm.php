@@ -163,7 +163,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 				continue;
 
 			require_once sprintf( '%s/class.%s.php',
-				__DIR__,
+				dirname( __FILE__ ),
 				$file
 			);
 

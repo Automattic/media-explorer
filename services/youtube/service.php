@@ -5,7 +5,7 @@ class EMM_Youtube_Service extends EMM_Service {
 	const DEFAULT_MAX_RESULTS = 18;
 
 	public function __construct() {
-		require_once __DIR__ . '/template.php';
+		require_once dirname( __FILE__ ) . '/template.php';
 
 		# Go!
 		$this->set_template( new EMM_Youtube_Template );
