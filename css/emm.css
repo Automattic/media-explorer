@@ -171,7 +171,8 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 /* ************************ */
 
 .emm-item-youtube .emm-item-main {
-	max-height: 47px;
+	max-height: 54px;
+	overflow: hidden;
 }
 
 .emm-item-youtube .emm-item-content {
