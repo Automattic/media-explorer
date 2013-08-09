@@ -34,7 +34,9 @@ wp.media.view.EMM = emmContentView.extend({
 		}, this );
 
 		jQuery( '#emm-button' ).prop( 'disabled', !selection.length );
-		jQuery( 'ul.emm-items' ).scroll( function() {
+
+		// Infinite scrolling for youtube results
+		jQuery( '.emm-content-youtube ul.emm-items' ).scroll( function() {
 			var $container = jQuery( 'ul.emm-items' ),
 				totalHeight = $container.get( 0 ).scrollHeight,
 				position = $container.height() + $container.scrollTop(),
