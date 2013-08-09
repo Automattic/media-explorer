@@ -543,14 +543,19 @@ media.controller.EMM = media.controller.State.extend({
 
 	emmInsert: function() {
 
-		var insert    = '';
-		var selection = this.frame.content.get().getSelection();
+		var selection = this.frame.content.get().getSelection(),
+		urls          = [];
 
 		selection.each( function( model ) {
-			insert += model.get( 'url' ) + "\n";
+			urls.push( model.get( 'url' ) );
 		}, this );
 
-		media.editor.insert( insert );
+		if ( typeof(tinymce) === 'undefined' || tinymce.activeEditor === null || tinymce.activeEditor.isHidden() ) {
+			media.editor.insert( _.toArray( urls ).join( "\n\n" ) );
+		} else {
+			media.editor.insert( "<p>" + _.toArray( urls ).join( "</p><p>" ) + "</p>" );
+		}
+
 		selection.reset();
 		this.frame.close();
 
