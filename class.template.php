@@ -14,12 +14,10 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM;
-
 /**
  * Abstract template class. Every service template should implement this class.
  */
-abstract class Template {
+abstract class EMM_Template {
 
 	/**
 	 * Outputs the Backbone template for an item within search results.

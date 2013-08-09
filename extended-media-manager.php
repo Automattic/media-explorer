@@ -26,9 +26,9 @@ GNU General Public License for more details.
 defined( 'ABSPATH' ) or die();
 
 foreach ( array( 'plugin', 'emm', 'service', 'template', 'response' ) as $class )
-	require_once sprintf( '%s/class.%s.php', __DIR__, $class );
+	require_once sprintf( '%s/class.%s.php', dirname( __FILE__ ), $class );
 
-foreach ( glob( __DIR__ . '/services/*/service.php' ) as $service )
+foreach ( glob( dirname( __FILE__ ) . '/services/*/service.php' ) as $service )
 	include $service;
 
 Extended_Media_Manager::init( __FILE__ );
