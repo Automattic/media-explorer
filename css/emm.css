@@ -171,6 +171,11 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 /* ************************ */
 /* Youtube-specific styles: */
 /* ************************ */
+
+.emm-item-youtube .emm-item-main {
+	max-height: 47px;
+}
+
 .emm-item-youtube .emm-item-content {
 	font-weight: bold;
 }
