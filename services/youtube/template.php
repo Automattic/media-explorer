@@ -62,7 +62,7 @@ class EMM_Youtube_Template extends EMM_Template {
 					<input type="hidden" name="tab" value="all" />
 					<input type="hidden" name="page_token" value="" id="page_token" class="all"/>
 					<label for="type" style="display: none">Type:</label>
-					<select name="type" style="display: none">
+					<select name="type">
 						<option value="video">videos</option>
 						<option value="playlist">playlists</option>
 					</select>
