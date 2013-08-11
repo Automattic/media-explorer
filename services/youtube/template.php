@@ -61,10 +61,10 @@ class EMM_Youtube_Template extends EMM_Template {
 					>
 					<input type="hidden" name="tab" value="all" />
 					<input type="hidden" name="page_token" value="" id="page_token" class="all"/>
-					<label for="type" style="display: none">Type:</label>
+					<label for="type" style="display: none"><?php _e( 'Type:', 'emm' ); ?></label>
 					<select name="type">
-						<option value="video">videos</option>
-						<option value="playlist">playlists</option>
+						<option value="video"><?php esc_html_e( 'Videos', 'emm' ); ?></option>
+						<option value="playlist"><?php esc_html_e( 'Playlists', 'emm' ); ?></option>
 					</select>
 					<div class="spinner"></div>
 				</form>
