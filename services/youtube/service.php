@@ -1,6 +1,6 @@
 <?php
 
-class EMM_Youtube_Service extends EMM_Service {
+class EMM_YouTube_Service extends EMM_Service {
 
 	const DEFAULT_MAX_RESULTS = 18;
 
@@ -8,7 +8,7 @@ class EMM_Youtube_Service extends EMM_Service {
 		require_once dirname( __FILE__ ) . '/template.php';
 
 		# Go!
-		$this->set_template( new EMM_Youtube_Template );
+		$this->set_template( new EMM_YouTube_Template );
 	}
 
 	public function load() {
@@ -41,7 +41,7 @@ class EMM_Youtube_Service extends EMM_Service {
 				//if ( isset( $params['page_token'] ) && '' !== $params['page_token'] )
 					//$request['page_token'] = sanitize_text_field( $params['page_token'] );
 
-				// Make the request to the Youtube API
+				// Make the request to the YouTube API
 				$search_response = $youtube->get_videos_from_channel( $request );
 			break;
 
@@ -58,7 +58,7 @@ class EMM_Youtube_Service extends EMM_Service {
 				if ( isset( $params['type'] ) )
 					$request['type'] = sanitize_text_field( $params['type'] );
 
-				// Make the request to the Youtube API
+				// Make the request to the YouTube API
 				$search_response = $youtube->get_videos( $request );
 			break;
 			
@@ -112,12 +112,12 @@ class EMM_Youtube_Service extends EMM_Service {
 
 		$developer_key = (string) apply_filters( 'emm_youtube_developer_key', '' ) ;
 
-		return new EMM_Youtube_Client( $developer_key );
+		return new EMM_YouTube_Client( $developer_key );
 	}
 
 	public function labels() {
 		return array(
-			'title'     => __( 'Insert Youtube', 'emm' ),
+			'title'     => __( 'Insert YouTube', 'emm' ),
 			'insert'    => __( 'Insert', 'emm' ),
 			'noresults' => __( 'No videos matched your search query.', 'emm' ),
 		);
@@ -127,7 +127,7 @@ class EMM_Youtube_Service extends EMM_Service {
 add_filter( 
 	'emm_services', 
 	create_function( '$services', 
-		'$services["youtube"] = new EMM_Youtube_Service;
+		'$services["youtube"] = new EMM_YouTube_Service;
 		return $services;' 
 	) 
 );

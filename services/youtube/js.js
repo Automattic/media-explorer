@@ -1,5 +1,5 @@
 /**
- * This js is going to handle the infinite scroll for the Youtube service in the
+ * This js is going to handle the infinite scroll for the YouTube service in the
  * EMM plugin
  * */
 

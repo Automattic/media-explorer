@@ -1,6 +1,6 @@
 <?php
 
-class EMM_Youtube_Template extends EMM_Template {
+class EMM_YouTube_Template extends EMM_Template {
 
 	/**
 	 * Template for single elements returned from the API
@@ -57,7 +57,7 @@ class EMM_Youtube_Template extends EMM_Template {
 						value="{{ data.params.q }}"
 						class="emm-input-text emm-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search Youtube', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search YouTube', 'emm' ); ?>"
 					>
 					<input type="hidden" name="tab" value="all" />
 					<input type="hidden" name="page_token" value="" id="page_token" class="all"/>

@@ -1,6 +1,6 @@
 <?php
 
-class EMM_Youtube_Client {
+class EMM_YouTube_Client {
 
 	private $developer_key='';
 
@@ -18,7 +18,7 @@ class EMM_Youtube_Client {
 	 *  &type=video
 	 *  &videoCaption=closedCaption
 	 *
-	 * this method performs a query to the search endpoint of the Youtube API
+	 * this method performs a query to the search endpoint of the YouTube API
 	 *
 	 * @param array $query an array containing the parameters of the query
 	 * @return string
@@ -44,7 +44,7 @@ class EMM_Youtube_Client {
 		if ( $channel_response['pageInfo']['totalResults'] == 0 )
 			return false;
 
-		// Every Youtube channel has a "uploads" playlist, containing all the uploads of the channel
+		// Every YouTube channel has a "uploads" playlist, containing all the uploads of the channel
 		$playlist_params['uploads_id'] = $channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
 		$playlist_params['page_token'] = $query['page_token'];
 
@@ -70,7 +70,7 @@ class EMM_Youtube_Client {
 
 		// URL for playlists
 		if ( $resource == 'playlistItems' ) {
-			$playlist_url_query = sprintf( '%s/playlistItems?maxResults=%s&playlistId=%s&part=snippet&key=%s', $this->api_url, EMM_Youtube_Service::DEFAULT_MAX_RESULTS, $query['uploads_id'], $this->developer_key );
+			$playlist_url_query = sprintf( '%s/playlistItems?maxResults=%s&playlistId=%s&part=snippet&key=%s', $this->api_url, EMM_YouTube_Service::DEFAULT_MAX_RESULTS, $query['uploads_id'], $this->developer_key );
 			if ( isset( $query['page_token'] ) && '' != $query['page_token'] )
 				$playlist_url_query .= '&pageToken=' . $query['page_token'];
 			return $playlist_url_query;
@@ -95,7 +95,7 @@ class EMM_Youtube_Client {
 		if ( isset( $query['maxResults'] ) )
 			$params[] = 'maxResults=' . (int) $query['maxResults'];
 		else
-			$params[] = 'maxResults=' . EMM_Youtube_Service::DEFAULT_MAX_RESULTS;
+			$params[] = 'maxResults=' . EMM_YouTube_Service::DEFAULT_MAX_RESULTS;
 
 		// Mandatory field "part"
 		if ( isset( $query['part'] ) )
