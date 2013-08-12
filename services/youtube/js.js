@@ -54,6 +54,12 @@ wp.media.view.EMM = emmContentView.extend({
 	},
 
 	fetchItems: function() {
+
+		if ( this.service.id !== 'youtube' ) {
+			emmContentView.prototype.fetchItems.apply( this, arguments );
+			return;
+		}
+
 		this.trigger( 'loading' );
 
 		var params = this.model.get( 'params' );
@@ -78,6 +84,11 @@ wp.media.view.EMM = emmContentView.extend({
 	},
 
 	fetchedSuccess: function( response ) {
+		if ( this.service.id !== 'youtube' ) {
+			emmContentView.prototype.fetchedSuccess.apply( this, arguments );
+			return;
+		}
+
 		if ( !this.model.get( 'page' ) ) {
 
 			if ( !response.items ) {
