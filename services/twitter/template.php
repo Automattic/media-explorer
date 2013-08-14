@@ -62,6 +62,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'emm' ); ?>"
 					>
+					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -80,6 +81,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
 					>
+					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -98,6 +100,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
 					>
+					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -170,6 +173,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
 					>
+					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
