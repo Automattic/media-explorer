@@ -17,11 +17,14 @@ wp.media.view.EMM = emmContentView.extend({
 			_this = this;
 
 		if ( this.collection && this.collection.models.length ) {
-
 			var container = document.createDocumentFragment();
 
-			this.collection.each( function( model ) {
-				container.appendChild( this.renderItem( model ) );
+			this.collection.each( function( model, index ) {
+				// This makes the collection to render only the las 18 items of
+				// it, instead of all. Tweak for the infinite scroll to work ok
+				if ( index >= this.collection.length - 18 ) {
+					container.appendChild( this.renderItem( model ) );
+				}
 			}, this );
 
 			this.$el.find( '.emm-items' ).append( container );
@@ -42,18 +45,23 @@ wp.media.view.EMM = emmContentView.extend({
 				position = $container.height() + $container.scrollTop(),
 				offset = ( totalHeight / 100 ) * 30;
 
-			// only fires when the position of the scrolled window is at the bottom
-			// This is compared to 15 instead of 0 because of the padding-top of the
-			// <ul>
 			if( totalHeight - position <= offset ) {
-				_this.fetchItems.apply( _this );
+				_this.fetchItems.apply( _this, [ jQuery( '.tab-all #page_token' ).val() ] );
 			}
 		} );
 
 		return this;
 	},
 
-	fetchItems: function() {
+	fetchItems: function( pageToken ) {
+
+		// This if-else block handles the concurrency for not calling to the
+		// same set of videos several times.
+		if ( "youtube" === this.service.id && pageToken && pageToken === flagAjaxExecutions ) {
+			return;
+		} else {
+			flagAjaxExecutions = pageToken;
+		}
 
 		if ( this.service.id !== 'youtube' ) {
 			emmContentView.prototype.fetchItems.apply( this, arguments );
@@ -84,6 +92,9 @@ wp.media.view.EMM = emmContentView.extend({
 	},
 
 	fetchedSuccess: function( response ) {
+
+		var _this = this;
+
 		if ( this.service.id !== 'youtube' ) {
 			emmContentView.prototype.fetchedSuccess.apply( this, arguments );
 			return;
@@ -95,11 +106,6 @@ wp.media.view.EMM = emmContentView.extend({
 				this.fetchedEmpty( response );
 				return;
 			}
-
-			if ( flagAjaxExecutions !== response.meta.page_token )
-				flagAjaxExecutions = response.meta.page_token;
-			else
-				return;
 
 			if ( response.meta.page_token ) {
 				var params = this.model.get( 'params' );
@@ -118,7 +124,12 @@ wp.media.view.EMM = emmContentView.extend({
 			this.model.set( 'min_id', response.meta.min_id );
 			this.model.set( 'items',  response.items );
 
-			this.collection.reset( response.items );
+			// Append the last elements to the collection.
+			_.each( response.items, function( item ) {
+				_this.collection.add( item );
+			} );
+
+			this.collection.reset( this.collection.models );
 
 		} else {
 
