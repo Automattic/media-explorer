@@ -66,7 +66,7 @@ class EMM_YouTube_Template extends EMM_Template {
 						<option value="video"><?php esc_html_e( 'Videos', 'emm' ); ?></option>
 						<option value="playlist"><?php esc_html_e( 'Playlists', 'emm' ); ?></option>
 					</select>
-					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -86,7 +86,7 @@ class EMM_YouTube_Template extends EMM_Template {
 					>
 					<input type="hidden" name="tab" value="by_user">
 					<input type="hidden" name="page_token" value="" id="page_token" class="by_user"/>
-					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php

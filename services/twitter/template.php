@@ -62,7 +62,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'emm' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -81,7 +81,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -100,7 +100,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -127,7 +127,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
 					>
 					<label for="<?php echo esc_attr( $id ); ?>-name">
-						<?php _e( 'Location:', 'emm' ); ?>
+						<?php esc_attr_e( 'Location:', 'emm' ); ?>
 					</label>
 					<input
 						type="text"
@@ -173,7 +173,7 @@ class EMM_Twitter_Template extends EMM_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php _e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
