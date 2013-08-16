@@ -313,10 +313,9 @@ class ME_Twitter_Service extends ME_Service {
 
 }
 
-add_filter( 
-	'emm_services', 
-	create_function( '$services', 
-		'$services["twitter"] = new ME_Twitter_Service;
-		return $services;' 
-	) 
-);
+add_filter( 'emm_services', 'emm_service_twitter' );
+
+function emm_service_twitter( array $services ) {
+	$services['twitter'] = new ME_Twitter_Service;
+	return $services;
+}

@@ -124,10 +124,9 @@ class ME_YouTube_Service extends ME_Service {
 	}
 }
 
-add_filter( 
-	'emm_services', 
-	create_function( '$services', 
-		'$services["youtube"] = new ME_YouTube_Service;
-		return $services;' 
-	) 
-);
+add_filter( 'emm_services', 'emm_service_youtube' );
+
+function emm_service_youtube( array $services ) {
+	$services['youtube'] = new ME_YouTube_Service;
+	return $services;
+}
