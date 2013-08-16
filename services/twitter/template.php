@@ -1,7 +1,5 @@
 <?php
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -14,9 +12,7 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM\Services\Twitter;
-
-class Template extends \EMM\Template {
+class EMM_Twitter_Template extends EMM_Template {
 
 	public function item( $id, $tab ) {
 		?>
@@ -66,6 +62,7 @@ class Template extends \EMM\Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'emm' ); ?>"
 					>
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -84,6 +81,7 @@ class Template extends \EMM\Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
 					>
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -102,6 +100,7 @@ class Template extends \EMM\Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
 					>
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -128,7 +127,7 @@ class Template extends \EMM\Template {
 						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
 					>
 					<label for="<?php echo esc_attr( $id ); ?>-name">
-						<?php _e( 'Location:', 'emm' ); ?>
+						<?php esc_attr_e( 'Location:', 'emm' ); ?>
 					</label>
 					<input
 						type="text"
@@ -175,6 +174,7 @@ class Template extends \EMM\Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
 					>
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php

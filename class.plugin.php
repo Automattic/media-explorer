@@ -1,7 +1,5 @@
 <?php
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -14,12 +12,10 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM;
-
 /**
  * Abstract plugin class. The plugin's main class should extend this to make use of its handy methods.
  */
-abstract class Plugin {
+abstract class EMM_Plugin {
 
 	/**
 	 * Class constructor

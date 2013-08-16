@@ -1,6 +1,4 @@
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -41,12 +39,6 @@ GNU General Public License for more details.
 body.mp6 .media-frame .emm-content .emm-toolbar {
 	background: #fff;
 	border-bottom: 1px solid #ddd;
-}
-
-/* The below can be removed when MP6 hits 1.6 */
-/* http://wordpress.org/support/topic/cssmedia-viewscss-references-a-non-existent-image */
-body.mp6 .media-frame .emm-content .spinner {
-	background-image: url( '../assets/wpspin_light.gif' );
 }
 
 .media-frame .emm-content .emm-toolbar-container {
@@ -172,4 +164,68 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 	width: 100%;
 	height: 160px;
 	background: transparent no-repeat center center;
+}
+
+/* ************************ */
+/* YouTube-specific styles: */
+/* ************************ */
+
+.emm-item-youtube .emm-item-main {
+	max-height: 54px;
+	overflow: hidden;
+}
+
+.emm-item-youtube .emm-item-content {
+	font-weight: bold;
+}
+
+.emm-content-youtube .emm-items {
+	padding-top: 15px;
+}
+
+.media-frame .spinner-bottom {
+	bottom: 18px;
+	position: absolute;
+	margin: auto;
+	left: 50%;
+}
+
+.emm-item-thumb img {
+	width: 95%;
+}
+
+/**
+ * One column layout
+ * */
+@media (max-width: 699px) {
+	.emm-content-youtube .attachment {
+		width: 100%;
+	}
+}
+
+/**
+ * Two column layout
+ * */
+@media (min-width: 700px) and (max-width: 1199px) {
+	.emm-content-youtube .attachment {
+		width: 45%;
+	}
+}
+
+/**
+ * Three column layout
+ * */
+@media (min-width: 1200px) and (max-width: 1499px) {
+	.emm-content-youtube .attachment {
+		width: 31%;
+	}
+}
+
+/**
+ * Four column layout
+ * */
+@media (min-width: 1500px) {
+	.emm-content-youtube .attachment {
+		width: 23%;
+	}
 }

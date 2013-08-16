@@ -1,7 +1,5 @@
 <?php
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -14,12 +12,10 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM;
-
 /**
  * Abstract template class. Every service template should implement this class.
  */
-abstract class Template {
+abstract class EMM_Template {
 
 	/**
 	 * Outputs the Backbone template for an item within search results.

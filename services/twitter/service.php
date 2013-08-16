@@ -1,7 +1,5 @@
 <?php
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -14,27 +12,25 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM\Services\Twitter;
-
 defined( 'ABSPATH' ) or die();
 
-class Service extends \EMM\Service {
+class EMM_Twitter_Service extends EMM_Service {
 
 	public $credentials = null;
 	public $response_meta = array();
 
 	public function __construct() {
 
-		require_once __DIR__ . '/template.php';
+		require_once dirname( __FILE__ ) . '/template.php';
 
 		# Go!
-		$this->set_template( new Template );
+		$this->set_template( new EMM_Twitter_Template );
 
 	}
 
 	public function load() {
 
-		$emm = \Extended_Media_Manager::init();
+		$emm = Extended_Media_Manager::init();
 
 		wp_enqueue_script(
 			'google-jsapi',
@@ -112,7 +108,7 @@ class Service extends \EMM\Service {
 
 		} else {
 
-			return new \WP_Error(
+			return new WP_Error(
 				'emm_twitter_failed_request',
 				sprintf( __( 'Could not connect to Twitter (error %s).', 'emm' ),
 					esc_html( $connection->http_code )
@@ -133,7 +129,7 @@ class Service extends \EMM\Service {
 		if ( is_wp_error( $result ) )
 			return $result;
 
-		$error = new \WP_Error(
+		$error = new WP_Error(
 			'emm_twitter_failed_location',
 			__( 'Could not find your requested location.', 'emm' )
 		);
@@ -194,7 +190,7 @@ class Service extends \EMM\Service {
 		if ( !isset( $r->statuses ) or empty( $r->statuses ) )
 			return false;
 
-		$response = new \EMM\Response;
+		$response = new EMM_Response;
 
 		if ( isset( $r->search_metadata->next_results ) )
 			$response->add_meta( 'max_id', self::get_max_id( $r->search_metadata->next_results ) );
@@ -204,7 +200,7 @@ class Service extends \EMM\Service {
 
 		foreach ( $r->statuses as $status ) {
 
-			$item = new \EMM\Response_Item;
+			$item = new EMM_Response_Item;
 
 			$item->set_id( $status->id_str );
 			$item->set_url( self::status_url( $status ) );
@@ -258,7 +254,7 @@ class Service extends \EMM\Service {
 
 	public function labels() {
 		return array(
-			'title'     => sprintf( __( 'Insert from %s', 'emm' ), 'Twitter' ),
+			'title'     => __( 'Insert Tweet', 'emm' ),
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
 			'insert'    => __( 'Insert Tweet', 'emm' ),
 			'noresults' => __( 'No tweets matched your search query', 'emm' ),
@@ -286,7 +282,7 @@ class Service extends \EMM\Service {
 
 		foreach ( array( 'consumer_key', 'consumer_secret', 'oauth_token', 'oauth_token_secret' ) as $field ) {
 			if ( !isset( $credentials[$field] ) or empty( $credentials[$field] ) ) {
-				return new \WP_Error(
+				return new WP_Error(
 					'emm_twitter_no_connection',
 					__( 'oAuth connection to Twitter not found.', 'emm' )
 				);
@@ -294,7 +290,7 @@ class Service extends \EMM\Service {
 		}
 
 		if ( !class_exists( 'WP_Twitter_OAuth' ) )
-			require_once __DIR__ . '/class.wp-twitter-oauth.php';
+			require_once dirname( __FILE__ ) . '/class.wp-twitter-oauth.php';
 
 		$connection = new WP_Twitter_OAuth(
 			$credentials['consumer_key'],
@@ -320,7 +316,10 @@ class Service extends \EMM\Service {
 
 }
 
-add_filter( 'emm_services', function( $services ) {
-	$services['twitter'] = new Service;
-	return $services;
-} );
+add_filter( 
+	'emm_services', 
+	create_function( '$services', 
+		'$services["twitter"] = new EMM_Twitter_Service;
+		return $services;' 
+	) 
+);

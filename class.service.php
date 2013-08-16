@@ -1,7 +1,5 @@
 <?php
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -14,12 +12,10 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM;
-
 /**
  * Abstract service class. Every service should implement this class.
  */
-abstract class Service {
+abstract class EMM_Service {
 
 	public $template = null;
 
@@ -96,7 +92,7 @@ abstract class Service {
 	 *
 	 * @return null
 	 */
-	final public function set_template( \EMM\Template $template ) {
+	final public function set_template( EMM_Template $template ) {
 
 		$this->template = $template;
 

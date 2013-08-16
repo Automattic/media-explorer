@@ -1,6 +1,4 @@
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -360,7 +358,9 @@ media.view.EMM = media.View.extend({
 			if ( n )
 				params[n] = jQuery(this).val();
 		} );
-
+		
+		this.clearSelection();
+		jQuery( '#emm-button' ).attr( 'disabled', 'disabled' );
 		this.model.set( 'params', params );
 		this.trigger( 'change:params' ); // why isn't this triggering automatically? might be because params is an object
 
@@ -538,14 +538,19 @@ media.controller.EMM = media.controller.State.extend({
 
 	emmInsert: function() {
 
-		var insert    = '';
-		var selection = this.frame.content.get().getSelection();
+		var selection = this.frame.content.get().getSelection(),
+		urls          = [];
 
 		selection.each( function( model ) {
-			insert += '<p>' + model.get( 'url' ) + '</p>';
+			urls.push( model.get( 'url' ) );
 		}, this );
 
-		media.editor.insert( insert );
+		if ( typeof(tinymce) === 'undefined' || tinymce.activeEditor === null || tinymce.activeEditor.isHidden() ) {
+			media.editor.insert( _.toArray( urls ).join( "\n\n" ) );
+		} else {
+			media.editor.insert( "<p>" + _.toArray( urls ).join( "</p><p>" ) + "</p>" );
+		}
+
 		selection.reset();
 		this.frame.close();
 

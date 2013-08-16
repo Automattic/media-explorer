@@ -1,7 +1,5 @@
 <?php
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -14,7 +12,7 @@ GNU General Public License for more details.
 
 */
 
-class Extended_Media_Manager extends \EMM\Plugin {
+class Extended_Media_Manager extends EMM_Plugin {
 
 	/**
 	 * Array of Service objects.
@@ -55,7 +53,7 @@ class Extended_Media_Manager extends \EMM\Plugin {
 	protected function load_services() {
 
 		foreach ( apply_filters( 'emm_services', array() ) as $service_id => $service ) {
-			if ( is_a( $service, '\EMM\Service' ) )
+			if ( is_a( $service, 'EMM_Service' ) )
 				$this->services[$service_id] = $service;
 		}
 
@@ -72,7 +70,7 @@ class Extended_Media_Manager extends \EMM\Plugin {
 		if ( isset( $this->services[$service_id] ) )
 			return $this->services[$service_id];
 
-		return new \WP_Error(
+		return new WP_Error(
 			'invalid_service',
 			sprintf( __( 'Media service "%s" was not found', 'emm' ), esc_html( $service_id ) )
 		);
@@ -163,7 +161,7 @@ class Extended_Media_Manager extends \EMM\Plugin {
 				continue;
 
 			require_once sprintf( '%s/class.%s.php',
-				__DIR__,
+				dirname( __FILE__ ),
 				$file
 			);
 
@@ -193,7 +191,7 @@ class Extended_Media_Manager extends \EMM\Plugin {
 				'error_message' => $response->get_error_message()
 			) );
 
-		} else if ( is_a( $response, '\EMM\Response' ) ) {
+		} else if ( is_a( $response, 'EMM_Response' ) ) {
 
 			wp_send_json_success( $response->output() );
 

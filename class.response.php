@@ -1,7 +1,5 @@
 <?php
 /*
-Copyright © 2013 Code for the People Ltd
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -14,13 +12,11 @@ GNU General Public License for more details.
 
 */
 
-namespace EMM;
-
 /**
  * Response class. A service's request() method should return a Response object. This
  * is used to populate the AJAX request's JSON response.
  */
-final class Response {
+final class EMM_Response {
 
 	public $items = array();
 	public $meta  = array(
@@ -57,7 +53,7 @@ final class Response {
 	 * @param Response_Item A response item.
 	 * @return null
 	 */
-	public function add_item( Response_Item $item ) {
+	public function add_item( EMM_Response_Item $item ) {
 		$this->items[] = $item;
 	}
 
@@ -93,7 +89,7 @@ final class Response {
 /**
  * Response Item class. Used within the Response class to populate the items in a response.
  */
-final class Response_Item {
+final class EMM_Response_Item {
 
 	public $id          = null;
 	public $url         = null;
