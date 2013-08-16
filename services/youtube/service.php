@@ -26,7 +26,8 @@ class EMM_YouTube_Service extends EMM_Service {
 	}
 
 	public function request( array $request ) {
-		$youtube = $this->get_connection();
+		if ( is_wp_error( $youtube = $this->get_connection() ) )
+			return $youtube;
 		$params = $request['params'];
 
 		switch ( $params['tab'] ) 
@@ -111,6 +112,13 @@ class EMM_YouTube_Service extends EMM_Service {
 		require_once plugin_dir_path( __FILE__) . '/class.wp-youtube-client.php';
 
 		$developer_key = (string) apply_filters( 'emm_youtube_developer_key', '' ) ;
+
+		if ( empty( $developer_key ) ) {
+			return new WP_Error(
+				'emm_youtube_no_connection',
+				__( 'API connection to YouTube not found.', 'emm' )
+			);
+		}
 
 		return new EMM_YouTube_Client( $developer_key );
 	}
