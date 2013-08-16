@@ -231,9 +231,9 @@ class EMM_Twitter_Service extends EMM_Service {
 			'hashtag' => array(
 				'text' => _x( 'With Hashtag', 'Tab title', 'emm'),
 			),
-			'images' => array(
-				'text' => _x( 'With Images', 'Tab title', 'emm'),
-			),
+			#'images' => array(
+			#	'text' => _x( 'With Images', 'Tab title', 'emm'),
+			#),
 			'by_user' => array(
 				'text' => _x( 'By User', 'Tab title', 'emm'),
 			),
