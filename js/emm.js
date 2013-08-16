@@ -425,7 +425,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 				priority: 100 // places it above Insert From URL
 			};
 
-			for ( tab in service.tabs ) {
+			for ( var tab in service.tabs ) {
 
 				// Content
 				this.on( 'content:render:' + id + '-content-' + tab, _.bind( this.emmContentRender, this, service, tab ) );
@@ -457,7 +457,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 		var id   = 'emm-service-' + service.id;
 		var tabs = {};
 
-		for ( tab in service.tabs ) {
+		for ( var tab in service.tabs ) {
 			tab_id = id + '-content-' + tab;
 			tabs[tab_id] = {
 				text : service.tabs[tab].text
@@ -511,7 +511,7 @@ media.controller.EMM = media.controller.State.extend({
 
 		this.props = new Backbone.Collection();
 
-		for ( tab in options.tabs ) {
+		for ( var tab in options.tabs ) {
 
 			this.props.add( new Backbone.Model({
 				id     : tab,

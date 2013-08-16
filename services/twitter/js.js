@@ -72,7 +72,7 @@ function emm_twitter_location_initialize() {
 
 	if ( navigator.geolocation ) {
 		navigator.geolocation.getCurrentPosition( emm_twitter_location_load, callback );
-		emm_twitter_location_timeout = window.setTimeout( callback, 8000 )
+		emm_twitter_location_timeout = window.setTimeout( callback, 8000 );
 	} else {
 		emm_twitter_location_fetch( callback );
 	}
@@ -91,7 +91,7 @@ function emm_twitter_location_fetch( callback ) {
 
 function emm_twitter_location_load( position ) {
 
-	var lat, lng, loc, radius;
+	var lat, lng, loc;
 	$ = jQuery;
 
 	window.clearTimeout( emm_twitter_location_timeout );
