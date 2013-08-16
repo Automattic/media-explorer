@@ -1,12 +1,12 @@
 /**
  * This js is going to handle the infinite scroll for the YouTube service in the
- * EMM plugin
+ * ME plugin
  * */
 
-var emmContentView = wp.media.view.EMM
+var emmContentView = wp.media.view.ME,
 	flagAjaxExecutions = '';
 
-wp.media.view.EMM = emmContentView.extend({
+wp.media.view.ME = emmContentView.extend({
 
 	initialize: function() {
 		emmContentView.prototype.initialize.apply( this, arguments );

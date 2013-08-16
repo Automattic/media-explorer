@@ -15,7 +15,7 @@ var media = wp.media;
 
 // VIEW: MEDIA ITEM:
 
-media.view.EMMItem = Backbone.View.extend({
+media.view.MEItem = Backbone.View.extend({
 
     tagName   : 'li',
     className : 'emm-item attachment',
@@ -33,7 +33,7 @@ media.view.EMMItem = Backbone.View.extend({
 
 // VIEW - BOTTOM TOOLBAR
 
-media.view.Toolbar.EMM = media.view.Toolbar.extend({
+media.view.Toolbar.ME = media.view.Toolbar.extend({
 
 	initialize: function() {
 
@@ -73,7 +73,7 @@ media.view.Toolbar.EMM = media.view.Toolbar.extend({
 
 // VIEW - MEDIA CONTENT AREA
 
-media.view.EMM = media.View.extend({
+media.view.ME = media.View.extend({
 
 	events: {
 		'click .emm-item-area'     : 'toggleSelectionHandler',
@@ -148,7 +148,7 @@ media.view.EMM = media.View.extend({
 
 	renderItem : function( model ) {
 
-		var view = new media.view.EMMItem({
+		var view = new media.view.MEItem({
 			model   : model,
 			service : this.service,
 			tab     : this.tab
@@ -436,7 +436,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 			}
 
 			this.states.add([
-				new media.controller.EMM( controller )
+				new media.controller.ME( controller )
 			]);
 
 			// Tabs
@@ -469,7 +469,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 	emmToolbarRender : function( service, view ) {
 
-		view.set( 'selection', new media.view.Selection.EMM({
+		view.set( 'selection', new media.view.Selection.ME({
 			service    : service,
 			controller : this,
 			collection : this.state().props.get('_all').get('selection'),
@@ -482,7 +482,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 		/* called when a tab becomes active */
 
-		this.content.set( new media.view.EMM( {
+		this.content.set( new media.view.ME( {
 			service    : service,
 			controller : this,
 			model      : this.state().props.get( tab ),
@@ -494,7 +494,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 	emmToolbarCreate : function( toolbar ) {
 
-		toolbar.view = new media.view.Toolbar.EMM( {
+		toolbar.view = new media.view.Toolbar.ME( {
 			controller : this
 		} );
 
@@ -504,7 +504,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 // CONTROLLER:
 
-media.controller.EMM = media.controller.State.extend({
+media.controller.ME = media.controller.State.extend({
 
 	initialize: function( options ) {
 

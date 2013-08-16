@@ -1,6 +1,6 @@
 <?php
 
-class EMM_YouTube_Template extends EMM_Template {
+class ME_YouTube_Template extends ME_Template {
 
 	/**
 	 * Template for single elements returned from the API

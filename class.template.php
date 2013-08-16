@@ -15,7 +15,7 @@ GNU General Public License for more details.
 /**
  * Abstract template class. Every service template should implement this class.
  */
-abstract class EMM_Template {
+abstract class ME_Template {
 
 	/**
 	 * Outputs the Backbone template for an item within search results.

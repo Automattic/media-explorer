@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-class EMM_Twitter_Service extends EMM_Service {
+class ME_Twitter_Service extends ME_Service {
 
 	public $credentials = null;
 	public $response_meta = array();
@@ -24,13 +24,13 @@ class EMM_Twitter_Service extends EMM_Service {
 		require_once dirname( __FILE__ ) . '/template.php';
 
 		# Go!
-		$this->set_template( new EMM_Twitter_Template );
+		$this->set_template( new ME_Twitter_Template );
 
 	}
 
 	public function load() {
 
-		$emm = Extended_Media_Manager::init();
+		$emm = Media_Explorer::init();
 
 		wp_enqueue_script(
 			'google-jsapi',
@@ -187,7 +187,7 @@ class EMM_Twitter_Service extends EMM_Service {
 		if ( !isset( $r->statuses ) or empty( $r->statuses ) )
 			return false;
 
-		$response = new EMM_Response;
+		$response = new ME_Response;
 
 		if ( isset( $r->search_metadata->next_results ) )
 			$response->add_meta( 'max_id', self::get_max_id( $r->search_metadata->next_results ) );
@@ -197,7 +197,7 @@ class EMM_Twitter_Service extends EMM_Service {
 
 		foreach ( $r->statuses as $status ) {
 
-			$item = new EMM_Response_Item;
+			$item = new ME_Response_Item;
 
 			$item->set_id( $status->id_str );
 			$item->set_url( self::status_url( $status ) );
@@ -316,7 +316,7 @@ class EMM_Twitter_Service extends EMM_Service {
 add_filter( 
 	'emm_services', 
 	create_function( '$services', 
-		'$services["twitter"] = new EMM_Twitter_Service;
+		'$services["twitter"] = new ME_Twitter_Service;
 		return $services;' 
 	) 
 );

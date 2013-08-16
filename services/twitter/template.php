@@ -12,7 +12,7 @@ GNU General Public License for more details.
 
 */
 
-class EMM_Twitter_Template extends EMM_Template {
+class ME_Twitter_Template extends ME_Template {
 
 	public function item( $id, $tab ) {
 		?>

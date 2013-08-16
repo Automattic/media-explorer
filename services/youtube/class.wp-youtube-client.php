@@ -1,6 +1,6 @@
 <?php
 
-class EMM_YouTube_Client {
+class ME_YouTube_Client {
 
 	private $developer_key='';
 
@@ -70,7 +70,7 @@ class EMM_YouTube_Client {
 
 		// URL for playlists
 		if ( $resource == 'playlistItems' ) {
-			$playlist_url_query = sprintf( '%s/playlistItems?maxResults=%s&playlistId=%s&part=snippet&key=%s', $this->api_url, EMM_YouTube_Service::DEFAULT_MAX_RESULTS, $query['uploads_id'], $this->developer_key );
+			$playlist_url_query = sprintf( '%s/playlistItems?maxResults=%s&playlistId=%s&part=snippet&key=%s', $this->api_url, ME_YouTube_Service::DEFAULT_MAX_RESULTS, $query['uploads_id'], $this->developer_key );
 			if ( isset( $query['page_token'] ) && '' != $query['page_token'] )
 				$playlist_url_query .= '&pageToken=' . $query['page_token'];
 			return $playlist_url_query;
@@ -95,7 +95,7 @@ class EMM_YouTube_Client {
 		if ( isset( $query['maxResults'] ) )
 			$params[] = 'maxResults=' . (int) $query['maxResults'];
 		else
-			$params[] = 'maxResults=' . EMM_YouTube_Service::DEFAULT_MAX_RESULTS;
+			$params[] = 'maxResults=' . ME_YouTube_Service::DEFAULT_MAX_RESULTS;
 
 		// Mandatory field "part"
 		if ( isset( $query['part'] ) )

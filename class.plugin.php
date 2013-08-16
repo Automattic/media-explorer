@@ -15,7 +15,7 @@ GNU General Public License for more details.
 /**
  * Abstract plugin class. The plugin's main class should extend this to make use of its handy methods.
  */
-abstract class EMM_Plugin {
+abstract class ME_Plugin {
 
 	/**
 	 * Class constructor

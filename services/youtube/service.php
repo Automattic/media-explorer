@@ -1,6 +1,6 @@
 <?php
 
-class EMM_YouTube_Service extends EMM_Service {
+class ME_YouTube_Service extends ME_Service {
 
 	const DEFAULT_MAX_RESULTS = 18;
 
@@ -8,12 +8,12 @@ class EMM_YouTube_Service extends EMM_Service {
 		require_once dirname( __FILE__ ) . '/template.php';
 
 		# Go!
-		$this->set_template( new EMM_YouTube_Template );
+		$this->set_template( new ME_YouTube_Template );
 	}
 
 	public function load() {
 
-		$emm = Extended_Media_Manager::init();
+		$emm = Media_Explorer::init();
 
 		wp_enqueue_script(
 			'emm-service-youtube-infinitescroll',
@@ -65,13 +65,13 @@ class EMM_YouTube_Service extends EMM_Service {
 		}
 
 		// Create the response for the API
-		$response = new EMM_Response();
+		$response = new ME_Response();
 
 		if ( !isset( $search_response['items'] ) )
 			return false;
 
 		foreach ( $search_response['items'] as $index => $search_item ) {
-			$item = new EMM_Response_Item();
+			$item = new ME_Response_Item();
 			if ( $request['type'] == 'video' && isset( $request['q'] ) ) { // For videos searched by query
 				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
 			} elseif( $request['type'] == 'playlist' && isset( $request['q'] ) ) { // For playlists searched by query
@@ -112,7 +112,7 @@ class EMM_YouTube_Service extends EMM_Service {
 
 		$developer_key = (string) apply_filters( 'emm_youtube_developer_key', '' ) ;
 
-		return new EMM_YouTube_Client( $developer_key );
+		return new ME_YouTube_Client( $developer_key );
 	}
 
 	public function labels() {
@@ -127,7 +127,7 @@ class EMM_YouTube_Service extends EMM_Service {
 add_filter( 
 	'emm_services', 
 	create_function( '$services', 
-		'$services["youtube"] = new EMM_YouTube_Service;
+		'$services["youtube"] = new ME_YouTube_Service;
 		return $services;' 
 	) 
 );

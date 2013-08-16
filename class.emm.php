@@ -12,7 +12,7 @@ GNU General Public License for more details.
 
 */
 
-class Extended_Media_Manager extends EMM_Plugin {
+class Media_Explorer extends ME_Plugin {
 
 	/**
 	 * Array of Service objects.
@@ -53,7 +53,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 	protected function load_services() {
 
 		foreach ( apply_filters( 'emm_services', array() ) as $service_id => $service ) {
-			if ( is_a( $service, 'EMM_Service' ) )
+			if ( is_a( $service, 'ME_Service' ) )
 				$this->services[$service_id] = $service;
 		}
 
@@ -189,7 +189,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 				'error_message' => $response->get_error_message()
 			) );
 
-		} else if ( is_a( $response, 'EMM_Response' ) ) {
+		} else if ( is_a( $response, 'ME_Response' ) ) {
 
 			wp_send_json_success( $response->output() );
 
@@ -265,14 +265,14 @@ class Extended_Media_Manager extends EMM_Plugin {
 	 * Singleton instantiator.
 	 *
 	 * @param string $file The plugin file (usually __FILE__) (optional)
-	 * @return Extended_Media_Manager
+	 * @return Media_Explorer
 	 */
 	public static function init( $file = null ) {
 
 		static $instance = null;
 
 		if ( !$instance )
-			$instance = new Extended_Media_Manager( $file );
+			$instance = new Media_Explorer( $file );
 
 		return $instance;
 
