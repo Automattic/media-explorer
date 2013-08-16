@@ -248,7 +248,7 @@ class EMM_Twitter_Service extends EMM_Service {
 
 	public function requires() {
 		return array(
-			'oauth' => '\OAuthConsumer'
+			'oauth' => 'OAuthConsumer'
 		);
 	}
 
