@@ -7,7 +7,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MExpRCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
@@ -15,7 +15,7 @@ GNU General Public License for more details.
 /**
  * Abstract service class. Every service should implement this class.
  */
-abstract class ME_Service {
+abstract class MEXP_Service {
 
 	public $template = null;
 
@@ -68,10 +68,10 @@ abstract class ME_Service {
 	final public function get_labels() {
 
 		return array_merge( array(
-			'title'     => __( 'Insert Media', 'emm' ),
-			'insert'    => __( 'Insert', 'emm' ),
-			'loadmore'  => __( 'Load More', 'emm' ),
-			'noresults' => __( 'Nothing matched your search query', 'emm' ),
+			'title'     => __( 'Insert Media', 'mexp' ),
+			'insert'    => __( 'Insert', 'mexp' ),
+			'loadmore'  => __( 'Load More', 'mexp' ),
+			'noresults' => __( 'Nothing matched your search query', 'mexp' ),
 		), (array) $this->labels() );
 
 	}
@@ -92,7 +92,7 @@ abstract class ME_Service {
 	 *
 	 * @return null
 	 */
-	final public function set_template( ME_Template $template ) {
+	final public function set_template( MEXP_Template $template ) {
 
 		$this->template = $template;
 

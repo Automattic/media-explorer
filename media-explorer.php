@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Extended Media Manager
-Description: Extends the Media Manager to add support for external media services (currently only Twitter).
+Plugin Name: Media Explorer
+Description: Extends the Media Manager to add support for external media services (currently only Twitter and YouTube).
 Version:     1.1
 Author:      Code For The People Ltd
 Author URI:  http://codeforthepeople.com/
-Text Domain: emm
+Text Domain: mexp
 Domain Path: /languages/
 License:     GPL v2 or later
 
@@ -23,7 +23,7 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-foreach ( array( 'plugin', 'emm', 'service', 'template', 'response' ) as $class )
+foreach ( array( 'plugin', 'mexp', 'service', 'template', 'response' ) as $class )
 	require_once sprintf( '%s/class.%s.php', dirname( __FILE__ ), $class );
 
 foreach ( glob( dirname( __FILE__ ) . '/services/*/service.php' ) as $service )

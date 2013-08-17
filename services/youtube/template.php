@@ -1,6 +1,6 @@
 <?php
 
-class ME_YouTube_Template extends ME_Template {
+class MEXP_YouTube_Template extends MEXP_Template {
 
 	/**
 	 * Template for single elements returned from the API
@@ -10,25 +10,25 @@ class ME_YouTube_Template extends ME_Template {
 	 */
 	public function item( $id, $tab ) {
 		?>
-		<div id="emm-item-youtube-<?php echo esc_attr( $tab ); ?>-{{ data.id }}" class="emm-item-area emm-item-youtube" data-id="{{ data.id }}">
-			<div class="emm-item-container clearfix">
-				<div class="emm-item-thumb">
+		<div id="mexp-item-youtube-<?php echo esc_attr( $tab ); ?>-{{ data.id }}" class="mexp-item-area mexp-item-youtube" data-id="{{ data.id }}">
+			<div class="mexp-item-container clearfix">
+				<div class="mexp-item-thumb">
 					<img src="{{ data.thumbnail }}">
 				</div>
-				<div class="emm-item-main">
-					<div class="emm-item-content">
+				<div class="mexp-item-main">
+					<div class="mexp-item-content">
 						{{ data.content }}
 					</div>
-					<div class="emm-item-channel">
-						<?php _e( 'by', 'emm' ) ?> {{ data.meta.user }}
+					<div class="mexp-item-channel">
+						<?php _e( 'by', 'mexp' ) ?> {{ data.meta.user }}
 					</div>
-					<div class="emm-item-date">
+					<div class="mexp-item-date">
 						{{ data.date }}
 					</div>
 				</div>
 			</div>
 		</div>
-		<a href="#" id="emm-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'emm' ); ?>">
+		<a href="#" id="mexp-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'mexp' ); ?>">
 			<div class="media-modal-icon"></div>
 		</a>
 		<?php
@@ -50,23 +50,23 @@ class ME_YouTube_Template extends ME_Template {
 		{
 			case 'all':
 				?>
-				<form action="#" class="emm-toolbar-container clearfix tab-all">
+				<form action="#" class="mexp-toolbar-container clearfix tab-all">
 					<input
 						type="text"
 						name="q"
 						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
+						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search YouTube', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search YouTube', 'mexp' ); ?>"
 					>
 					<input type="hidden" name="tab" value="all" />
 					<input type="hidden" name="page_token" value="" id="page_token" class="all"/>
-					<label for="type" style="display: none"><?php _e( 'Type:', 'emm' ); ?></label>
+					<label for="type" style="display: none"><?php _e( 'Type:', 'mexp' ); ?></label>
 					<select name="type">
-						<option value="video"><?php esc_html_e( 'Videos', 'emm' ); ?></option>
-						<option value="playlist"><?php esc_html_e( 'Playlists', 'emm' ); ?></option>
+						<option value="video"><?php esc_html_e( 'Videos', 'mexp' ); ?></option>
+						<option value="playlist"><?php esc_html_e( 'Playlists', 'mexp' ); ?></option>
 					</select>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -74,19 +74,19 @@ class ME_YouTube_Template extends ME_Template {
 			
 			case 'by_user':
 				?>
-				<form action="#" class="emm-toolbar-container clearfix
+				<form action="#" class="mexp-toolbar-container clearfix
 				tab-by_user">
 					<input
 						type="text"
 						name="channel"
 						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
+						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter Username', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter Username', 'mexp' ); ?>"
 					>
 					<input type="hidden" name="tab" value="by_user">
 					<input type="hidden" name="page_token" value="" id="page_token" class="by_user"/>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php

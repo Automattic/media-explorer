@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: EMM oAuth Credentials
-Description: EMM oAuth Credentials
+Plugin Name: MEXP oAuth Credentials
+Description: MEXP oAuth Credentials
 Version:     1.0
 Author:      John Blackbourn
 Author URI:  http://johnblackbourn.com/
@@ -18,9 +18,9 @@ GNU General Public License for more details.
 
 */
 
-add_filter( 'emm_twitter_credentials', 'emm_twitter_credentials_callback' );
+add_filter( 'mexp_twitter_credentials', 'mexp_twitter_credentials_callback' );
 
-function emm_twitter_credentials_callback() {
+function mexp_twitter_credentials_callback() {
 
 	return array(
 		'consumer_key'       => '',
@@ -31,9 +31,9 @@ function emm_twitter_credentials_callback() {
 
 }
 
-add_filter( 'emm_youtube_developer_key', 'emm_youtube_developer_key_callback' );
+add_filter( 'mexp_youtube_developer_key', 'mexp_youtube_developer_key_callback' );
 
-function emm_youtube_developer_key_callback() {
+function mexp_youtube_developer_key_callback() {
 
 	// Add your developer key here.
 	// Get your developer key at: <https://code.google.com/apis/console>

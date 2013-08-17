@@ -11,11 +11,11 @@ GNU General Public License for more details.
 
 */
 
-.media-frame .emm-content {
+.media-frame .mexp-content {
 	background: #fff;
 }
 
-.media-frame .emm-content .emm-error {
+.media-frame .mexp-content .mexp-error {
 	background: #fdd;
 	padding: 12px 16px;
 	margin: 0 0 10px 0;
@@ -23,7 +23,7 @@ GNU General Public License for more details.
 	display: none;
 }
 
-.media-frame .emm-content .emm-empty {
+.media-frame .mexp-content .mexp-empty {
 	background: #ffd;
 	padding: 12px 16px;
 	margin: 0 0 10px 0;
@@ -31,64 +31,64 @@ GNU General Public License for more details.
 	display: none;
 }
 
-.media-frame .emm-content .emm-toolbar {
+.media-frame .mexp-content .mexp-toolbar {
 	background: #f5f5f5;
 	padding: 0;
 	right: 0;
 }
-body.mp6 .media-frame .emm-content .emm-toolbar {
+body.mp6 .media-frame .mexp-content .mexp-toolbar {
 	background: #fff;
 	border-bottom: 1px solid #ddd;
 }
 
-.media-frame .emm-content .emm-toolbar-container {
+.media-frame .mexp-content .mexp-toolbar-container {
 	padding: 10px 9px;
 }
 
-.media-frame .emm-content .attachments {
+.media-frame .mexp-content .attachments {
 	right: 0;
 }
 
-.media-frame .emm-content .emm-toolbar label,
-.media-frame .emm-content .emm-toolbar select,
-.media-frame .emm-content .emm-toolbar input {
+.media-frame .mexp-content .mexp-toolbar label,
+.media-frame .mexp-content .mexp-toolbar select,
+.media-frame .mexp-content .mexp-toolbar input {
 	float: left;
 }
 
 /* WP media manager style tweaks: */
-.media-frame .emm-content .emm-toolbar label{
+.media-frame .mexp-content .mexp-toolbar label{
 	margin: 7px;
 	color: #555;
 }
-.media-frame .emm-content .emm-toolbar select {
+.media-frame .mexp-content .mexp-toolbar select {
 	margin: 1px;
 	padding: 6px 6px 5px;
 	height: 2.5em;
 }
-.media-frame .emm-content .emm-toolbar .button {
+.media-frame .mexp-content .mexp-toolbar .button {
 	margin: 1px;
 }
 
-.media-frame .emm-content .emm-toolbar .spinner {
+.media-frame .mexp-content .mexp-toolbar .spinner {
 	float: left;
 	margin: 7px 10px;
 }
 
-.media-frame .emm-content .emm-pagination .spinner {
+.media-frame .mexp-content .mexp-pagination .spinner {
 	float: left;
 	margin: 3px 10px;
 }
 
-.media-frame .emm-content .emm-pagination {
+.media-frame .mexp-content .mexp-pagination {
 	display: none;
 	padding: 10px;
 }
 
-.media-frame .emm-content .emm-pagination a {
+.media-frame .mexp-content .mexp-pagination a {
 	float: left;
 }
 
-.media-frame .emm-content .clearfix:after {
+.media-frame .mexp-content .clearfix:after {
 	clear: both;
 	content: ".";
 	display: block;
@@ -101,7 +101,7 @@ body.mp6 .media-frame .emm-content .emm-toolbar {
 /* Twitter-specific styles: */
 /* ************************ */
 
-.media-frame .emm-content-twitter .emm-item {
+.media-frame .mexp-content-twitter .mexp-item {
 	float: none;
 	max-width: 800px;
 	text-align: left;
@@ -110,57 +110,57 @@ body.mp6 .media-frame .emm-content .emm-toolbar {
 	cursor: pointer;
 }
 
-.media-frame .emm-content-twitter .emm-item:hover {
+.media-frame .mexp-content-twitter .mexp-item:hover {
 	border-color: #999;
 }
 
-.media-frame .emm-content-twitter .emm-item.selected {
+.media-frame .mexp-content-twitter .mexp-item.selected {
 	border-color: transparent;
 }
-html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
+html.ie8 .media-frame .mexp-content-twitter .mexp-item.selected {
 	border-color: #999;
 }
 
-.media-frame .emm-content-twitter .emm-item .emm-item-container {
+.media-frame .mexp-content-twitter .mexp-item .mexp-item-container {
 	padding: 13px;
 }
 
-.media-frame .emm-content-twitter .emm-item .emm-item-thumb {
+.media-frame .mexp-content-twitter .mexp-item .mexp-item-thumb {
 	float: left;
 	margin: 0 10px 10px 0;
 }
 
-.media-frame .emm-content-twitter .emm-item .emm-item-thumb img {
+.media-frame .mexp-content-twitter .mexp-item .mexp-item-thumb img {
 	width: 48px;
 	height: 48px;
 }
 
-.media-frame .emm-content-twitter .emm-item .emm-item-author {
+.media-frame .mexp-content-twitter .mexp-item .mexp-item-author {
 	font-size: 18px;
 }
 
-.media-frame .emm-content-twitter .emm-item .emm-item-author-screen-name {
+.media-frame .mexp-content-twitter .mexp-item .mexp-item-author-screen-name {
 	color: #bbb;
 }
 
-.media-frame .emm-content-twitter .emm-item .emm-item-content {
+.media-frame .mexp-content-twitter .mexp-item .mexp-item-content {
 	margin: 8px 0;
 }
 
-.media-frame .emm-content-twitter .emm-item .emm-item-date {
+.media-frame .mexp-content-twitter .mexp-item .mexp-item-date {
 	color: #bbb;
 	clear: left;
 }
 
-.media-frame .emm-content-twitter-location .emm-toolbar {
+.media-frame .mexp-content-twitter-location .mexp-toolbar {
 	height: 210px;
 }
 
-.media-frame .emm-content-twitter-location .attachments {
+.media-frame .mexp-content-twitter-location .attachments {
 	top: 210px;
 }
 
-#emm_twitter_map_canvas {
+#mexp_twitter_map_canvas {
 	width: 100%;
 	height: 160px;
 	background: transparent no-repeat center center;
@@ -170,16 +170,16 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 /* YouTube-specific styles: */
 /* ************************ */
 
-.emm-item-youtube .emm-item-main {
+.mexp-item-youtube .mexp-item-main {
 	max-height: 54px;
 	overflow: hidden;
 }
 
-.emm-item-youtube .emm-item-content {
+.mexp-item-youtube .mexp-item-content {
 	font-weight: bold;
 }
 
-.emm-content-youtube .emm-items {
+.mexp-content-youtube .mexp-items {
 	padding-top: 15px;
 }
 
@@ -190,7 +190,7 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
 	left: 50%;
 }
 
-.emm-item-thumb img {
+.mexp-item-thumb img {
 	width: 95%;
 }
 
@@ -198,7 +198,7 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
  * One column layout
  * */
 @media (max-width: 699px) {
-	.emm-content-youtube .attachment {
+	.mexp-content-youtube .attachment {
 		width: 100%;
 	}
 }
@@ -207,7 +207,7 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
  * Two column layout
  * */
 @media (min-width: 700px) and (max-width: 1199px) {
-	.emm-content-youtube .attachment {
+	.mexp-content-youtube .attachment {
 		width: 45%;
 	}
 }
@@ -216,7 +216,7 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
  * Three column layout
  * */
 @media (min-width: 1200px) and (max-width: 1499px) {
-	.emm-content-youtube .attachment {
+	.mexp-content-youtube .attachment {
 		width: 31%;
 	}
 }
@@ -225,7 +225,7 @@ html.ie8 .media-frame .emm-content-twitter .emm-item.selected {
  * Four column layout
  * */
 @media (min-width: 1500px) {
-	.emm-content-youtube .attachment {
+	.mexp-content-youtube .attachment {
 		width: 23%;
 	}
 }

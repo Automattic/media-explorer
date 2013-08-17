@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 defined( 'ABSPATH' ) or die();
 
-class ME_Twitter_Service extends ME_Service {
+class MEXP_Twitter_Service extends MEXP_Service {
 
 	public $credentials = null;
 	public $response_meta = array();
@@ -24,13 +24,13 @@ class ME_Twitter_Service extends ME_Service {
 		require_once dirname( __FILE__ ) . '/template.php';
 
 		# Go!
-		$this->set_template( new ME_Twitter_Template );
+		$this->set_template( new MEXP_Twitter_Template );
 
 	}
 
 	public function load() {
 
-		$emm = Media_Explorer::init();
+		$mexp = Media_Explorer::init();
 
 		wp_enqueue_script(
 			'google-jsapi',
@@ -39,10 +39,10 @@ class ME_Twitter_Service extends ME_Service {
 			false
 		);
 		wp_enqueue_script(
-			'emm-service-twitter',
-			$emm->plugin_url( 'services/twitter/js.js' ),
-			array( 'jquery', 'emm' ),
-			$emm->plugin_ver( 'services/twitter/js.js' )
+			'mexp-service-twitter',
+			$mexp->plugin_url( 'services/twitter/js.js' ),
+			array( 'jquery', 'mexp' ),
+			$mexp->plugin_ver( 'services/twitter/js.js' )
 		);
 
 	}
@@ -106,8 +106,8 @@ class ME_Twitter_Service extends ME_Service {
 		} else {
 
 			return new WP_Error(
-				'emm_twitter_failed_request',
-				sprintf( __( 'Could not connect to Twitter (error %s).', 'emm' ),
+				'mexp_twitter_failed_request',
+				sprintf( __( 'Could not connect to Twitter (error %s).', 'mexp' ),
 					esc_html( $connection->http_code )
 				)
 			);
@@ -127,8 +127,8 @@ class ME_Twitter_Service extends ME_Service {
 			return $result;
 
 		$error = new WP_Error(
-			'emm_twitter_failed_location',
-			__( 'Could not find your requested location.', 'emm' )
+			'mexp_twitter_failed_location',
+			__( 'Could not find your requested location.', 'mexp' )
 		);
 
 		if ( 200 != wp_remote_retrieve_response_code( $result ) )
@@ -187,7 +187,7 @@ class ME_Twitter_Service extends ME_Service {
 		if ( !isset( $r->statuses ) or empty( $r->statuses ) )
 			return false;
 
-		$response = new ME_Response;
+		$response = new MEXP_Response;
 
 		if ( isset( $r->search_metadata->next_results ) )
 			$response->add_meta( 'max_id', self::get_max_id( $r->search_metadata->next_results ) );
@@ -197,7 +197,7 @@ class ME_Twitter_Service extends ME_Service {
 
 		foreach ( $r->statuses as $status ) {
 
-			$item = new ME_Response_Item;
+			$item = new MEXP_Response_Item;
 
 			$item->set_id( $status->id_str );
 			$item->set_url( self::status_url( $status ) );
@@ -222,23 +222,23 @@ class ME_Twitter_Service extends ME_Service {
 	public function tabs() {
 		return array(
 			'all' => array(
-				'text'       => _x( 'All', 'Tab title', 'emm'),
+				'text'       => _x( 'All', 'Tab title', 'mexp'),
 				'defaultTab' => true
 			),
 			'hashtag' => array(
-				'text' => _x( 'With Hashtag', 'Tab title', 'emm'),
+				'text' => _x( 'With Hashtag', 'Tab title', 'mexp'),
 			),
 			#'images' => array(
-			#	'text' => _x( 'With Images', 'Tab title', 'emm'),
+			#	'text' => _x( 'With Images', 'Tab title', 'mexp'),
 			#),
 			'by_user' => array(
-				'text' => _x( 'By User', 'Tab title', 'emm'),
+				'text' => _x( 'By User', 'Tab title', 'mexp'),
 			),
 			'to_user' => array(
-				'text' => _x( 'To User', 'Tab title', 'emm'),
+				'text' => _x( 'To User', 'Tab title', 'mexp'),
 			),
 			'location' => array(
-				'text' => _x( 'By Location', 'Tab title', 'emm'),
+				'text' => _x( 'By Location', 'Tab title', 'mexp'),
 			),
 		);
 	}
@@ -251,10 +251,10 @@ class ME_Twitter_Service extends ME_Service {
 
 	public function labels() {
 		return array(
-			'title'     => __( 'Insert Tweet', 'emm' ),
+			'title'     => __( 'Insert Tweet', 'mexp' ),
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
-			'insert'    => __( 'Insert Tweet', 'emm' ),
-			'noresults' => __( 'No tweets matched your search query', 'emm' ),
+			'insert'    => __( 'Insert Tweet', 'mexp' ),
+			'noresults' => __( 'No tweets matched your search query', 'mexp' ),
 			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' )
 		);
 	}
@@ -280,8 +280,8 @@ class ME_Twitter_Service extends ME_Service {
 		foreach ( array( 'consumer_key', 'consumer_secret', 'oauth_token', 'oauth_token_secret' ) as $field ) {
 			if ( !isset( $credentials[$field] ) or empty( $credentials[$field] ) ) {
 				return new WP_Error(
-					'emm_twitter_no_connection',
-					__( 'oAuth connection to Twitter not found.', 'emm' )
+					'mexp_twitter_no_connection',
+					__( 'oAuth connection to Twitter not found.', 'mexp' )
 				);
 			}
 		}
@@ -305,7 +305,7 @@ class ME_Twitter_Service extends ME_Service {
 	private function get_credentials() {
 
 		if ( is_null( $this->credentials ) )
-			$this->credentials = (array) apply_filters( 'emm_twitter_credentials', array() );
+			$this->credentials = (array) apply_filters( 'mexp_twitter_credentials', array() );
 
 		return $this->credentials;
 
@@ -313,9 +313,9 @@ class ME_Twitter_Service extends ME_Service {
 
 }
 
-add_filter( 'emm_services', 'emm_service_twitter' );
+add_filter( 'mexp_services', 'mexp_service_twitter' );
 
-function emm_service_twitter( array $services ) {
-	$services['twitter'] = new ME_Twitter_Service;
+function mexp_service_twitter( array $services ) {
+	$services['twitter'] = new MEXP_Twitter_Service;
 	return $services;
 }
