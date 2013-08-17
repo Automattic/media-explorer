@@ -30,6 +30,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 		# (none)
 
 		# Actions:
+		add_action( 'plugins_loaded',        array( $this, 'action_plugins_loaded' ) );
 		add_action( 'init',                  array( $this, 'action_init' ) );
 		add_action( 'wp_enqueue_media',      array( $this, 'action_enqueue_media' ) );
 		add_action( 'print_media_templates', array( $this, 'action_print_media_templates' ) );
@@ -39,23 +40,6 @@ class Extended_Media_Manager extends EMM_Plugin {
 
 		# Parent setup:
 		parent::__construct( $file );
-
-		# Go!
-		$this->load_services();
-
-	}
-
-	/**
-	 * Populate the array of Service objects.
-	 *
-	 * @return null
-	 */
-	protected function load_services() {
-
-		foreach ( apply_filters( 'emm_services', array() ) as $service_id => $service ) {
-			if ( is_a( $service, 'EMM_Service' ) )
-				$this->services[$service_id] = $service;
-		}
 
 	}
 
@@ -252,7 +236,18 @@ class Extended_Media_Manager extends EMM_Plugin {
 	}
 
 	/**
+	 * Fire the `emm_init` action for plugins to hook into.
+	 *
+	 * @action plugins_loaded
+	 * @return null
+	 */
+	public function action_plugins_loaded() {
+		do_action( 'emm_init' );
+	}
+
+	/**
 	 * Load text domain and localisation files.
+	 * Populate the array of Service objects.
 	 *
 	 * @action init
 	 * @return null
@@ -260,6 +255,11 @@ class Extended_Media_Manager extends EMM_Plugin {
 	public function action_init() {
 
 		load_plugin_textdomain( 'emm', false, dirname( $this->plugin_base() ) . '/languages/' );
+
+		foreach ( apply_filters( 'emm_services', array() ) as $service_id => $service ) {
+			if ( is_a( $service, 'EMM_Service' ) )
+				$this->services[$service_id] = $service;
+		}
 
 	}
 
