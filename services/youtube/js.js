@@ -4,7 +4,8 @@
  * */
 
 var emmContentView = wp.media.view.EMM
-	flagAjaxExecutions = '';
+	flagAjaxExecutions = '',
+	isInfiniteScroll = false;
 
 wp.media.view.EMM = emmContentView.extend({
 
@@ -19,13 +20,19 @@ wp.media.view.EMM = emmContentView.extend({
 		if ( this.collection && this.collection.models.length ) {
 			var container = document.createDocumentFragment();
 
-			this.collection.each( function( model, index ) {
-				// This makes the collection to render only the las 18 items of
-				// it, instead of all. Tweak for the infinite scroll to work ok
-				if ( index >= this.collection.length - 18 ) {
+			if ( isInfiniteScroll ) {
+				this.collection.each( function( model, index ) {
+					// This makes the collection to render only the last 18 items of
+					// it, instead of all. Tweak for the infinite scroll to work ok
+					if ( index >= this.collection.length - 18 && isInfiniteScroll )
+						container.appendChild( this.renderItem( model ) );
+				}, this );
+			} else {
+				this.collection.each( function( model, index ) {
 					container.appendChild( this.renderItem( model ) );
-				}
-			}, this );
+				}, this );
+			}
+
 
 			this.$el.find( '.emm-items' ).append( container );
 
@@ -55,22 +62,31 @@ wp.media.view.EMM = emmContentView.extend({
 
 	fetchItems: function( pageToken ) {
 
-		// This if-else block handles the concurrency for not calling to the
-		// same set of videos several times.
-		if ( "youtube" === this.service.id && pageToken && pageToken === flagAjaxExecutions ) {
-			return;
-		} else {
-			flagAjaxExecutions = pageToken;
-		}
-
 		if ( this.service.id !== 'youtube' ) {
 			emmContentView.prototype.fetchItems.apply( this, arguments );
 			return;
 		}
 
+		// This if-else block handles the concurrency for not calling to the
+		// same set of videos several times.
+		if ( "youtube" === this.service.id && pageToken && pageToken === flagAjaxExecutions )
+			return;
+		else
+			flagAjaxExecutions = pageToken;
+
 		this.trigger( 'loading' );
 
 		var params = this.model.get( 'params' );
+
+		if ( undefined === pageToken ) {
+			isInfiniteScroll = false;
+			jQuery( '.tab-all #page_token' ).val( '' );
+			params.page_token = '';
+		} else {
+			isInfiniteScroll = true;
+		}
+
+		console.log(params);
 
 		params.startIndex = jQuery( '.emm-item' ).length;
 
@@ -125,11 +141,15 @@ wp.media.view.EMM = emmContentView.extend({
 			this.model.set( 'items',  response.items );
 
 			// Append the last elements to the collection.
-			_.each( response.items, function( item ) {
-				_this.collection.add( item );
-			} );
+			if ( isInfiniteScroll ) {
+				_.each( response.items, function( item ) {
+					_this.collection.add( item );
+				} );
+				this.collection.reset( this.collection.models );
+			} else {
+				this.collection.reset( response.items );
+			}
 
-			this.collection.reset( this.collection.models );
 
 		} else {
 
@@ -166,10 +186,6 @@ wp.media.view.EMM = emmContentView.extend({
 			this.$el.find( '.emm-items' ).append( container );
 
 		}
-
-		this.$el.find( '.emm-pagination' ).show();
-
-		this.model.set( 'max_id', response.meta.max_id );
 
 		this.trigger( 'loaded loaded:success', response );
 
