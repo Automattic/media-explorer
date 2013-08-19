@@ -160,6 +160,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 
 				break;
 
+			case 'images':
 			case 'all':
 			default:
 

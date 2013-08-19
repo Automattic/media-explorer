@@ -16,7 +16,7 @@ class MEXP_YouTube_Service extends MEXP_Service {
 		$mexp = Media_Explorer::init();
 
 		wp_enqueue_script(
-			'mexp-service-youtube-infinitescroll',
+			'mexp-service-youtube',
 			$mexp->plugin_url( 'services/youtube/js.js' ),
 			array( 'jquery', 'mexp' ),
 			$mexp->plugin_ver( 'services/youtube/js.js' ),
@@ -26,7 +26,8 @@ class MEXP_YouTube_Service extends MEXP_Service {
 	}
 
 	public function request( array $request ) {
-		$youtube = $this->get_connection();
+		if ( is_wp_error( $youtube = $this->get_connection() ) )
+			return $youtube;
 		$params = $request['params'];
 
 		switch ( $params['tab'] ) 
@@ -111,6 +112,13 @@ class MEXP_YouTube_Service extends MEXP_Service {
 		require_once plugin_dir_path( __FILE__) . '/class.wp-youtube-client.php';
 
 		$developer_key = (string) apply_filters( 'mexp_youtube_developer_key', '' ) ;
+
+		if ( empty( $developer_key ) ) {
+			return new WP_Error(
+				'mexp_youtube_no_connection',
+				__( 'API connection to YouTube not found.', 'mexp' )
+			);
+		}
 
 		return new MEXP_YouTube_Client( $developer_key );
 	}

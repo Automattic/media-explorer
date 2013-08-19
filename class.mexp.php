@@ -169,6 +169,7 @@ class Media_Explorer extends MEXP_Plugin {
 
 		$request = wp_parse_args( stripslashes_deep( $_POST ), array(
 			'params'  => array(),
+			'tab'     => null,
 			'min_id'  => null,
 			'max_id'  => null,
 			'page'    => 1,
@@ -176,6 +177,7 @@ class Media_Explorer extends MEXP_Plugin {
 
 		$response = $service->request( array(
 			'params'  => $request['params'],
+			'tab'     => $request['tab'],
 			'min_id'  => $request['min_id'],
 			'max_id'  => $request['max_id'],
 			'page'    => absint( $request['page'] ),

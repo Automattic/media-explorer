@@ -89,7 +89,7 @@ function mexp_twitter_location_fetch( callback ) {
 
 function mexp_twitter_location_load( position ) {
 
-	var lat, lng, loc, radius;
+	var lat, lng;
 	$ = jQuery;
 
 	window.clearTimeout( mexp_twitter_location_timeout );
@@ -97,7 +97,9 @@ function mexp_twitter_location_load( position ) {
 	// Enable the visual refresh
 	google.maps.visualRefresh = true;
 
-	if ( loc = $('#mexp-twitter-search-location-coords').val() ) {
+	var loc = $('#mexp-twitter-search-location-coords').val();
+
+	if ( loc ) {
 		ll = loc.split( ',' );
 		lat = ll[0];
 		lng = ll[1];

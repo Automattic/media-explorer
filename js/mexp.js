@@ -272,6 +272,7 @@ media.view.ME = media.View.extend({
 		var data = {
 			_nonce  : mexp._nonce,
 			service : this.service.id,
+			tab     : this.tab,
 			params  : this.model.get( 'params' ),
 			page    : this.model.get( 'page' ),
 			max_id  : this.model.get( 'max_id' )
@@ -424,7 +425,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 				priority: 100 // places it above Insert From URL
 			};
 
-			for ( tab in service.tabs ) {
+			for ( var tab in service.tabs ) {
 
 				// Content
 				this.on( 'content:render:' + id + '-content-' + tab, _.bind( this.mexpContentRender, this, service, tab ) );
@@ -456,7 +457,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 		var id   = 'mexp-service-' + service.id;
 		var tabs = {};
 
-		for ( tab in service.tabs ) {
+		for ( var tab in service.tabs ) {
 			tab_id = id + '-content-' + tab;
 			tabs[tab_id] = {
 				text : service.tabs[tab].text
@@ -510,7 +511,7 @@ media.controller.ME = media.controller.State.extend({
 
 		this.props = new Backbone.Collection();
 
-		for ( tab in options.tabs ) {
+		for ( var tab in options.tabs ) {
 
 			this.props.add( new Backbone.Model({
 				id     : tab,

@@ -80,6 +80,9 @@ class MEXP_Twitter_Service extends MEXP_Service {
 		if ( isset( $params['to_user'] ) )
 			$q[] = sprintf( '@%s', ltrim( $params['to_user'], '@' ) );
 
+		if ( 'images' == $request['tab'] )
+			$q[] = 'filter:images';
+
 		$args = array(
 			'q'           => implode( ' ', $q ),
 			'result_type' => 'recent',
@@ -245,7 +248,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 	public function requires() {
 		return array(
-			'oauth' => '\OAuthConsumer'
+			'oauth' => 'OAuthConsumer'
 		);
 	}
 
