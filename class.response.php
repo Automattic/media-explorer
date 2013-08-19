@@ -16,7 +16,7 @@ GNU General Public License for more details.
  * Response class. A service's request() method should return a Response object. This
  * is used to populate the AJAX request's JSON response.
  */
-final class EMM_Response {
+final class MEXP_Response {
 
 	public $items = array();
 	public $meta  = array(
@@ -53,7 +53,7 @@ final class EMM_Response {
 	 * @param Response_Item A response item.
 	 * @return null
 	 */
-	public function add_item( EMM_Response_Item $item ) {
+	public function add_item( MEXP_Response_Item $item ) {
 		$this->items[] = $item;
 	}
 
@@ -89,7 +89,7 @@ final class EMM_Response {
 /**
  * Response Item class. Used within the Response class to populate the items in a response.
  */
-final class EMM_Response_Item {
+final class MEXP_Response_Item {
 
 	public $id          = null;
 	public $url         = null;

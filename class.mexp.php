@@ -12,7 +12,7 @@ GNU General Public License for more details.
 
 */
 
-class Extended_Media_Manager extends EMM_Plugin {
+class Media_Explorer extends MEXP_Plugin {
 
 	/**
 	 * Array of Service objects.
@@ -35,7 +35,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 		add_action( 'print_media_templates', array( $this, 'action_print_media_templates' ) );
 
 		# AJAX actions:
-		add_action( 'wp_ajax_emm_request',   array( $this, 'ajax_request' ) );
+		add_action( 'wp_ajax_mexp_request',   array( $this, 'ajax_request' ) );
 
 		# Parent setup:
 		parent::__construct( $file );
@@ -52,8 +52,8 @@ class Extended_Media_Manager extends EMM_Plugin {
 	 */
 	protected function load_services() {
 
-		foreach ( apply_filters( 'emm_services', array() ) as $service_id => $service ) {
-			if ( is_a( $service, 'EMM_Service' ) )
+		foreach ( apply_filters( 'mexp_services', array() ) as $service_id => $service ) {
+			if ( is_a( $service, 'MEXP_Service' ) )
 				$this->services[$service_id] = $service;
 		}
 
@@ -72,7 +72,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 
 		return new WP_Error(
 			'invalid_service',
-			sprintf( __( 'Media service "%s" was not found', 'emm' ), esc_html( $service_id ) )
+			sprintf( __( 'Media service "%s" was not found', 'mexp' ), esc_html( $service_id ) )
 		);
 
 	}
@@ -104,7 +104,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 
 				foreach ( $service->get_tabs() as $tab_id => $tab ) {
 
-					$id = sprintf( 'emm-%s-%s-%s',
+					$id = sprintf( 'mexp-%s-%s-%s',
 						esc_attr( $service_id ),
 						esc_attr( $t ),
 						esc_attr( $tab_id )
@@ -120,7 +120,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 
 			foreach ( array( 'thumbnail' ) as $t ) {
 
-				$id = sprintf( 'emm-%s-%s',
+				$id = sprintf( 'mexp-%s-%s',
 					esc_attr( $service_id ),
 					esc_attr( $t )
 				);
@@ -138,12 +138,12 @@ class Extended_Media_Manager extends EMM_Plugin {
 	/**
 	 * Process an AJAX request and output the resulting JSON.
 	 *
-	 * @action wp_ajax_emm_request
+	 * @action wp_ajax_mexp_request
 	 * @return null
 	 */
 	public function ajax_request() {
 
-		if ( !isset( $_POST['_nonce'] ) or !wp_verify_nonce( $_POST['_nonce'], 'emm_request' ) )
+		if ( !isset( $_POST['_nonce'] ) or !wp_verify_nonce( $_POST['_nonce'], 'mexp_request' ) )
 			die( '-1' );
 
 		$service = $this->get_service( stripslashes( $_POST['service'] ) );
@@ -191,7 +191,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 				'error_message' => $response->get_error_message()
 			) );
 
-		} else if ( is_a( $response, 'EMM_Response' ) ) {
+		} else if ( is_a( $response, 'MEXP_Response' ) ) {
 
 			wp_send_json_success( $response->output() );
 
@@ -211,10 +211,10 @@ class Extended_Media_Manager extends EMM_Plugin {
 	 */
 	public function action_enqueue_media() {
 
-		$emm = array(
-			'_nonce'    => wp_create_nonce( 'emm_request' ),
+		$mexp = array(
+			'_nonce'    => wp_create_nonce( 'mexp_request' ),
 			'labels'    => array(
-				'insert' => __( 'Insert', 'emm' )
+				'insert' => __( 'Insert', 'mexp' )
 			),
 			'base_url'  => untrailingslashit( $this->plugin_url() ),
 			'admin_url' => untrailingslashit( admin_url() ),
@@ -222,7 +222,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 
 		foreach ( $this->get_services() as $service_id => $service ) {
 			$service->load();
-			$emm['services'][$service_id] = array(
+			$mexp['services'][$service_id] = array(
 				'id'     => $service_id,
 				'labels' => $service->get_labels(),
 				'tabs'   => $service->get_tabs(),
@@ -230,23 +230,23 @@ class Extended_Media_Manager extends EMM_Plugin {
 		}
 
 		wp_enqueue_script(
-			'emm',
-			$this->plugin_url( 'js/emm.js' ),
+			'mexp',
+			$this->plugin_url( 'js/mexp.js' ),
 			array( 'jquery', 'media-views' ),
-			$this->plugin_ver( 'js/emm.js' )
+			$this->plugin_ver( 'js/mexp.js' )
 		);
 
 		wp_localize_script(
-			'emm',
-			'emm',
-			$emm
+			'mexp',
+			'mexp',
+			$mexp
 		);
 
 		wp_enqueue_style(
-			'emm',
-			$this->plugin_url( 'css/emm.css' ),
+			'mexp',
+			$this->plugin_url( 'css/mexp.css' ),
 			array( /*'wp-admin'*/ ),
-			$this->plugin_ver( 'css/emm.css' )
+			$this->plugin_ver( 'css/mexp.css' )
 		);
 
 	}
@@ -259,7 +259,7 @@ class Extended_Media_Manager extends EMM_Plugin {
 	 */
 	public function action_init() {
 
-		load_plugin_textdomain( 'emm', false, dirname( $this->plugin_base() ) . '/languages/' );
+		load_plugin_textdomain( 'mexp', false, dirname( $this->plugin_base() ) . '/languages/' );
 
 	}
 
@@ -267,14 +267,14 @@ class Extended_Media_Manager extends EMM_Plugin {
 	 * Singleton instantiator.
 	 *
 	 * @param string $file The plugin file (usually __FILE__) (optional)
-	 * @return Extended_Media_Manager
+	 * @return Media_Explorer
 	 */
 	public static function init( $file = null ) {
 
 		static $instance = null;
 
 		if ( !$instance )
-			$instance = new Extended_Media_Manager( $file );
+			$instance = new Media_Explorer( $file );
 
 		return $instance;
 

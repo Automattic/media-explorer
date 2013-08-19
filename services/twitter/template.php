@@ -12,30 +12,30 @@ GNU General Public License for more details.
 
 */
 
-class EMM_Twitter_Template extends EMM_Template {
+class MEXP_Twitter_Template extends MEXP_Template {
 
 	public function item( $id, $tab ) {
 		?>
-		<div id="emm-item-twitter-<?php echo esc_attr( $tab ); ?>-{{ data.id }}" class="emm-item-area" data-id="{{ data.id }}">
-			<div class="emm-item-container clearfix">
-				<div class="emm-item-thumb">
+		<div id="mexp-item-twitter-<?php echo esc_attr( $tab ); ?>-{{ data.id }}" class="mexp-item-area" data-id="{{ data.id }}">
+			<div class="mexp-item-container clearfix">
+				<div class="mexp-item-thumb">
 					<img src="{{ data.thumbnail }}">
 				</div>
-				<div class="emm-item-main">
-					<div class="emm-item-author">
-						<span class="emm-item-author-name">{{ data.meta.user.name }}</span>
-						<span class="emm-item-author-screen-name"><span class="emm-item-author-at">@</span>{{ data.meta.user.screen_name }}</span>
+				<div class="mexp-item-main">
+					<div class="mexp-item-author">
+						<span class="mexp-item-author-name">{{ data.meta.user.name }}</span>
+						<span class="mexp-item-author-screen-name"><span class="mexp-item-author-at">@</span>{{ data.meta.user.screen_name }}</span>
 					</div>
-					<div class="emm-item-content">
+					<div class="mexp-item-content">
 						{{{ data.content }}}
 					</div>
-					<div class="emm-item-date">
+					<div class="mexp-item-date">
 						{{ data.date }}
 					</div>
 				</div>
 			</div>
 		</div>
-		<a href="#" id="emm-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'emm' ); ?>">
+		<a href="#" id="mexp-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'mexp' ); ?>">
 			<div class="media-modal-icon"></div>
 		</a>
 		<?php
@@ -53,16 +53,16 @@ class EMM_Twitter_Template extends EMM_Template {
 			case 'hashtag':
 
 				?>
-				<form action="#" class="emm-toolbar-container clearfix">
+				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
 						type="text"
 						name="hashtag"
 						value="{{ data.params.hashtag }}"
-						class="emm-input-text emm-input-search"
+						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'mexp' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -72,16 +72,16 @@ class EMM_Twitter_Template extends EMM_Template {
 			case 'by_user':
 
 				?>
-				<form action="#" class="emm-toolbar-container clearfix">
+				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
 						type="text"
 						name="by_user"
 						value="{{ data.params.by_user }}"
-						class="emm-input-text emm-input-search"
+						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'mexp' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -91,16 +91,16 @@ class EMM_Twitter_Template extends EMM_Template {
 			case 'to_user':
 
 				?>
-				<form action="#" class="emm-toolbar-container clearfix">
+				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
 						type="text"
 						name="to_user"
 						value="{{ data.params.to_user }}"
-						class="emm-input-text emm-input-search"
+						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'mexp' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -110,8 +110,8 @@ class EMM_Twitter_Template extends EMM_Template {
 			case 'location':
 
 				?>
-				<div id="emm_twitter_map_canvas"></div>
-				<form action="#" class="emm-toolbar-container clearfix">
+				<div id="mexp_twitter_map_canvas"></div>
+				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
 						id="<?php echo esc_attr( $id ); ?>-coords"
 						type="hidden"
@@ -122,37 +122,37 @@ class EMM_Twitter_Template extends EMM_Template {
 						type="text"
 						name="q"
 						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
+						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search Twitter', 'mexp' ); ?>"
 					>
 					<label for="<?php echo esc_attr( $id ); ?>-name">
-						<?php esc_attr_e( 'Location:', 'emm' ); ?>
+						<?php esc_attr_e( 'Location:', 'mexp' ); ?>
 					</label>
 					<input
 						type="text"
 						id="<?php echo esc_attr( $id ); ?>-name"
 						name="location"
 						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
+						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter location', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter location', 'mexp' ); ?>"
 					>
 					<select
 						id="<?php echo esc_attr( $id ); ?>-radius"
 						type="text"
 						name="radius"
-						class="emm-input-text emm-input-select"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
+						class="mexp-input-text mexp-input-select"
+						placeholder="<?php esc_attr_e( 'Search Twitter', 'mexp' ); ?>"
 					>
 						<?php foreach ( array( 1, 5, 10, 20, 50, 100, 200 ) as $km ) { ?>
-							<option value="<?php echo absint( $km ); ?>"><?php printf( esc_html__( 'Within %skm', 'emm' ), $km ); ?></option>
+							<option value="<?php echo absint( $km ); ?>"><?php printf( esc_html__( 'Within %skm', 'mexp' ), $km ); ?></option>
 						<?php } ?>
 					</select>
 					<input
 						type="submit"
 						class="button button-large"
-						value="<?php esc_attr_e( 'Search', 'emm' ); ?>"
+						value="<?php esc_attr_e( 'Search', 'mexp' ); ?>"
 					>
 					<div class="spinner"></div>
 				</form>
@@ -165,16 +165,16 @@ class EMM_Twitter_Template extends EMM_Template {
 			default:
 
 				?>
-				<form action="#" class="emm-toolbar-container clearfix">
+				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
 						type="text"
 						name="q"
 						value="{{ data.params.q }}"
-						class="emm-input-text emm-input-search"
+						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'emm' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search Twitter', 'mexp' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'emm') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
