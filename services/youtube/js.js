@@ -1,16 +1,16 @@
 /**
  * This js is going to handle the infinite scroll for the YouTube service in the
- * EMM plugin
+ * ME plugin
  * */
 
-var emmContentView = wp.media.view.EMM
+var mexpContentView = wp.media.view.ME,
 	flagAjaxExecutions = '',
 	isInfiniteScroll = false;
 
-wp.media.view.EMM = emmContentView.extend({
+wp.media.view.ME = mexpContentView.extend({
 
 	initialize: function() {
-		emmContentView.prototype.initialize.apply( this, arguments );
+		mexpContentView.prototype.initialize.apply( this, arguments );
 	},
 
 	render: function() {
@@ -33,21 +33,20 @@ wp.media.view.EMM = emmContentView.extend({
 				}, this );
 			}
 
-
-			this.$el.find( '.emm-items' ).append( container );
+			this.$el.find( '.mexp-items' ).append( container );
 
 		}
 
 		selection.each( function( model ) {
-			var id = '#emm-item-' + this.service.id + '-' + this.tab + '-' + model.get( 'id' );
-			this.$el.find( id ).closest( '.emm-item' ).addClass( 'selected details' );
+			var id = '#mexp-item-' + this.service.id + '-' + this.tab + '-' + model.get( 'id' );
+			this.$el.find( id ).closest( '.mexp-item' ).addClass( 'selected details' );
 		}, this );
 
-		jQuery( '#emm-button' ).prop( 'disabled', !selection.length );
+		jQuery( '#mexp-button' ).prop( 'disabled', !selection.length );
 
 		// Infinite scrolling for youtube results
-		jQuery( '.emm-content-youtube ul.emm-items' ).scroll( function() {
-			var $container = jQuery( 'ul.emm-items' ),
+		jQuery( '.mexp-content-youtube ul.mexp-items' ).scroll( function() {
+			var $container = jQuery( 'ul.mexp-items' ),
 				totalHeight = $container.get( 0 ).scrollHeight,
 				position = $container.height() + $container.scrollTop(),
 				offset = ( totalHeight / 100 ) * 30;
@@ -63,7 +62,7 @@ wp.media.view.EMM = emmContentView.extend({
 	fetchItems: function( pageToken ) {
 
 		if ( this.service.id !== 'youtube' ) {
-			emmContentView.prototype.fetchItems.apply( this, arguments );
+			mexpContentView.prototype.fetchItems.apply( this, arguments );
 			return;
 		}
 
@@ -86,19 +85,17 @@ wp.media.view.EMM = emmContentView.extend({
 			isInfiniteScroll = true;
 		}
 
-		console.log(params);
-
-		params.startIndex = jQuery( '.emm-item' ).length;
+		params.startIndex = jQuery( '.mexp-item' ).length;
 
 		var data = {
-			_nonce  : emm._nonce,
+			_nonce  : mexp._nonce,
 			service : this.service.id,
 			params  : params,
 			page    : this.model.get( 'page' ),
 			max_id  : this.model.get( 'max_id' )
 		};
 
-		media.ajax( 'emm_request', {
+		media.ajax( 'mexp_request', {
 			context : this,
 			success : this.fetchedSuccess,
 			error   : this.fetchedError,
@@ -112,7 +109,7 @@ wp.media.view.EMM = emmContentView.extend({
 		var _this = this;
 
 		if ( this.service.id !== 'youtube' ) {
-			emmContentView.prototype.fetchedSuccess.apply( this, arguments );
+			mexpContentView.prototype.fetchedSuccess.apply( this, arguments );
 			return;
 		}
 
@@ -183,7 +180,7 @@ wp.media.view.EMM = emmContentView.extend({
 				container.appendChild( this.renderItem( model ) );
 			}, this );
 
-			this.$el.find( '.emm-items' ).append( container );
+			this.$el.find( '.mexp-items' ).append( container );
 
 		}
 
@@ -192,10 +189,10 @@ wp.media.view.EMM = emmContentView.extend({
 	},
 
 	fetchedError: function(response) {
-		emmContentView.prototype.fetchedError.apply( this, arguments );
+		mexpContentView.prototype.fetchedError.apply( this, arguments );
 	},
 
 	fetchedEmpty: function() {
-		emmContentView.prototype.fetchedEmpty.apply( this, arguments );
+		mexpContentView.prototype.fetchedEmpty.apply( this, arguments );
 	},
 });

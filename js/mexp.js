@@ -15,14 +15,14 @@ var media = wp.media;
 
 // VIEW: MEDIA ITEM:
 
-media.view.EMMItem = Backbone.View.extend({
+media.view.MEItem = Backbone.View.extend({
 
     tagName   : 'li',
-    className : 'emm-item attachment',
+    className : 'mexp-item attachment',
 
     render: function() {
 
-    	this.template = media.template( 'emm-' + this.options.service.id + '-item-' + this.options.tab );
+    	this.template = media.template( 'mexp-' + this.options.service.id + '-item-' + this.options.tab );
        	this.$el.html( this.template( this.model.toJSON() ) );
 
         return this;
@@ -33,7 +33,7 @@ media.view.EMMItem = Backbone.View.extend({
 
 // VIEW - BOTTOM TOOLBAR
 
-media.view.Toolbar.EMM = media.view.Toolbar.extend({
+media.view.Toolbar.ME = media.view.Toolbar.extend({
 
 	initialize: function() {
 
@@ -43,12 +43,12 @@ media.view.Toolbar.EMM = media.view.Toolbar.extend({
 			items : {
 			    // See wp.media.view.Button
 			    inserter     : {
-			        id       : 'emm-button',
+			        id       : 'mexp-button',
 			        style    : 'primary',
-			        text     : emm.labels.insert,
+			        text     : mexp.labels.insert,
 			        priority : 80,
 			        click    : function() {
-					    this.controller.state().emmInsert();
+					    this.controller.state().mexpInsert();
 					}
 			    }
 			}
@@ -73,13 +73,13 @@ media.view.Toolbar.EMM = media.view.Toolbar.extend({
 
 // VIEW - MEDIA CONTENT AREA
 
-media.view.EMM = media.View.extend({
+media.view.ME = media.View.extend({
 
 	events: {
-		'click .emm-item-area'     : 'toggleSelectionHandler',
-		'click .emm-item .check'   : 'removeSelectionHandler',
-		'click .emm-pagination a'  : 'paginate',
-		'submit .emm-toolbar form' : 'updateInput'
+		'click .mexp-item-area'     : 'toggleSelectionHandler',
+		'click .mexp-item .check'   : 'removeSelectionHandler',
+		'click .mexp-pagination a'  : 'paginate',
+		'submit .mexp-toolbar form' : 'updateInput'
 	},
 
 	initialize: function() {
@@ -102,7 +102,7 @@ media.view.EMM = media.View.extend({
 
 		// @TODO do this somewhere else:
 		// @TODO this gets reverted anyway when the button model's disabled state changes. look into it.
-		//jQuery( '#emm-button' ).text( this.service.labels.insert );
+		//jQuery( '#mexp-button' ).text( this.service.labels.insert );
 
 		this.collection.on( 'reset', this.render, this );
 
@@ -131,16 +131,16 @@ media.view.EMM = media.View.extend({
 				container.appendChild( this.renderItem( model ) );
 			}, this );
 
-			this.$el.find( '.emm-items' ).append( container );
+			this.$el.find( '.mexp-items' ).append( container );
 
 		}
 
 		selection.each( function( model ) {
-			var id = '#emm-item-' + this.service.id + '-' + this.tab + '-' + model.get( 'id' );
-			this.$el.find( id ).closest( '.emm-item' ).addClass( 'selected details' );
+			var id = '#mexp-item-' + this.service.id + '-' + this.tab + '-' + model.get( 'id' );
+			this.$el.find( id ).closest( '.mexp-item' ).addClass( 'selected details' );
 		}, this );
 
-		jQuery( '#emm-button' ).prop( 'disabled', !selection.length );
+		jQuery( '#mexp-button' ).prop( 'disabled', !selection.length );
 
 		return this;
 
@@ -148,7 +148,7 @@ media.view.EMM = media.View.extend({
 
 	renderItem : function( model ) {
 
-		var view = new media.view.EMMItem({
+		var view = new media.view.MEItem({
 			model   : model,
 			service : this.service,
 			tab     : this.tab
@@ -161,24 +161,24 @@ media.view.EMM = media.View.extend({
 	createToolbar: function() {
 
 		// @TODO this could be a separate view:
-		html = '<div class="emm-error attachments"></div>';
+		html = '<div class="mexp-error attachments"></div>';
 		this.$el.prepend( html );
 
 		// @TODO this could be a separate view:
-		html = '<div class="emm-empty attachments"></div>';
+		html = '<div class="mexp-empty attachments"></div>';
 		this.$el.prepend( html );
 
 		// @TODO this could be a separate view:
-		html = '<ul class="emm-items attachments clearfix"></ul>';
+		html = '<ul class="mexp-items attachments clearfix"></ul>';
 		this.$el.append( html );
 
 		// @TODO this could be a separate view:
-		var toolbar_template = media.template( 'emm-' + this.service.id + '-search-' + this.tab );
-		html = '<div class="emm-toolbar media-toolbar clearfix">' + toolbar_template( this.model.toJSON() ) + '</div>';
+		var toolbar_template = media.template( 'mexp-' + this.service.id + '-search-' + this.tab );
+		html = '<div class="mexp-toolbar media-toolbar clearfix">' + toolbar_template( this.model.toJSON() ) + '</div>';
 		this.$el.prepend( html );
 
 		// @TODO this could be a separate view:
-		html = '<div class="emm-pagination clearfix"><a href="#" class="button button-secondary button-large">' + this.service.labels.loadmore + '</a><div class="spinner"></div></div>';
+		html = '<div class="mexp-pagination clearfix"><a href="#" class="button button-secondary button-large">' + this.service.labels.loadmore + '</a><div class="spinner"></div></div>';
 		this.$el.append( html );
 
 	},
@@ -211,7 +211,7 @@ media.view.EMM = media.View.extend({
 
 	addToSelection: function( target, id ) {
 
-		target.closest( '.emm-item' ).addClass( 'selected details' );
+		target.closest( '.mexp-item' ).addClass( 'selected details' );
 
 		this.getSelection().add( this.collection._byId[id] );
 
@@ -222,7 +222,7 @@ media.view.EMM = media.View.extend({
 
 	removeFromSelection: function( target, id ) {
 
-		target.closest( '.emm-item' ).removeClass( 'selected details' );
+		target.closest( '.mexp-item' ).removeClass( 'selected details' );
 
 		this.getSelection().remove( this.collection._byId[id] );
 
@@ -241,9 +241,9 @@ media.view.EMM = media.View.extend({
 
 	clearItems: function() {
 
-		this.$el.find( '.emm-item' ).removeClass( 'selected details' );
-		this.$el.find( '.emm-items' ).empty();
-		this.$el.find( '.emm-pagination' ).hide();
+		this.$el.find( '.mexp-item' ).removeClass( 'selected details' );
+		this.$el.find( '.mexp-items' ).empty();
+		this.$el.find( '.mexp-pagination' ).hide();
 
 	},
 
@@ -253,8 +253,8 @@ media.view.EMM = media.View.extend({
 		this.$el.find( '.spinner' ).show();
 
 		// hide messages
-		this.$el.find( '.emm-error' ).hide().text('');
-		this.$el.find( '.emm-empty' ).hide().text('');
+		this.$el.find( '.mexp-error' ).hide().text('');
+		this.$el.find( '.mexp-empty' ).hide().text('');
 
 	},
 
@@ -270,7 +270,7 @@ media.view.EMM = media.View.extend({
 		this.trigger( 'loading' );
 
 		var data = {
-			_nonce  : emm._nonce,
+			_nonce  : mexp._nonce,
 			service : this.service.id,
 			tab     : this.tab,
 			params  : this.model.get( 'params' ),
@@ -278,7 +278,7 @@ media.view.EMM = media.View.extend({
 			max_id  : this.model.get( 'max_id' )
 		};
 
-		media.ajax( 'emm_request', {
+		media.ajax( 'mexp_request', {
 			context : this,
 			success : this.fetchedSuccess,
 			error   : this.fetchedError,
@@ -319,11 +319,11 @@ media.view.EMM = media.View.extend({
 				container.appendChild( this.renderItem( model ) );
 			}, this );
 
-			this.$el.find( '.emm-items' ).append( container );
+			this.$el.find( '.mexp-items' ).append( container );
 
 		}
 
-		this.$el.find( '.emm-pagination' ).show();
+		this.$el.find( '.mexp-pagination' ).show();
 
 		this.model.set( 'max_id', response.meta.max_id );
 
@@ -333,8 +333,8 @@ media.view.EMM = media.View.extend({
 
 	fetchedEmpty: function( response ) {
 
-		this.$el.find( '.emm-empty' ).text( this.service.labels.noresults ).show();
-		this.$el.find( '.emm-pagination' ).hide();
+		this.$el.find( '.mexp-empty' ).text( this.service.labels.noresults ).show();
+		this.$el.find( '.mexp-pagination' ).hide();
 
 		this.trigger( 'loaded loaded:noresults', response );
 
@@ -342,7 +342,7 @@ media.view.EMM = media.View.extend({
 
 	fetchedError: function( response ) {
 
-		this.$el.find( '.emm-error' ).text( response.error_message ).show();
+		this.$el.find( '.mexp-error' ).text( response.error_message ).show();
 
 		this.trigger( 'loaded loaded:error', response );
 
@@ -353,14 +353,14 @@ media.view.EMM = media.View.extend({
 		// triggered when a search is submitted
 
 		var params = this.model.get( 'params' );
-		var els = this.$el.find( '.emm-toolbar' ).find( ':input' ).each( function( k, el ) {
+		var els = this.$el.find( '.mexp-toolbar' ).find( ':input' ).each( function( k, el ) {
 			var n = jQuery(this).attr('name');
 			if ( n )
 				params[n] = jQuery(this).val();
 		} );
 		
 		this.clearSelection();
-		jQuery( '#emm-button' ).attr( 'disabled', 'disabled' );
+		jQuery( '#mexp-button' ).attr( 'disabled', 'disabled' );
 		this.model.set( 'params', params );
 		this.trigger( 'change:params' ); // why isn't this triggering automatically? might be because params is an object
 
@@ -412,9 +412,9 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 		post_frame.prototype.initialize.apply( this, arguments );
 
-		_.each( emm.services, function( service, service_id ) {
+		_.each( mexp.services, function( service, service_id ) {
 
-			var id = 'emm-service-' + service.id;
+			var id = 'mexp-service-' + service.id;
 			var controller = {
 				id      : id,
 				router  : id + '-router',
@@ -428,7 +428,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 			for ( var tab in service.tabs ) {
 
 				// Content
-				this.on( 'content:render:' + id + '-content-' + tab, _.bind( this.emmContentRender, this, service, tab ) );
+				this.on( 'content:render:' + id + '-content-' + tab, _.bind( this.mexpContentRender, this, service, tab ) );
 
 				// Set the default tab
 				if ( service.tabs[tab].defaultTab )
@@ -437,24 +437,24 @@ media.view.MediaFrame.Post = post_frame.extend({
 			}
 
 			this.states.add([
-				new media.controller.EMM( controller )
+				new media.controller.ME( controller )
 			]);
 
 			// Tabs
 			this.on( 'router:create:' + id + '-router', this.createRouter, this );
-			this.on( 'router:render:' + id + '-router', _.bind( this.emmRouterRender, this, service ) );
+			this.on( 'router:render:' + id + '-router', _.bind( this.mexpRouterRender, this, service ) );
 
 			// Toolbar
-			this.on( 'toolbar:create:' + id + '-toolbar', this.emmToolbarCreate, this );
-			//this.on( 'toolbar:render:' + id + '-toolbar', _.bind( this.emmToolbarRender, this, service ) );
+			this.on( 'toolbar:create:' + id + '-toolbar', this.mexpToolbarCreate, this );
+			//this.on( 'toolbar:render:' + id + '-toolbar', _.bind( this.mexpToolbarRender, this, service ) );
 
 		}, this );
 
 	},
 
-	emmRouterRender : function( service, view ) {
+	mexpRouterRender : function( service, view ) {
 
-		var id   = 'emm-service-' + service.id;
+		var id   = 'mexp-service-' + service.id;
 		var tabs = {};
 
 		for ( var tab in service.tabs ) {
@@ -468,9 +468,9 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 	},
 
-	emmToolbarRender : function( service, view ) {
+	mexpToolbarRender : function( service, view ) {
 
-		view.set( 'selection', new media.view.Selection.EMM({
+		view.set( 'selection', new media.view.Selection.ME({
 			service    : service,
 			controller : this,
 			collection : this.state().props.get('_all').get('selection'),
@@ -479,23 +479,23 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 	},
 
-	emmContentRender : function( service, tab ) {
+	mexpContentRender : function( service, tab ) {
 
 		/* called when a tab becomes active */
 
-		this.content.set( new media.view.EMM( {
+		this.content.set( new media.view.ME( {
 			service    : service,
 			controller : this,
 			model      : this.state().props.get( tab ),
 			tab        : tab,
-			className  : 'clearfix attachments-browser emm-content emm-content-' + service.id + ' emm-content-' + service.id + '-' + tab
+			className  : 'clearfix attachments-browser mexp-content mexp-content-' + service.id + ' mexp-content-' + service.id + '-' + tab
 		} ) );
 
 	},
 
-	emmToolbarCreate : function( toolbar ) {
+	mexpToolbarCreate : function( toolbar ) {
 
-		toolbar.view = new media.view.Toolbar.EMM( {
+		toolbar.view = new media.view.Toolbar.ME( {
 			controller : this
 		} );
 
@@ -505,7 +505,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 // CONTROLLER:
 
-media.controller.EMM = media.controller.State.extend({
+media.controller.ME = media.controller.State.extend({
 
 	initialize: function( options ) {
 
@@ -536,7 +536,7 @@ media.controller.EMM = media.controller.State.extend({
 		this.frame.toolbar.get().refresh();
 	},
 
-	emmInsert: function() {
+	mexpInsert: function() {
 
 		var selection = this.frame.content.get().getSelection(),
 		urls          = [];
