@@ -3,7 +3,8 @@
  * MEXP plugin
  * */
 
-var mexpContentView = wp.media.view.MEXP,
+var mexpItem = wp.media.view.MEXPItem,
+	mexpContentView = wp.media.view.MEXP,
 	flagAjaxExecutions = '',
 	isInfiniteScroll = false;
 
@@ -195,4 +196,31 @@ wp.media.view.MEXP = mexpContentView.extend({
 	fetchedEmpty: function() {
 		mexpContentView.prototype.fetchedEmpty.apply( this, arguments );
 	},
+});
+
+wp.media.view.MEXPItem = mexpItem.extend({
+
+	events: {
+		'mouseenter .mexp-item-thumb img' : 'replaceByVideo',
+		'mouseleave .mexp-item-thumb iframe' : 'replaceByImage',
+	},
+
+	replaceByVideo: function() {
+		var thumbContainer = this.$el.find( '.mexp-item-thumb' ),
+			thumb = thumbContainer.find( 'img' ),
+			videoSrc = '//www.youtube.com/embed/' + this.model.get( 'url' ).match( /\?v=(\w*)/i )[1] + '?autoplay=1',
+			height = thumb.height(),
+			width = thumb.width(),
+			iframeEmbed = '<iframe width="' + width + '" height="' + height + '" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
+
+		thumbContainer.html(iframeEmbed);
+	},
+					
+	replaceByImage: function() {
+		var thumbContainer = this.$el.find( '.mexp-item-thumb' ),
+			image = '<img src="' + this.model.get( 'thumbnail' ) + '">';
+
+		thumbContainer.html( image );
+	},
+
 });
