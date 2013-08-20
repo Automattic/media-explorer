@@ -15,7 +15,7 @@ var media = wp.media;
 
 // VIEW: MEDIA ITEM:
 
-media.view.MEItem = Backbone.View.extend({
+media.view.MEXPItem = Backbone.View.extend({
 
     tagName   : 'li',
     className : 'mexp-item attachment',
@@ -33,7 +33,7 @@ media.view.MEItem = Backbone.View.extend({
 
 // VIEW - BOTTOM TOOLBAR
 
-media.view.Toolbar.ME = media.view.Toolbar.extend({
+media.view.Toolbar.MEXP = media.view.Toolbar.extend({
 
 	initialize: function() {
 
@@ -73,7 +73,7 @@ media.view.Toolbar.ME = media.view.Toolbar.extend({
 
 // VIEW - MEDIA CONTENT AREA
 
-media.view.ME = media.View.extend({
+media.view.MEXP = media.View.extend({
 
 	events: {
 		'click .mexp-item-area'     : 'toggleSelectionHandler',
@@ -148,7 +148,7 @@ media.view.ME = media.View.extend({
 
 	renderItem : function( model ) {
 
-		var view = new media.view.MEItem({
+		var view = new media.view.MEXPItem({
 			model   : model,
 			service : this.service,
 			tab     : this.tab
@@ -437,7 +437,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 			}
 
 			this.states.add([
-				new media.controller.ME( controller )
+				new media.controller.MEXP( controller )
 			]);
 
 			// Tabs
@@ -470,7 +470,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 	mexpToolbarRender : function( service, view ) {
 
-		view.set( 'selection', new media.view.Selection.ME({
+		view.set( 'selection', new media.view.Selection.MEXP({
 			service    : service,
 			controller : this,
 			collection : this.state().props.get('_all').get('selection'),
@@ -483,7 +483,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 		/* called when a tab becomes active */
 
-		this.content.set( new media.view.ME( {
+		this.content.set( new media.view.MEXP( {
 			service    : service,
 			controller : this,
 			model      : this.state().props.get( tab ),
@@ -495,7 +495,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 	mexpToolbarCreate : function( toolbar ) {
 
-		toolbar.view = new media.view.Toolbar.ME( {
+		toolbar.view = new media.view.Toolbar.MEXP( {
 			controller : this
 		} );
 
@@ -505,7 +505,7 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 // CONTROLLER:
 
-media.controller.ME = media.controller.State.extend({
+media.controller.MEXP = media.controller.State.extend({
 
 	initialize: function( options ) {
 

@@ -1,13 +1,13 @@
 /**
  * This js is going to handle the infinite scroll for the YouTube service in the
- * ME plugin
+ * MEXP plugin
  * */
 
-var mexpContentView = wp.media.view.ME,
+var mexpContentView = wp.media.view.MEXP,
 	flagAjaxExecutions = '',
 	isInfiniteScroll = false;
 
-wp.media.view.ME = mexpContentView.extend({
+wp.media.view.MEXP = mexpContentView.extend({
 
 	initialize: function() {
 		mexpContentView.prototype.initialize.apply( this, arguments );
