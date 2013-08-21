@@ -246,7 +246,6 @@ class Media_Explorer extends MEXP_Plugin {
 		do_action( 'mexp_init' );
 
 	}
-	
 
 	/**
 	 * Load text domain and localisation files.
