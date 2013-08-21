@@ -242,7 +242,7 @@ class Media_Explorer extends MEXP_Plugin {
 	 * @return null
 	 */
 	public function action_plugins_loaded() {
-		do_action( 'emm_init' );
+		do_action( 'mexp_init' );
 	}
 
 	/**
@@ -258,11 +258,6 @@ class Media_Explorer extends MEXP_Plugin {
 
 		foreach ( apply_filters( 'mexp_services', array() ) as $service_id => $service ) {
 			if ( is_a( $service, 'MEXP_Service' ) )
-				$this->services[$service_id] = $service;
-		}
-
-		foreach ( apply_filters( 'emm_services', array() ) as $service_id => $service ) {
-			if ( is_a( $service, 'EMM_Service' ) )
 				$this->services[$service_id] = $service;
 		}
 
