@@ -201,22 +201,29 @@ wp.media.view.MEXP = mexpContentView.extend({
 wp.media.view.MEXPItem = mexpItem.extend({
 
 	events: {
-		'mouseenter .mexp-item-thumb img' : 'replaceByVideo',
+		'hover .mexp-item-thumb img' : 'replaceByVideo',
 		'mouseleave .mexp-item-thumb iframe' : 'replaceByImage',
 	},
 
-	replaceByVideo: function() {
-		var thumbContainer = this.$el.find( '.mexp-item-thumb' ),
-			thumb = thumbContainer.find( 'img' ),
-			videoSrc = '//www.youtube.com/embed/' + this.model.get( 'url' ).match( /\?v=(\w*)/i )[1] + '?autoplay=1',
-			height = thumb.height(),
-			width = thumb.width(),
-			iframeEmbed = '<iframe width="' + width + '" height="' + height + '" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
+	replaceByVideo: function( event ) {
 
-		thumbContainer.html(iframeEmbed);
+		var _this = this;
+
+		if ( 'mouseenter' == event.type ) {
+			window.videoPreviewTimer = setTimeout( function() {
+				var thumbContainer = _this.$el.find( '.mexp-item-thumb' ),
+					thumb = thumbContainer.find( 'img' ),
+					videoSrc = '//www.youtube.com/embed/' + _this.model.get( 'url' ).match( /\?v=(\w*)/i )[1] + '?autoplay=1',
+					iframeEmbed = '<iframe width="' + thumb.width() + '" height="' + (thumb.height() + 7) + '" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
+
+				thumbContainer.html(iframeEmbed);
+			}, 1000 );
+		} else if ( 'mouseleave' == event.type ) {
+			clearTimeout(window.videoPreviewTimer);
+		}
 	},
 					
-	replaceByImage: function() {
+	replaceByImage: function( event ) {
 		var thumbContainer = this.$el.find( '.mexp-item-thumb' ),
 			image = '<img src="' + this.model.get( 'thumbnail' ) + '">';
 
