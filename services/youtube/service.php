@@ -15,6 +15,10 @@ class MEXP_YouTube_Service extends MEXP_Service {
 
 		add_action( 'mexp_enqueue', array( $this, 'enqueue_statics' ) );
 
+		add_filter( 'mexp_tabs', array( $this, 'tabs' ), 10, 1 );
+
+		add_filter( 'mexp_labels', array( $this, 'labels' ), 10, 1 );
+
 	}
 
 	public function enqueue_statics() {
@@ -101,8 +105,8 @@ class MEXP_YouTube_Service extends MEXP_Service {
 		return $response;
 	}
 
-	public function tabs() {
-		return array(
+	public function tabs( array $tabs ) {
+		$tabs['youtube'] = array(
 			'all' => array(
 				'text'       => _x( 'All', 'Tab title', 'mexp'),
 				'defaultTab' => true
@@ -111,6 +115,7 @@ class MEXP_YouTube_Service extends MEXP_Service {
 				'text'       => _x( 'By User', 'Tab title', 'mexp'),
 			),
 		);
+		return $tabs;
 	}
 
 	private function get_connection() {
@@ -129,12 +134,15 @@ class MEXP_YouTube_Service extends MEXP_Service {
 		return new MEXP_YouTube_Client( $developer_key );
 	}
 
-	public function labels() {
-		return array(
+	public function labels( array $labels ) {
+
+		$labels['youtube'] = array(
 			'title'     => __( 'Insert YouTube', 'mexp' ),
 			'insert'    => __( 'Insert', 'mexp' ),
 			'noresults' => __( 'No videos matched your search query.', 'mexp' ),
 		);
+
+		return $labels;
 	}
 }
 

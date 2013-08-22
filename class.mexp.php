@@ -83,10 +83,13 @@ class Media_Explorer extends MEXP_Plugin {
 			if ( ! $template = $service->get_template() )
 				continue;
 
+			// apply filters for tabs
+			$tabs = apply_filters( 'mexp_tabs', array() );
+
 			# @TODO this list of templates should be somewhere else. where?
 			foreach ( array( 'search', 'item' ) as $t ) {
 
-				foreach ( $service->get_tabs() as $tab_id => $tab ) {
+				foreach ( $tabs[$service_id] as $tab_id => $tab ) {
 
 					$id = sprintf( 'mexp-%s-%s-%s',
 						esc_attr( $service_id ),
@@ -206,14 +209,18 @@ class Media_Explorer extends MEXP_Plugin {
 
 		foreach ( $this->get_services() as $service_id => $service ) {
 			$service->load();
+
+			$tabs = apply_filters( 'mexp_tabs', array() );
+			$labels = apply_filters( 'mexp_labels', array() );
+
 			$mexp['services'][$service_id] = array(
 				'id'     => $service_id,
-				'labels' => $service->get_labels(),
-				'tabs'   => $service->get_tabs(),
+				'labels' => $labels[$service_id],
+				'tabs'   => $tabs[$service_id],
 			);
 		}
 
-		// this action must enqueue all the statics for each service
+		// this action enqueues all the statics for each service
 		do_action( 'mexp_enqueue' );
 
 		wp_enqueue_script(

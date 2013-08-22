@@ -32,6 +32,10 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 		add_action( 'mexp_enqueue', array( $this, 'enqueue_statics' ) );
 
+		add_filter( 'mexp_tabs', array( $this, 'tabs' ), 10, 1 );
+
+		add_filter( 'mexp_labels', array( $this, 'labels' ), 10, 1 );
+
 	}
 
 	public function enqueue_statics() {
@@ -228,8 +232,8 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 	}
 
-	public function tabs() {
-		return array(
+	public function tabs( array $tabs ) {
+		$tabs['twitter'] = array(
 			'all' => array(
 				'text'       => _x( 'All', 'Tab title', 'mexp'),
 				'defaultTab' => true
@@ -250,6 +254,8 @@ class MEXP_Twitter_Service extends MEXP_Service {
 				'text' => _x( 'By Location', 'Tab title', 'mexp'),
 			),
 		);
+
+		return $tabs;
 	}
 
 	public function requires() {
@@ -258,14 +264,16 @@ class MEXP_Twitter_Service extends MEXP_Service {
 		);
 	}
 
-	public function labels() {
-		return array(
+	public function labels( array $labels ) {
+		$labels['twitter'] = array(
 			'title'     => __( 'Insert Tweet', 'mexp' ),
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
 			'insert'    => __( 'Insert Tweet', 'mexp' ),
 			'noresults' => __( 'No tweets matched your search query', 'mexp' ),
 			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' )
 		);
+
+		return $labels;
 	}
 
 	private function get_connection() {
