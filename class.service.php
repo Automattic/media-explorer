@@ -33,14 +33,14 @@ abstract class MEXP_Service {
 	 *
 	 * @return array Associative array of labels.
 	 */
-	abstract function labels();
+	abstract function labels( array $labels );
 
 	/**
 	 * Returns an array of tabs (routers) for the service's media manager panel.
 	 *
 	 * @return array Associative array of tabs. The key is the tab ID and the value is an array of tab attributes.
 	 */
-	abstract function tabs();
+	abstract function tabs( array $tabs );
 
 	/**
 	 * A *very* simple dependency system that allows a plugin to return an array of classes and filename that it requires. Currently 
@@ -58,33 +58,6 @@ abstract class MEXP_Service {
 	 * @return null
 	 */
 	public function load() {
-	}
-
-	/**
-	 * Returns an array of text labels for this service. Extended by the labels() method of child classes.
-	 *
-	 * @return array Associative array of labels.
-	 */
-	final public function get_labels() {
-
-		return array_merge( array(
-			'title'     => __( 'Insert Media', 'mexp' ),
-			'insert'    => __( 'Insert', 'mexp' ),
-			'loadmore'  => __( 'Load More', 'mexp' ),
-			'noresults' => __( 'Nothing matched your search query', 'mexp' ),
-		), (array) $this->labels() );
-
-	}
-
-	/**
-	 * Returns an array of tabs (routers) for the service's media manager panel. Extended by the tabs() method of child classes.
-	 *
-	 * @return array Associative array of tabs. The key is the tab ID and the value is an array of tab attributes.
-	 */
-	final public function get_tabs() {
-
-		return (array) $this->tabs();
-
 	}
 
 	/**
