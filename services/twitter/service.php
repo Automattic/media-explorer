@@ -30,6 +30,12 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 	public function load() {
 
+		add_action( 'mexp_enqueue', array( $this, 'enqueue_statics' ) );
+
+	}
+
+	public function enqueue_statics() {
+
 		$mexp = Media_Explorer::init();
 
 		wp_enqueue_script(

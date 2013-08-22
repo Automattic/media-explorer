@@ -213,6 +213,9 @@ class Media_Explorer extends MEXP_Plugin {
 			);
 		}
 
+		// this action must enqueue all the statics for each service
+		do_action( 'mexp_enqueue' );
+
 		wp_enqueue_script(
 			'mexp',
 			$this->plugin_url( 'js/mexp.js' ),
