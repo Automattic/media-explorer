@@ -201,7 +201,7 @@ class Media_Explorer extends MEXP_Plugin {
 		$mexp = array(
 			'_nonce'    => wp_create_nonce( 'mexp_request' ),
 			'labels'    => array(
-				'insert' => __( 'Insert', 'mexp' )
+				'insert' => __( 'Insert into post', 'mexp' )
 			),
 			'base_url'  => untrailingslashit( $this->plugin_url() ),
 			'admin_url' => untrailingslashit( admin_url() ),
