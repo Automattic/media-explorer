@@ -55,6 +55,10 @@ body.mp6 .media-frame .mexp-content .mexp-toolbar {
 	float: left;
 }
 
+.media-frame .mexp-content .media-toolbar .mexp-input-search {
+	margin-left: 10px;
+}
+
 /* WP media manager style tweaks: */
 .media-frame .mexp-content .mexp-toolbar label{
 	margin: 7px;
@@ -198,8 +202,17 @@ html.ie8 .media-frame .mexp-content .mexp-item.selected {
 }
 
 .mexp-item-thumb img {
-	width: 95%;
-	margin-top: 2%;
+	width: 99%;
+}
+
+/*
+ * Fixes the 180px right margin for the ul.attachments in lo-res revices
+ * */
+@media (max-width: 782px) {
+	.mp6 .mexp-content-youtube ul.mexp-items, .mp6 .mexp-content-youtube ul.mexp-items {
+		margin-right: 0px;
+		overflow: hidden;
+	}
 }
 
 /**
@@ -208,6 +221,9 @@ html.ie8 .media-frame .mexp-content .mexp-item.selected {
 @media (max-width: 699px) {
 	.mexp-content-youtube .attachment {
 		width: 100%;
+	}
+	.media-frame .mexp-content .media-toolbar .mexp-input-search {
+		width: 128px;
 	}
 }
 
