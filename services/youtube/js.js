@@ -196,38 +196,38 @@ wp.media.view.MEXP = mexpContentView.extend({
 	fetchedEmpty: function() {
 		mexpContentView.prototype.fetchedEmpty.apply( this, arguments );
 	},
+
+	toggleSelectionHandler: function( event ) {
+		if ( !jQuery(event.srcElement).hasClass( 'mexp-item-youtube-preview' ) )
+			mexpContentView.prototype.toggleSelectionHandler.apply( this, arguments );
+		else
+			event.preventDefault();
+	},
 });
 
 wp.media.view.MEXPItem = mexpItem.extend({
 
 	events: {
-		'hover .mexp-item-thumb img' : 'replaceByVideo',
-		'mouseleave .mexp-item-thumb iframe' : 'replaceByImage',
+		'click .mexp-item-youtube-preview' : 'toggleVideoThumb',
 	},
 
-	replaceByVideo: function( event ) {
+	toggleVideoThumb: function( event ) {
+		if ( jQuery(event.srcElement).hasClass( 'stop' ) ) {
+			var thumbContainer = this.$el.find( '.mexp-item-thumb' ),
+				image = '<img src="' + this.model.get( 'thumbnail' ) + '">';
 
-		var _this = this;
+			jQuery( event.srcElement ).removeClass( 'stop' ).text( 'Preview' );
 
-		if ( 'mouseenter' == event.type ) {
-			window.videoPreviewTimer = setTimeout( function() {
-				var thumbContainer = _this.$el.find( '.mexp-item-thumb' ),
-					thumb = thumbContainer.find( 'img' ),
-					videoSrc = '//www.youtube.com/embed/' + _this.model.get( 'url' ).match( /\?v=(\w*)/i )[1] + '?autoplay=1',
-					iframeEmbed = '<iframe width="' + thumb.width() + '" height="' + (thumb.height() + 7) + '" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
+			thumbContainer.html( image );
+		} else {
+			var thumbContainer = this.$el.find( '.mexp-item-thumb' ),
+				thumb = thumbContainer.find( 'img' ),
+				videoSrc = '//www.youtube.com/embed/' + this.model.get( 'url' ).match( /\?v=(\w*)/i )[1] + '?autoplay=1',
+				iframeEmbed = '<iframe width="' + thumb.width() + '" height="' + thumb.height() + '" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
 
-				thumbContainer.html(iframeEmbed);
-			}, 1000 );
-		} else if ( 'mouseleave' == event.type ) {
-			clearTimeout(window.videoPreviewTimer);
+			jQuery( event.srcElement ).addClass( 'stop' ).text( 'Stop' );
+
+			thumbContainer.html(iframeEmbed);
 		}
 	},
-					
-	replaceByImage: function( event ) {
-		var thumbContainer = this.$el.find( '.mexp-item-thumb' ),
-			image = '<img src="' + this.model.get( 'thumbnail' ) + '">';
-
-		thumbContainer.html( image );
-	},
-
 });

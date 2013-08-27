@@ -15,6 +15,7 @@ class MEXP_YouTube_Template extends MEXP_Template {
 				<div class="mexp-item-thumb">
 					<img src="{{ data.thumbnail }}">
 				</div>
+				<a id="mexp-item-youtube-preview-{{ data.id }}" class="mexp-item-youtube-preview"><?php _e( 'Preview', 'mexp' ) ?></a>
 				<div class="mexp-item-main">
 					<div class="mexp-item-content">
 						{{ data.content }}
