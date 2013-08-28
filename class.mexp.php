@@ -136,6 +136,7 @@ class Media_Explorer extends MEXP_Plugin {
 		$service = $this->get_service( stripslashes( $_POST['service'] ) );
 
 		if ( is_wp_error( $service ) ) {
+			do_action( 'mexp_ajax_request_error', $service );
 			wp_send_json_error( array(
 				'error_code'    => $service->get_error_code(),
 				'error_message' => $service->get_error_message()
