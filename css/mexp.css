@@ -186,7 +186,7 @@ html.ie8 .media-frame .mexp-content .mexp-item.selected {
 /* ************************ */
 
 .media-frame .mexp-item-youtube .mexp-item-main {
-	max-height: 54px;
+	max-height: 48px;
 	overflow: hidden;
 }
 
