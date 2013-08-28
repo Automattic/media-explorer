@@ -162,15 +162,11 @@ class Media_Explorer extends MEXP_Plugin {
 			'max_id'  => null,
 			'page'    => 1,
 		) );
+		$request['page'] = absint( $request['page'] );
+		$request['user_id'] = absint( get_current_user_id() );
+		$request = apply_filters( 'mexp_ajax_request_args', $request, $service );
 
-		$response = $service->request( array(
-			'params'  => $request['params'],
-			'tab'     => $request['tab'],
-			'min_id'  => $request['min_id'],
-			'max_id'  => $request['max_id'],
-			'page'    => absint( $request['page'] ),
-			'user_id' => absint( get_current_user_id() ),
-		) );
+		$response = $service->request( $request );
 
 		if ( is_wp_error( $response ) ) {
 			do_action( 'mexp_ajax_request_error', $response );
