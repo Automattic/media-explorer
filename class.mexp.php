@@ -172,18 +172,18 @@ class Media_Explorer extends MEXP_Plugin {
 		) );
 
 		if ( is_wp_error( $response ) ) {
-
+			do_action( 'mexp_ajax_request_error', $response );
 			wp_send_json_error( array(
 				'error_code'    => $response->get_error_code(),
 				'error_message' => $response->get_error_message()
 			) );
 
 		} else if ( is_a( $response, 'MEXP_Response' ) ) {
-
+			do_action( 'mexp_ajax_request_success', $response );
 			wp_send_json_success( $response->output() );
 
 		} else {
-
+			do_action( 'mexp_ajax_request_success', false );
 			wp_send_json_success( false );
 
 		}
