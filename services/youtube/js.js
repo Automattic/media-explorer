@@ -3,7 +3,8 @@
  * MEXP plugin
  * */
 
-var mexpContentView = wp.media.view.MEXP,
+var toolbarView = wp.media.view.Toolbar.MEXP,
+	mexpContentView = wp.media.view.MEXP,
 	flagAjaxExecutions = '',
 	isInfiniteScroll = false;
 
@@ -195,4 +196,37 @@ wp.media.view.MEXP = mexpContentView.extend({
 	fetchedEmpty: function() {
 		mexpContentView.prototype.fetchedEmpty.apply( this, arguments );
 	},
+	
+	loading: function() {
+		mexpContentView.prototype.loading.apply( this, arguments );
+
+		if ( 'youtube' !== this.service.id ) return;
+
+		// show bottom spinner
+		jQuery( '.spinner-bottom' ).show();
+	},
+	
+	loaded: function() {
+		mexpContentView.prototype.loaded.apply( this, arguments );
+
+		if ( 'youtube' !== this.service.id ) return;
+
+		// hide bottom spinner
+		jQuery( '.spinner-bottom' ).hide();
+	},
+});
+
+wp.media.view.Toolbar.MEXP = toolbarView.extend({
+
+	initialize: function() {
+
+		toolbarView.prototype.initialize.apply( this, arguments );
+
+		this.set( 'spinner', new Backbone.View({
+			tagName: 'span',
+			className: 'spinner spinner-bottom',
+			priority: -20,
+		}) );
+
+	}
 });
