@@ -93,6 +93,10 @@ class MEXP_Twitter_Service extends MEXP_Service {
 		if ( 'images' == $request['tab'] )
 			$q[] = 'filter:images';
 
+		// Exclude retweets from certain searches
+		if ( ! isset( $params['by_user'] ) && ! isset( $params['to_user'] ) )
+			$q[] = '+exclude:retweets';
+
 		$args = array(
 			'q'           => implode( ' ', $q ),
 			'result_type' => 'recent',
