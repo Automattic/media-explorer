@@ -270,7 +270,8 @@ class MEXP_Twitter_Service extends MEXP_Service {
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
 			'insert'    => __( 'Insert Tweet', 'mexp' ),
 			'noresults' => __( 'No tweets matched your search query', 'mexp' ),
-			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' )
+			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' ),
+			'loadmore'  => 'Load more tweets',
 		);
 
 		return $labels;

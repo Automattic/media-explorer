@@ -90,6 +90,8 @@ body.mp6 .media-frame .mexp-content .mexp-toolbar {
 
 .media-frame .mexp-content .mexp-pagination a {
 	float: left;
+	position: absolute;
+	top: 65px;
 }
 
 .media-frame .mexp-content .clearfix:after {
