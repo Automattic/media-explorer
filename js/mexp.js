@@ -56,6 +56,15 @@ media.view.Toolbar.MEXP = media.view.Toolbar.extend({
 
 		media.view.Toolbar.prototype.initialize.apply( this, arguments );
 
+		var serviceName = this.controller.state().id.replace( /mexp-service-/g, '');
+
+		this.set( 'pagination', new media.view.Button({
+			tagName: 'a',
+			classes: 'mexp-pagination button button-secondary',
+			id: serviceName + '-loadmore',
+			text: mexp.labels.loadmore,
+			priority: -20,
+		}) );
 	},
 
 	refresh: function() {
@@ -78,13 +87,14 @@ media.view.MEXP = media.View.extend({
 	events: {
 		'click .mexp-item-area'     : 'toggleSelectionHandler',
 		'click .mexp-item .check'   : 'removeSelectionHandler',
-		'click .mexp-pagination a'  : 'paginate',
 		'submit .mexp-toolbar form' : 'updateInput'
 	},
 
 	initialize: function() {
 
 		/* fired when you switch router tabs */
+		
+		var _this = this;
 
 		this.collection = new Backbone.Collection();
 		this.service    = this.options.service;
@@ -112,6 +122,10 @@ media.view.MEXP = media.View.extend({
 		this.on( 'loaded',        this.loaded, this );
 		this.on( 'change:params', this.changedParams, this );
 		this.on( 'change:page',   this.changedPage, this );
+
+		jQuery( '.mexp-pagination' ).click( function( event ) {
+			_this.paginate( event );
+		} );
 
 	},
 
@@ -176,10 +190,6 @@ media.view.MEXP = media.View.extend({
 		var toolbar_template = media.template( 'mexp-' + this.service.id + '-search-' + this.tab );
 		html = '<div class="mexp-toolbar media-toolbar clearfix">' + toolbar_template( this.model.toJSON() ) + '</div>';
 		this.$el.prepend( html );
-
-		// @TODO this could be a separate view:
-		html = '<div class="mexp-pagination clearfix"><a href="#" class="button button-secondary button-large">' + this.service.labels.loadmore + '</a><div class="spinner"></div></div>';
-		this.$el.append( html );
 
 	},
 
@@ -256,6 +266,10 @@ media.view.MEXP = media.View.extend({
 		this.$el.find( '.mexp-error' ).hide().text('');
 		this.$el.find( '.mexp-empty' ).hide().text('');
 
+		var _this = this;
+
+		jQuery( '#' + _this.service.id + '-loadmore' ).hide();
+
 	},
 
 	loaded: function( response ) {
@@ -323,7 +337,9 @@ media.view.MEXP = media.View.extend({
 
 		}
 
-		this.$el.find( '.mexp-pagination' ).show();
+		var _this = this;
+
+		jQuery( '#' + _this.service.id + '-loadmore' ).show();
 
 		this.model.set( 'max_id', response.meta.max_id );
 
@@ -369,6 +385,9 @@ media.view.MEXP = media.View.extend({
 	},
 
 	paginate : function( event ) {
+
+		if( 0 == this.collection.length )
+			return;
 
 		var page = this.model.get( 'page' ) || 1;
 
