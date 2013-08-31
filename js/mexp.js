@@ -108,6 +108,9 @@ media.view.MEXP = media.View.extend({
 			this.collection = new Backbone.Collection();
 			this.collection.reset( this.model.get( 'items' ) );
 
+			jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
+		} else {
+			jQuery( '#' + this.service.id + '-loadmore' ).hide();
 		}
 
 		// @TODO do this somewhere else:
@@ -266,10 +269,8 @@ media.view.MEXP = media.View.extend({
 		this.$el.find( '.mexp-error' ).hide().text('');
 		this.$el.find( '.mexp-empty' ).hide().text('');
 
-		var _this = this;
-
-		jQuery( '#' + _this.service.id + '-loadmore' ).hide();
-
+		// disable 'load more' button
+		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', true );
 	},
 
 	loaded: function( response ) {
@@ -337,10 +338,7 @@ media.view.MEXP = media.View.extend({
 
 		}
 
-		var _this = this;
-
-		jQuery( '#' + _this.service.id + '-loadmore' ).show();
-
+		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
 		this.model.set( 'max_id', response.meta.max_id );
 
 		this.trigger( 'loaded loaded:success', response );
@@ -359,7 +357,7 @@ media.view.MEXP = media.View.extend({
 	fetchedError: function( response ) {
 
 		this.$el.find( '.mexp-error' ).text( response.error_message ).show();
-
+		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
 		this.trigger( 'loaded loaded:error', response );
 
 	},

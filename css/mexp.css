@@ -92,7 +92,6 @@ body.mp6 .media-frame .mexp-content .mexp-toolbar {
 }
 
 .button.mexp-pagination {
-	display: none;
 	margin-top: 15px;
 }
 
@@ -177,12 +176,17 @@ html.ie8 .media-frame .mexp-content .mexp-item.selected {
 	background: transparent no-repeat center center;
 }
 
+#twitter-loadmore {
+	display: none;
+}
+
+
 /* ************************ */
 /* YouTube-specific styles: */
 /* ************************ */
 
 #youtube-loadmore {
-	display: none;
+	display: none !important;
 }
 
 .media-frame .mexp-item-youtube .mexp-item-main {
