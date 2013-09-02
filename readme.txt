@@ -1,7 +1,7 @@
 === Media Explorer ===
 Contributors: Automattic, johnbillion, garhdez, djpaul
 Tags: media, social media, twitter, youtube, media explorer
-Stable tag: 1.1
+Stable tag: 1.2
 
 Insert social media content into your posts.
 
