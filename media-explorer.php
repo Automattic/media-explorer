@@ -2,7 +2,7 @@
 /*
 Plugin Name: Media Explorer
 Description: Extends the Media Manager to add support for external media services (currently only Twitter and YouTube).
-Version:     1.1
+Version:     1.2
 Author:      Code For The People Ltd, Automattic
 Text Domain: mexp
 Domain Path: /languages/
