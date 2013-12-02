@@ -19,7 +19,7 @@ var pf = wp.media.view.MediaFrame.Post;
 
 jQuery( function( $ ) {
 
-	wp.media.view.MediaFrame.Post = pf.extend({
+	wp.media.view.MediaFrame.Post = wp.media.view.MediaFrame.Post.extend({
 
 		initialize: function() {
 
