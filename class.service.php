@@ -44,7 +44,7 @@ abstract class MEXP_Service {
 
 	/**
 	 * A *very* simple dependency system that allows a plugin to return an array of classes and filename that it requires. Currently 
-	 * only the OAuth class is available as a dependancy.
+	 * only the OAuth class is available as a dependency.
 	 *
 	 * @return array Associative array of required classes. The array key is the portion of the filename and the value is the class name.
 	 */

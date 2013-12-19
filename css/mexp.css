@@ -83,21 +83,16 @@ body.mp6 .media-frame .mexp-content .mexp-toolbar {
 	margin: 3px 10px;
 }
 
-.media-frame .mexp-content .mexp-pagination {
-	display: none;
-	padding: 10px;
-}
-
-.media-frame .mexp-content .mexp-pagination a {
-	float: left;
-}
-
 .media-frame .mexp-content .clearfix:after {
 	clear: both;
 	content: ".";
 	display: block;
 	height: 0;
 	visibility: hidden;
+}
+
+.button.mexp-pagination {
+	margin-top: 15px;
 }
 
 /* ************************** */
@@ -181,12 +176,21 @@ html.ie8 .media-frame .mexp-content .mexp-item.selected {
 	background: transparent no-repeat center center;
 }
 
+#twitter-loadmore {
+	display: none;
+}
+
+
 /* ************************ */
 /* YouTube-specific styles: */
 /* ************************ */
 
+#youtube-loadmore {
+	display: none !important;
+}
+
 .media-frame .mexp-item-youtube .mexp-item-main {
-	max-height: 54px;
+	max-height: 48px;
 	overflow: hidden;
 }
 
