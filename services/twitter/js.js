@@ -17,48 +17,44 @@ var mexp_twitter_location_marker    = null;
 var mexp_twitter_location_timeout   = null;
 var pf = wp.media.view.MediaFrame.Post;
 
-jQuery( function( $ ) {
+wp.media.view.MediaFrame.Post = pf.extend({
 
-	wp.media.view.MediaFrame.Post = pf.extend({
+	initialize: function() {
 
-		initialize: function() {
+		pf.prototype.initialize.apply( this, arguments );
 
-			pf.prototype.initialize.apply( this, arguments );
+		this.on( 'content:render:mexp-service-twitter-content-location', _.bind( function() {
 
-			this.on( 'content:render:mexp-service-twitter-content-location', _.bind( function() {
+			this.state().frame.content.get().on( 'loaded', function( response ) {
 
-				this.state().frame.content.get().on( 'loaded', function( response ) {
+				if ( ! response || ! response.meta || ! response.meta.coords )
+					return;
 
-					if ( ! response || ! response.meta || ! response.meta.coords )
-						return;
+				var ll = new google.maps.LatLng( response.meta.coords.lat, response.meta.coords.lng );
 
-					var ll = new google.maps.LatLng( response.meta.coords.lat, response.meta.coords.lng );
+				mexp_twitter_location_marker.setPosition( ll );
+				mexp_twitter_location_map.panTo( ll );
 
-					mexp_twitter_location_marker.setPosition( ll );
-					mexp_twitter_location_map.panTo( ll );
+			} );
 
-				} );
+			if ( !mexp_twitter_location_js_loaded ) {
 
-				if ( !mexp_twitter_location_js_loaded ) {
+				$('#mexp_twitter_map_canvas').css( 'background-image', 'url(' + mexp.admin_url + '/images/wpspin_light.gif)');
 
-					$('#mexp_twitter_map_canvas').css( 'background-image', 'url(' + mexp.admin_url + '/images/wpspin_light.gif)');
+				var script = document.createElement("script");
+				script.type = "text/javascript";
+				script.src = mexp.services.twitter.labels.gmaps_url + '?sensor=false&callback=mexp_twitter_location_initialize';
+				document.body.appendChild(script);
 
-					var script = document.createElement("script");
-					script.type = "text/javascript";
-					script.src = mexp.services.twitter.labels.gmaps_url + '?sensor=false&callback=mexp_twitter_location_initialize';
-					document.body.appendChild(script);
+			} else {
 
-				} else {
+				mexp_twitter_location_initialize();
 
-					mexp_twitter_location_initialize();
+			}
 
-				}
+		}, this ) );
 
-			}, this ) );
-
-		}
-
-	});
+	}
 
 });
 
