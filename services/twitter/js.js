@@ -66,7 +66,7 @@ function mexp_twitter_location_initialize() {
 
 	if ( navigator.geolocation ) {
 		navigator.geolocation.getCurrentPosition( mexp_twitter_location_load, callback );
-		mexp_twitter_location_timeout = window.setTimeout( callback, 8000 )
+		mexp_twitter_location_timeout = window.setTimeout( callback, 8000 );
 	} else {
 		mexp_twitter_location_fetch( callback );
 	}
