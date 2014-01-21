@@ -1,0 +1,19 @@
+.mexp-content-instagram .attachment {
+	width: 200px;
+}
+
+.mexp-content-instagram .attachment .mexp-item-instagram {
+	height: 235px;
+	overflow: hidden;
+	padding: 10px;
+}
+
+.mexp-content-instagram .mexp-item-thumb img {
+	width: 150px;
+	height: 150px;
+}
+
+.mexp-content-instagram .description {
+	float: left;
+	margin: 7px 10px;
+}
