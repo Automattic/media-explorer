@@ -129,6 +129,11 @@ media.view.MEXP = media.View.extend({
 		jQuery( '.mexp-pagination' ).click( function( event ) {
 			_this.paginate( event );
 		} );
+		
+		if ( _this.model.get( 'fetchOnRender' ) ) {
+			_this.model.set( 'fetchOnRender', false );
+			_this.fetchItems();
+		}
 
 	},
 
@@ -535,7 +540,8 @@ media.controller.MEXP = media.controller.State.extend({
 				params : {},
 				page   : null,
 				min_id : null,
-				max_id : null
+				max_id : null,
+				fetchOnRender : options.tabs[ tab ].fetchOnRender,
 			}) );
 
 		}
