@@ -220,9 +220,9 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 	public function labels( array $labels ) {
 		$labels['instagram'] = array(
-			'title'     => __( 'Insert Instagram (a8c)', 'mexp' ),
+			'title'     => __( 'Insert Instagram', 'mexp' ),
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
-			'insert'    => __( 'Insert Instagram (a8c)', 'mexp' ),
+			'insert'    => __( 'Insert Instagram', 'mexp' ),
 			'noresults' => __( 'No pics matched your search query', 'mexp' ),
 			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' ),
 			'loadmore'  => __( 'Load more pics', 'mexp' ),
