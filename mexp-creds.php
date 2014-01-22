@@ -40,3 +40,15 @@ function mexp_youtube_developer_key_callback() {
 	return '';
 
 }
+
+add_filter( 'mexp_instagram_credentials', 'mexp_instagram_credentials_callback' );
+
+function mexp_instagram_credentials_callback( $credentials ) {
+
+	// Add your developer key here.
+	// Get your developer key at: <https://instagram.com/developer>
+	return array( 
+		'access_token' => '',
+	);
+
+}
