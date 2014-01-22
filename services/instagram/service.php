@@ -16,6 +16,9 @@ defined( 'ABSPATH' ) or die();
 
 class MEXP_Instagram_Service extends MEXP_Service {
 
+	public $credentials = null;
+	public $generic_credentials = null;
+	
 	public function __construct() {
 
 		require_once dirname( __FILE__ ) . '/template.php';
@@ -188,7 +191,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	public function tabs( array $tabs ) {
 		$tabs['instagram'] = array();
 
-		if ( Keyring::init()->get_service_by_name( 'instagram' )->is_connected() ) {
+		if ( class_exists( 'Keyring' ) && Keyring::init()->get_service_by_name( 'instagram' )->is_connected() ) {
 			$tabs['instagram']['mine'] = array(
 				'text'       => _x( 'My Instagrams', 'Tab title', 'mexp' ),
 				'defaultTab' => true,
@@ -239,7 +242,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 	private function get_user_credentials() {
 
-		if ( is_null( $this->user_credentials ) ) {
+		if ( class_exists( 'Keyring' ) && is_null( $this->user_credentials ) ) {
 			// Hacky time, Keyring is designed to handle requests, but we're just stealing its access_token.
 			$keyring = Keyring::init()->get_service_by_name( 'instagram' );
 			$users_tokens = Keyring::init()->get_token_store()->get_tokens_by_user( get_current_user_id() );
@@ -257,8 +260,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 add_filter( 'mexp_services', 'mexp_service_instagram' );
 
 function mexp_service_instagram( array $services ) {
-	if ( is_automattician() )
-		$services['instagram'] = new MEXP_Instagram_Service;
+	$services['instagram'] = new MEXP_Instagram_Service;
 
 	return $services;
 }
