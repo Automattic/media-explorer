@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) or die();
 
 class MEXP_Instagram_Service extends MEXP_Service {
 
-	public $credentials = null;
+	public $user_credentials = null;
 	public $generic_credentials = null;
 	
 	public function __construct() {
@@ -168,7 +168,11 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 			$item->set_id( $result->id );
 			$item->set_url( $result->link );
-			$item->set_content( $result->caption->text );
+			
+			if ( property_exists( $result->caption, 'text' ) ) {
+				$item->set_content( $result->caption->text );
+			}
+			
 			$item->set_thumbnail( set_url_scheme( $result->images->thumbnail->url ) );
 			$item->set_date( $result->created_time );
 			$item->set_date_format( 'g:i A - j M y' );
@@ -191,7 +195,8 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	public function tabs( array $tabs ) {
 		$tabs['instagram'] = array();
 
-		if ( class_exists( 'Keyring' ) && Keyring::init()->get_service_by_name( 'instagram' )->is_connected() ) {
+		$this->get_user_credentials();
+		if ( ! empty( $this->user_credentials ) ) {
 			$tabs['instagram']['mine'] = array(
 				'text'       => _x( 'My Instagrams', 'Tab title', 'mexp' ),
 				'defaultTab' => true,
@@ -241,15 +246,9 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	}
 
 	private function get_user_credentials() {
-
-		if ( class_exists( 'Keyring' ) && is_null( $this->user_credentials ) ) {
-			// Hacky time, Keyring is designed to handle requests, but we're just stealing its access_token.
-			$keyring = Keyring::init()->get_service_by_name( 'instagram' );
-			$users_tokens = Keyring::init()->get_token_store()->get_tokens_by_user( get_current_user_id() );
-			$this->user_credentials = array(
-				'access_token' => $users_tokens['instagram'][0]->token
-			);
-		}
+		
+		if ( is_null( $this->user_credentials ) )
+			$this->user_credentials = (array) apply_filters( 'mexp_instagram_user_credentials', array() );
 
 		return $this->user_credentials;
 
