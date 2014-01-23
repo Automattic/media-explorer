@@ -98,7 +98,11 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 		$response = $this->do_request( $endpoint, $query_params );
 
-		if ( 200 == $response['code'] || 400 == $response['code'] ) {
+		if ( is_wp_error( $response ) ) {
+			
+			return $response;
+			
+		} elseif ( 200 == $response['code'] || 400 == $response['code'] ) {
 
 			return $this->response( $response );
 
@@ -120,6 +124,14 @@ class MEXP_Instagram_Service extends MEXP_Service {
 		$version = 'v1';
 		if ( !isset( $params['access_token'] ) ) {
 			$credentials = $this->get_generic_credentials();
+
+			if ( ! isset( $credentials['access_token'] ) ) {
+				return new WP_Error(
+					'mexp_instagram_no_connection',
+					__( 'oAuth connection to Instagram not found.', 'mexp' )
+				);
+			}
+
 			$params['access_token'] = $credentials['access_token'];
 		}
 
@@ -144,7 +156,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	public function get_user_id( $username ) {
 		$response = $this->do_request( 'users/search', array( 'q' => $username ) );
 
-		if ( 200 == $response['code'] ) {
+		if ( ! is_wp_error( $response ) && 200 == $response['code'] ) {
 			foreach ( $response['data'] as $user ) {
 				if ( $user->username == $username ) {
 					return $user->id;
