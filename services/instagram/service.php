@@ -169,7 +169,8 @@ class MEXP_Instagram_Service extends MEXP_Service {
 			$item->set_id( $result->id );
 			$item->set_url( $result->link );
 			
-			if ( property_exists( $result->caption, 'text' ) ) {
+			// Not all results have a caption
+			if ( is_object( $result->caption ) ) {
 				$item->set_content( $result->caption->text );
 			}
 			
@@ -195,8 +196,8 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	public function tabs( array $tabs ) {
 		$tabs['instagram'] = array();
 
-		$this->get_user_credentials();
-		if ( ! empty( $this->user_credentials ) ) {
+		$user_creds = $this->get_user_credentials();
+		if ( ! empty( $user_creds ) ) {
 			$tabs['instagram']['mine'] = array(
 				'text'       => _x( 'My Instagrams', 'Tab title', 'mexp' ),
 				'defaultTab' => true,

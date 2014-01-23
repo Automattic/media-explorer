@@ -13,7 +13,7 @@ class MEXP_Instagram_Template extends MEXP_Template {
 				</div>
 				<div class="mexp-item-main">
 					<div class="mexp-item-content">
-						<strong>{{ data.meta.user.username }}:</strong> {{ data.content }}
+						<strong>{{ data.meta.user.username }}{{ data.content ? ':' : '' }}</strong> {{ data.content }}
 					</div>
 					<div class="mexp-item-date">
 						{{ data.date }}
