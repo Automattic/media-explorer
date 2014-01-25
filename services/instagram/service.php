@@ -144,7 +144,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 		$data = array();
 		if ( 200 == $code )
-			$data = json_decode( wp_remote_retrieve_body( $response ) )->data;
+			$data = json_decode( wp_remote_retrieve_body( $response ) );
 
 		return array(
 			'code' => $code,
@@ -174,8 +174,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 		$response = new MEXP_Response;
 
-		foreach ( $r['data'] as $result ) {
-
+		foreach ( $r['data']->data as $result ) {
 			$item = new MEXP_Response_Item;
 
 			$item->set_id( $result->id );
@@ -199,7 +198,10 @@ class MEXP_Instagram_Service extends MEXP_Service {
 		}
 
 		// Pagination details
-		$response->add_meta( 'max_id', $result->id );
+		if ( !empty( $r['data']->pagination ) ) {
+			$response->add_meta( 'max_id', $r['data']->pagination->next_max_id );
+			$response->add_meta( 'min_id', $r['data']->pagination->next_min_id );
+		}
 
 		return $response;
 
