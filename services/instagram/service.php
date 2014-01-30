@@ -23,7 +23,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 		require_once dirname( __FILE__ ) . '/template.php';
 
-		# Go!
+		// Go!
 		$this->set_template( new MEXP_Instagram_Template );
 
 	}
@@ -63,8 +63,9 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 		$query_params = array();
 
-		if ( isset( $params['q'] ) )
+		if ( isset( $params['q'] ) ) {
 			$q = $query_params['q'] = sanitize_title_with_dashes( $params['q'] );
+		}
 
 		switch ( $tab ) {
 			case 'tag':
@@ -93,9 +94,10 @@ class MEXP_Instagram_Service extends MEXP_Service {
 				$endpoint = 'media/popular';
 		}
 
-		if ( !empty( $request['max_id'] ) )
+		if ( !empty( $request['max_id'] ) ) {
 			$query_params['max_id'] = $request['max_id'];
-
+		}
+		
 		$response = $this->do_request( $endpoint, $query_params );
 
 		if ( is_wp_error( $response ) ) {
@@ -143,8 +145,9 @@ class MEXP_Instagram_Service extends MEXP_Service {
 		$code = wp_remote_retrieve_response_code( $response );
 
 		$data = array();
-		if ( 200 == $code )
+		if ( 200 == $code ) {
 			$data = json_decode( wp_remote_retrieve_body( $response ) );
+		}
 
 		return array(
 			'code' => $code,
@@ -169,8 +172,9 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 	public function response( $r ) {
 
-		if ( empty( $r['data'] ) )
+		if ( empty( $r['data'] ) ) {
 			return false;
+		}
 
 		$response = new MEXP_Response;
 
@@ -241,7 +245,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	public function labels( array $labels ) {
 		$labels['instagram'] = array(
 			'title'     => __( 'Insert Instagram', 'mexp' ),
-			# @TODO the 'insert' button text gets reset when selecting items. find out why.
+			// @TODO the 'insert' button text gets reset when selecting items. find out why.
 			'insert'    => __( 'Insert Instagram', 'mexp' ),
 			'noresults' => __( 'No pics matched your search query', 'mexp' ),
 			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' ),
@@ -253,8 +257,9 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 	private function get_generic_credentials() {
 
-		if ( is_null( $this->generic_credentials ) )
+		if ( is_null( $this->generic_credentials ) ) {
 			$this->generic_credentials = (array) apply_filters( 'mexp_instagram_credentials', array() );
+		}
 
 		return $this->generic_credentials;
 
@@ -262,8 +267,9 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 	private function get_user_credentials() {
 		
-		if ( is_null( $this->user_credentials ) )
+		if ( is_null( $this->user_credentials ) ) {
 			$this->user_credentials = (array) apply_filters( 'mexp_instagram_user_credentials', array() );
+		}
 
 		return $this->user_credentials;
 
