@@ -159,7 +159,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 		$response = $this->do_request( 'users/search', array( 'q' => $username ) );
 
 		if ( ! is_wp_error( $response ) && 200 == $response['code'] ) {
-			foreach ( $response['data'] as $user ) {
+			foreach ( $response['data']->data as $user ) {
 				if ( $user->username == $username ) {
 					return $user->id;
 				}
