@@ -248,7 +248,6 @@ class MEXP_Instagram_Service extends MEXP_Service {
 			// @TODO the 'insert' button text gets reset when selecting items. find out why.
 			'insert'    => __( 'Insert Instagram', 'mexp' ),
 			'noresults' => __( 'No pics matched your search query', 'mexp' ),
-			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' ),
 			'loadmore'  => __( 'Load more pics', 'mexp' ),
 		);
 
