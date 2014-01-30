@@ -202,8 +202,13 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 		// Pagination details
 		if ( !empty( $r['data']->pagination ) ) {
-			$response->add_meta( 'max_id', $r['data']->pagination->next_max_id );
-			$response->add_meta( 'min_id', $r['data']->pagination->next_min_id );
+			if ( isset( $r['data']->pagination->next_max_id ) ) {
+				$response->add_meta( 'max_id', $r['data']->pagination->next_max_id );
+			}
+			
+			if ( isset( $r['data']->pagination->next_min_id ) ) {
+				$response->add_meta( 'min_id', $r['data']->pagination->next_min_id );
+			}
 		}
 
 		return $response;
