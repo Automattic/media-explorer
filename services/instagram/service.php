@@ -137,9 +137,8 @@ class MEXP_Instagram_Service extends MEXP_Service {
 			$params['access_token'] = $credentials['access_token'];
 		}
 
-		$query_params = http_build_query( $params, null, '&' );
+		$url = add_query_arg( $params, "$host/$version/$endpoint/" );
 
-		$url = "$host/$version/$endpoint/?$query_params";
 		$response = wp_remote_get( $url );
 
 		$code = wp_remote_retrieve_response_code( $response );
