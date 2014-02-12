@@ -11,12 +11,12 @@ the next steps:
 * Clone this repo in the plugins folder of your WordPress install with `git
 clone https://github.com/Automattic/media-explorer.git`.
 * Get your credentials:
-** [Twitter](http://dev.twitter.com)
-** [YouTube](https://developers.google.com/youtube/v3/).
-** [Instagram](https://instagram.com/developer).
-*** You'll have to create or use an existing project in your [Google Developers Console](https://cloud.google.com/console/project)
-*** Ensure that this project has the "YouTube Data API v3" API enabled.
-*** Create and use a public access API Key for your project.
+  * [Twitter](http://dev.twitter.com)
+  * [Instagram](https://instagram.com/developer).
+  * [YouTube](https://developers.google.com/youtube/v3/).
+    * For YouTube, you'll have to create or use an existing project in your [Google Developers Console](https://cloud.google.com/console/project)
+    * Ensure that this project has the "YouTube Data API v3" API enabled.
+    * Create and use a public access API Key for your project.
 * Write your credentials in [mexp-creds.php](https://github.com/Automattic/media-explorer/blob/master/mexp-creds.php)
 * Activate the "MEXP oAuth Creditials" plugin to enable the configured API keys.
 * Enjoy!
