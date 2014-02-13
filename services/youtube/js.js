@@ -222,7 +222,7 @@ wp.media.view.Toolbar.MEXP = toolbarView.extend({
 
 		toolbarView.prototype.initialize.apply( this, arguments );
 
-		this.set( 'spinner', new Backbone.View({
+		this.set( 'spinner', new wp.Backbone.View({
 			tagName: 'span',
 			className: 'spinner spinner-bottom',
 			priority: -20,

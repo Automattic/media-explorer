@@ -15,7 +15,7 @@ var media = wp.media;
 
 // VIEW: MEDIA ITEM:
 
-media.view.MEXPItem = Backbone.View.extend({
+media.view.MEXPItem = wp.Backbone.View.extend({
 
     tagName   : 'li',
     className : 'mexp-item attachment',
