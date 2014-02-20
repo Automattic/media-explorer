@@ -120,6 +120,6 @@ function mexp_twitter_credentials_callback( array $credentials ) {
 
 add_filter( 'mexp_instagram_user_credentials', 'mexp_instagram_user_credentials_callback', 99 );
 
-function mexp_instagram_credentials_callback( array $credentials ) {
+function mexp_instagram_user_credentials_callback( array $credentials ) {
 	return mexp_get_keyring_oauth2_credentials( 'instagram', $credentials );
 }
