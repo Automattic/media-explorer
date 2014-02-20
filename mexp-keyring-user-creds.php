@@ -123,3 +123,13 @@ add_filter( 'mexp_instagram_user_credentials', 'mexp_instagram_user_credentials_
 function mexp_instagram_user_credentials_callback( array $credentials ) {
 	return mexp_get_keyring_oauth2_credentials( 'instagram', $credentials );
 }
+
+add_filter( 'mexp_youtube_developer_key', 'mexp_youtube_developer_key_callback', 99 );
+
+function mexp_youtube_developer_key_callback( $key ) {
+	$credentials = mexp_get_keyring_oauth2_credentials( 'google-contacts', $credentials );
+	if ( isset( $credentials['access_token'] ) ) {
+		return $credentials['access_token'];
+	}
+	return $key;
+}
