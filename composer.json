@@ -1,7 +1,7 @@
 {
 	"name"       : "automattic/media-explorer",
 	"description": "Extends the Media Manager to add support for external media services.",
-	"homepage"   : "http://wordpress.org/plugins/media-explorer/",
+	"homepage"   : "https://github.com/Automattic/media-explorer/blob/master/README.md",
 	"type"       : "wordpress-plugin",
 	"license"    : "GPL-2.0+",
 	"authors"    : [
