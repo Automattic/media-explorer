@@ -1,10 +1,9 @@
 <?php
 /*
 Plugin Name: MEXP Keyring Credentials
-Description: MEXP Keyring Credentials
+Description: Allows the use of the <a href="http://wordpress.org/plugins/keyring/">Keyring plugin</a> to authenticate for Twitter, Instagram and YouTube services to Media Explorer.
 Version:     1.0
-Author:      Michael Blouin, Automattic
-Author URI:  http://automattic.com
+Author:      <a href="http://automattic.com">Michael Blouin (Automattic)</a>, <a href="http://codeforthepeople.com/">John Blackbourn (Code For The People)</a>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
