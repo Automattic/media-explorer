@@ -82,7 +82,7 @@ wp.media.view.MEXP = mexpContentView.extend({
 			isInfiniteScroll = false;
 			jQuery( '.tab-all #page_token' ).val( '' );
 			params.page_token = '';
-		} else {
+		} else {
 			isInfiniteScroll = true;
 		}
 
