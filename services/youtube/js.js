@@ -206,7 +206,7 @@ wp.media.view.MEXP = mexpContentView.extend({
 		jQuery( '.spinner-bottom' ).show();
 	},
 	
-	loaded: function() {
+	loaded: function() {
 		mexpContentView.prototype.loaded.apply( this, arguments );
 
 		if ( 'youtube' !== this.service.id ) return;
