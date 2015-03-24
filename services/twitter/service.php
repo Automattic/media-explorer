@@ -103,6 +103,12 @@ class MEXP_Twitter_Service extends MEXP_Service {
 			'count'       => 20,
 		);
 
+		if ( $request['tab'] != 'location' ) {
+			if ( empty( $params['q'] ) && empty( $params['hashtag'] ) && empty( $params['by_user'] ) && empty( $params['to_user'] ) ) {
+				return false;
+			}
+		}
+
 		if ( isset( $params['coords'] ) and isset( $params['radius'] ) ) {
 			if ( is_array( $params['radius'] ) )
 				$params['radius'] = reset( $params['radius'] );

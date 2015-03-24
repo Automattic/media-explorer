@@ -125,7 +125,7 @@ html.ie8 .media-frame .mexp-content .mexp-item.selected {
 /* ************************ */
 
 .media-frame .mexp-content-twitter .mexp-item {
-	float: none;
+	width: 100%;
 	max-width: 800px;
 	text-align: left;
 	margin: 6px 10px;
@@ -190,7 +190,7 @@ html.ie8 .media-frame .mexp-content .mexp-item.selected {
 }
 
 .media-frame .mexp-item-youtube .mexp-item-main {
-	max-height: 48px;
+	max-height: 52px;
 	overflow: hidden;
 }
 

@@ -21,6 +21,8 @@ wp.media.view.MediaFrame.Post = pf.extend({
 
 	initialize: function() {
 
+		var $ = jQuery;
+
 		pf.prototype.initialize.apply( this, arguments );
 
 		this.on( 'content:render:mexp-service-twitter-content-location', _.bind( function() {

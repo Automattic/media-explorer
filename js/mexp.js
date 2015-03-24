@@ -108,7 +108,7 @@ media.view.MEXP = media.View.extend({
 			this.collection = new Backbone.Collection();
 			this.collection.reset( this.model.get( 'items' ) );
 
-			jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
+			jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).css('display', 'block');
 		} else {
 			jQuery( '#' + this.service.id + '-loadmore' ).hide();
 		}
@@ -343,7 +343,7 @@ media.view.MEXP = media.View.extend({
 
 		}
 
-		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
+		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).css('display', 'block');
 		this.model.set( 'max_id', response.meta.max_id );
 
 		this.trigger( 'loaded loaded:success', response );
@@ -362,7 +362,7 @@ media.view.MEXP = media.View.extend({
 	fetchedError: function( response ) {
 
 		this.$el.find( '.mexp-error' ).text( response.error_message ).show();
-		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).show();
+		jQuery( '#' + this.service.id + '-loadmore' ).attr( 'disabled', false ).css('display', 'block');
 		this.trigger( 'loaded loaded:error', response );
 
 	},
