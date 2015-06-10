@@ -268,7 +268,7 @@ media.view.MEXP = media.View.extend({
 	loading: function() {
 
 		// show spinner
-		this.$el.find( '.spinner' ).show();
+		this.$el.find( '.spinner' ).addClass( 'is-active' );
 
 		// hide messages
 		this.$el.find( '.mexp-error' ).hide().text('');
@@ -281,7 +281,7 @@ media.view.MEXP = media.View.extend({
 	loaded: function( response ) {
 
 		// hide spinner
-		this.$el.find( '.spinner' ).hide();
+		this.$el.find( '.spinner' ).removeClass( 'is-active' );
 
 	},
 
