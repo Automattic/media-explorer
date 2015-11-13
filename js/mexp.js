@@ -59,7 +59,7 @@ media.view.Toolbar.MEXP = media.view.Toolbar.extend({
 		var serviceName = this.controller.state().id.replace( /mexp-service-/g, '');
 
 		this.set( 'pagination', new media.view.Button({
-			tagName: 'a',
+			tagName: 'button',
 			classes: 'mexp-pagination button button-secondary',
 			id: serviceName + '-loadmore',
 			text: mexp.labels.loadmore,
