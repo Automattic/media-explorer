@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: MEXP oAuth Credentials
-Description: MEXP oAuth Credentials
+Description: A blank template plugin for you to enter your credentials for Twitter, YouTube and Instagram (i.e. this plugin will not work without entering your details).
 Version:     1.0
 Author:      John Blackbourn
 Author URI:  http://johnblackbourn.com/
