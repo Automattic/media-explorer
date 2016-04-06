@@ -84,11 +84,11 @@ class MEXP_YouTube_Service extends MEXP_Service {
 		foreach ( $search_response['items'] as $index => $search_item ) {
 			$item = new MEXP_Response_Item();
 			if ( $request['type'] == 'video' && isset( $request['q'] ) ) { // For videos searched by query
-				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
+				$item->set_url( esc_url( sprintf( "https://www.youtube.com/watch?v=%s", $search_item['id']['videoId'] ) ) );
 			} elseif( $request['type'] == 'playlist' && isset( $request['q'] ) ) { // For playlists searched by query
-				$item->set_url( esc_url( sprintf( "http://www.youtube.com/playlist?list=%s", $search_item['id']['playlistId'] ) ) );
+				$item->set_url( esc_url( sprintf( "https://www.youtube.com/playlist?list=%s", $search_item['id']['playlistId'] ) ) );
 			} else { // For videos searched by channel name
-				$item->set_url( esc_url( sprintf( "http://www.youtube.com/watch?v=%s", $search_item['snippet']['resourceId']['videoId'] ) ) );
+				$item->set_url( esc_url( sprintf( "https://www.youtube.com/watch?v=%s", $search_item['snippet']['resourceId']['videoId'] ) ) );
 			}
 			$item->add_meta( 'user', $search_item['snippet']['channelTitle'] );
 			$item->set_id( (int) $params['startIndex'] + (int) $index );
