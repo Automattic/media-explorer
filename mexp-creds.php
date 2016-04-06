@@ -4,7 +4,7 @@ Plugin Name: MEXP oAuth Credentials
 Description: MEXP oAuth Credentials
 Version:     1.0
 Author:      John Blackbourn
-Author URI:  http://johnblackbourn.com/
+Author URI:  https://johnblackbourn.com/
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
