@@ -7,11 +7,11 @@
 	"authors"    : [
 		{
 			"name"    : "Automattic",
-			"homepage": "http://automattic.com/"
+			"homepage": "https://automattic.com/"
 		},
 		{
 			"name"    : "Code For The People",
-			"homepage": "http://codeforthepeople.com/"
+			"homepage": "https://codeforthepeople.com/"
 		}
 	],
 	"support"    : {

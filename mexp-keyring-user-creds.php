@@ -4,7 +4,7 @@ Plugin Name: MEXP Keyring Credentials
 Description: MEXP Keyring Credentials
 Version:     1.0
 Author:      Michael Blouin, Automattic
-Author URI:  http://automattic.com
+Author URI:  https://automattic.com
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

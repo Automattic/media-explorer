@@ -135,7 +135,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 	public function get_coords( $location ) {
 
-		$url = sprintf( 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false',
+		$url = sprintf( 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false',
 			urlencode( trim( $location ) )
 		);
 		$result = wp_remote_get( $url );
@@ -274,7 +274,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
 			'insert'    => __( 'Insert Tweet', 'mexp' ),
 			'noresults' => __( 'No tweets matched your search query', 'mexp' ),
-			'gmaps_url' => set_url_scheme( 'http://maps.google.com/maps/api/js' ),
+			'gmaps_url' => set_url_scheme( 'https://maps.google.com/maps/api/js', 'https' ),
 			'loadmore'  => __( 'Load more tweets', 'mexp' ),
 		);
 
