@@ -225,7 +225,8 @@ class Media_Explorer extends MEXP_Plugin {
 			'mexp',
 			$this->plugin_url( 'js/mexp.js' ),
 			array( 'jquery', 'media-views' ),
-			$this->plugin_ver( 'js/mexp.js' )
+			$this->plugin_ver( 'js/mexp.js' ),
+			true
 		);
 
 		wp_localize_script(
