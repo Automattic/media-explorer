@@ -67,6 +67,11 @@ class MEXP_Instagram_Service extends MEXP_Service {
 			$q = $query_params['q'] = sanitize_title_with_dashes( $params['q'] );
 		}
 
+		$credentials = $this->get_user_credentials();
+		if ( isset( $credentials['access_token'] ) ) {
+			$query_params['access_token'] = $credentials['access_token'];
+		}
+
 		switch ( $tab ) {
 			case 'tag':
 				$endpoint = "tags/{$q}/media/recent";
@@ -78,14 +83,10 @@ class MEXP_Instagram_Service extends MEXP_Service {
 				break;
 
 			case 'mine':
-				$credentials = $this->get_user_credentials();
-				$query_params['access_token'] = $credentials['access_token'];
 				$endpoint = 'users/self/media/recent';
 				break;
 
 			case 'feed':
-				$credentials = $this->get_user_credentials();
-				$query_params['access_token'] = $credentials['access_token'];
 				$endpoint = 'users/self/feed';
 				break;
 
