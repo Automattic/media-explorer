@@ -82,7 +82,7 @@ wp.media.view.MEXP = mexpContentView.extend({
 			isInfiniteScroll = false;
 			jQuery( '.tab-all #page_token' ).val( '' );
 			params.page_token = '';
-		} else {
+		} else {
 			isInfiniteScroll = true;
 		}
 
@@ -206,7 +206,7 @@ wp.media.view.MEXP = mexpContentView.extend({
 		jQuery( '.spinner-bottom' ).show();
 	},
 	
-	loaded: function() {
+	loaded: function() {
 		mexpContentView.prototype.loaded.apply( this, arguments );
 
 		if ( 'youtube' !== this.service.id ) return;
