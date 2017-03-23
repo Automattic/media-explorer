@@ -213,8 +213,8 @@ media.view.MEXP = media.View.extend({
 	},
 
 	toggleSelectionHandler: function( event ) {
-
-		if ( event.target.href )
+		// IE<=11 can add href property to HTMLImageElement
+		if ( event.target.href && 'IMG' !== event.target.nodeName )
 			return;
 
 		var target = jQuery( '#' + event.currentTarget.id );
