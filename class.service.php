@@ -66,9 +66,7 @@ abstract class MEXP_Service {
 	 * @return null
 	 */
 	final public function set_template( MEXP_Template $template ) {
-
 		$this->template = $template;
-
 	}
 
 	/**
@@ -77,9 +75,7 @@ abstract class MEXP_Service {
 	 * @return Template|null A Template object, or null if a template isn't set.
 	 */
 	final public function get_template() {
-
 		return $this->template;
-
 	}
 
 }

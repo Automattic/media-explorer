@@ -79,14 +79,14 @@ abstract class MEXP_Plugin {
 	 * @author John Blackbourn
 	 */
 	protected function _plugin( $item, $file = '' ) {
-		if ( !isset( $this->plugin ) ) {
+		if ( ! isset( $this->plugin ) ) {
 			$this->plugin = array(
 				'url'  => plugin_dir_url( $this->file ),
 				'path' => plugin_dir_path( $this->file ),
-				'base' => plugin_basename( $this->file )
+				'base' => plugin_basename( $this->file ),
 			);
 		}
-		return $this->plugin[$item] . ltrim( $file, '/' );
+		return $this->plugin[ $item ] . ltrim( $file, '/' );
 	}
 
 }

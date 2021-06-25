@@ -29,22 +29,17 @@ final class MEXP_Response {
 	 * Add a meta value to the response. Accepts a key/value pair or an associative array.
 	 *
 	 * @param string|array $key The meta key, or an associative array of meta keys/values.
-	 * @param mixed $value The meta value.
+	 * @param mixed        $value The meta value.
 	 * @return null
 	 */
 	public function add_meta( $key, $value = null ) {
-
 		if ( is_array( $key ) ) {
-
-			foreach ( $key as $k => $v )
-				$this->meta[$k] = $v;
-
+			foreach ( $key as $k => $v ) {
+				$this->meta[ $k ] = $v;
+			}
 		} else {
-
-			$this->meta[$key] = $value;
-
+			$this->meta[ $key ] = $value;
 		}
-
 	}
 
 	/**
@@ -63,25 +58,27 @@ final class MEXP_Response {
 	 * @return array|bool The response output, or boolean false if there's nothing to output.
 	 */
 	public function output() {
-
-		if ( empty( $this->items ) )
+		if ( empty( $this->items ) ) {
 			return false;
+		}
 
-		if ( is_null( $this->meta['count'] ) )
+		if ( is_null( $this->meta['count'] ) ) {
 			$this->meta['count'] = count( $this->items );
-		if ( is_null( $this->meta['min_id'] ) )
+		}
+		if ( is_null( $this->meta['min_id'] ) ) {
 			$this->meta['min_id'] = reset( $this->items )->id;
+		}
 
 		$output = array(
 			'meta'  => $this->meta,
-			'items' => array()
+			'items' => array(),
 		);
 
-		foreach ( $this->items as $item )
+		foreach ( $this->items as $item ) {
 			$output['items'][] = $item->output();
+		}
 
 		return $output;
-
 	}
 
 }
@@ -163,22 +160,17 @@ final class MEXP_Response_Item {
 	 * Add a meta value to the response item. Accepts a key/value pair or an associative array.
 	 *
 	 * @param string|array $key The meta key, or an associative array of meta keys/values.
-	 * @param mixed $value The meta value.
+	 * @param mixed        $value The meta value.
 	 * @return null
 	 */
 	public function add_meta( $key, $value = null ) {
-
 		if ( is_array( $key ) ) {
-
-			foreach ( $key as $k => $v )
-				$this->meta[$k] = $v;
-
+			foreach ( $key as $k => $v ) {
+				$this->meta[ $k ] = $v;
+			}
 		} else {
-
-			$this->meta[$key] = $value;
-
+			$this->meta[ $key ] = $value;
 		}
-
 	}
 
 	/**
@@ -187,9 +179,9 @@ final class MEXP_Response_Item {
 	 * @return array The response item output.
 	 */
 	public function output() {
-
-		if ( is_null( $this->date_format ) )
+		if ( is_null( $this->date_format ) ) {
 			$this->date_format = get_option( 'date_format' );
+		}
 
 		return array(
 			'id'        => $this->id,
@@ -199,7 +191,6 @@ final class MEXP_Response_Item {
 			'date'      => date( $this->date_format, $this->date ),
 			'meta'      => $this->meta,
 		);
-
 	}
 
 }

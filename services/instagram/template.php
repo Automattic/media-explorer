@@ -28,9 +28,7 @@ class MEXP_Instagram_Template extends MEXP_Template {
 	}
 
 	public function search( $id, $tab ) {
-
 		switch ( $tab ) {
-
 			case 'tag':
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
@@ -42,15 +40,14 @@ class MEXP_Instagram_Template extends MEXP_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a tag', 'mexp' ); ?>"
 						>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp' ); ?>">
 					<input type="hidden" name="type" value="tag">
 					<div class="spinner"></div>
 				</form>
 				<?php
-			break;
+				break;
 
 			case 'by_user':
-
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
@@ -61,37 +58,37 @@ class MEXP_Instagram_Template extends MEXP_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter an Instagram Username', 'mexp' ); ?>"
 						>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp' ); ?>">
 					<input type="hidden" name="type" value="by_user">
 					<div class="spinner"></div>
 				</form>
 				<?php
-			break;
+				break;
 
 			case 'mine':
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
-					<span class="description"><?php _e( 'A selection of your own recent Instagrams.', 'mexp' ) ?></span>
+					<span class="description"><?php _e( 'A selection of your own recent Instagrams.', 'mexp' ); ?></span>
 					<input type="hidden" name="type" value="mine">
 					<div class="spinner"></div>
 				</form>
 				<?php
-			break;
+				break;
 
 			case 'feed':
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
-					<span class="description"><?php _e( 'The latest Instagrams from your personal feed.', 'mexp' ) ?></span>
+					<span class="description"><?php _e( 'The latest Instagrams from your personal feed.', 'mexp' ); ?></span>
 					<input type="hidden" name="type" value="mine">
 					<div class="spinner"></div>
 				</form>
 				<?php
-			break;
+				break;
 
 			case 'popular':
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
-					<span class="description"><?php _e( 'A selection of trending content on Instagram.', 'mexp' ) ?></span>
+					<span class="description"><?php _e( 'A selection of trending content on Instagram.', 'mexp' ); ?></span>
 					<input type="hidden" name="type" value="popular">
 					<div class="spinner"></div>
 				</form>

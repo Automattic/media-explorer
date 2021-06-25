@@ -26,21 +26,20 @@ class Media_Explorer extends MEXP_Plugin {
 	 */
 	protected function __construct( $file ) {
 
-		# Filters:
-		# (none)
+		// Filters:
+		// (none)
 
-		# Actions:
-		add_action( 'plugins_loaded',        array( $this, 'action_plugins_loaded' ) );
-		add_action( 'init',                  array( $this, 'action_init' ) );
-		add_action( 'wp_enqueue_media',      array( $this, 'action_enqueue_media' ) );
+		// Actions:
+		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
+		add_action( 'init', array( $this, 'action_init' ) );
+		add_action( 'wp_enqueue_media', array( $this, 'action_enqueue_media' ) );
 		add_action( 'print_media_templates', array( $this, 'action_print_media_templates' ) );
 
-		# AJAX actions:
-		add_action( 'wp_ajax_mexp_request',   array( $this, 'ajax_request' ) );
+		// AJAX actions:
+		add_action( 'wp_ajax_mexp_request', array( $this, 'ajax_request' ) );
 
-		# Parent setup:
+		// Parent setup:
 		parent::__construct( $file );
-
 	}
 
 	/**
@@ -50,15 +49,14 @@ class Media_Explorer extends MEXP_Plugin {
 	 * @return Service|WP_Error A Service object on success, a WP_Error object on failure.
 	 */
 	public function get_service( $service_id ) {
-
-		if ( isset( $this->services[$service_id] ) )
-			return $this->services[$service_id];
+		if ( isset( $this->services[ $service_id ] ) ) {
+			return $this->services[ $service_id ];
+		}
 
 		return new WP_Error(
 			'invalid_service',
 			sprintf( __( 'Media service "%s" was not found', 'mexp' ), esc_html( $service_id ) )
 		);
-
 	}
 
 	/**
@@ -77,21 +75,19 @@ class Media_Explorer extends MEXP_Plugin {
 	 * @return null
 	 */
 	public function action_print_media_templates() {
-
 		foreach ( $this->get_services() as $service_id => $service ) {
-
-			if ( ! $template = $service->get_template() )
+			if ( ! $template = $service->get_template() ) {
 				continue;
+			}
 
 			// apply filters for tabs
 			$tabs = apply_filters( 'mexp_tabs', array() );
 
-			# @TODO this list of templates should be somewhere else. where?
+			// @TODO this list of templates should be somewhere else. where?
 			foreach ( array( 'search', 'item' ) as $t ) {
-
-				foreach ( $tabs[$service_id] as $tab_id => $tab ) {
-
-					$id = sprintf( 'mexp-%s-%s-%s',
+				foreach ( $tabs[ $service_id ] as $tab_id => $tab ) {
+					$id = sprintf(
+						'mexp-%s-%s-%s',
 						esc_attr( $service_id ),
 						esc_attr( $t ),
 						esc_attr( $tab_id )
@@ -100,14 +96,12 @@ class Media_Explorer extends MEXP_Plugin {
 					$template->before_template( $id, $tab_id );
 					call_user_func( array( $template, $t ), $id, $tab_id );
 					$template->after_template( $id, $tab_id );
-
 				}
-
 			}
 
 			foreach ( array( 'thumbnail' ) as $t ) {
-
-				$id = sprintf( 'mexp-%s-%s',
+				$id = sprintf(
+					'mexp-%s-%s',
 					esc_attr( $service_id ),
 					esc_attr( $t )
 				);
@@ -115,11 +109,8 @@ class Media_Explorer extends MEXP_Plugin {
 				$template->before_template( $id );
 				call_user_func( array( $template, $t ), $id );
 				$template->after_template( $id );
-
 			}
-
 		}
-
 	}
 
 	/**
@@ -129,62 +120,65 @@ class Media_Explorer extends MEXP_Plugin {
 	 * @return null
 	 */
 	public function ajax_request() {
-
-		if ( !isset( $_POST['_nonce'] ) or !wp_verify_nonce( $_POST['_nonce'], 'mexp_request' ) )
+		if ( ! isset( $_POST['_nonce'] ) or ! wp_verify_nonce( $_POST['_nonce'], 'mexp_request' ) ) {
 			die( '-1' );
+		}
 
 		$service = $this->get_service( stripslashes( $_POST['service'] ) );
 
 		if ( is_wp_error( $service ) ) {
 			do_action( 'mexp_ajax_request_error', $service );
-			wp_send_json_error( array(
-				'error_code'    => $service->get_error_code(),
-				'error_message' => $service->get_error_message()
-			) );
+			wp_send_json_error(
+				array(
+					'error_code'    => $service->get_error_code(),
+					'error_message' => $service->get_error_message(),
+				) 
+			);
 		}
 
 		foreach ( $service->requires() as $file => $class ) {
-
-			if ( class_exists( $class ) )
+			if ( class_exists( $class ) ) {
 				continue;
+			}
 
-			require_once sprintf( '%s/class.%s.php',
+			require_once sprintf(
+				'%s/class.%s.php',
 				dirname( __FILE__ ),
 				$file
 			);
-
 		}
 
-		$request = wp_parse_args( stripslashes_deep( $_POST ), array(
-			'params'  => array(),
-			'tab'     => null,
-			'min_id'  => null,
-			'max_id'  => null,
-			'page'    => 1,
-		) );
-		$request['page'] = absint( $request['page'] );
+		$request            = wp_parse_args(
+			stripslashes_deep( $_POST ),
+			array(
+				'params' => array(),
+				'tab'    => null,
+				'min_id' => null,
+				'max_id' => null,
+				'page'   => 1,
+			) 
+		);
+		$request['page']    = absint( $request['page'] );
 		$request['user_id'] = absint( get_current_user_id() );
-		$request = apply_filters( 'mexp_ajax_request_args', $request, $service );
+		$request            = apply_filters( 'mexp_ajax_request_args', $request, $service );
 
 		$response = $service->request( $request );
 
 		if ( is_wp_error( $response ) ) {
 			do_action( 'mexp_ajax_request_error', $response );
-			wp_send_json_error( array(
-				'error_code'    => $response->get_error_code(),
-				'error_message' => $response->get_error_message()
-			) );
-
-		} else if ( is_a( $response, 'MEXP_Response' ) ) {
+			wp_send_json_error(
+				array(
+					'error_code'    => $response->get_error_code(),
+					'error_message' => $response->get_error_message(),
+				) 
+			);
+		} elseif ( is_a( $response, 'MEXP_Response' ) ) {
 			do_action( 'mexp_ajax_request_success', $response );
 			wp_send_json_success( $response->output() );
-
 		} else {
 			do_action( 'mexp_ajax_request_success', false );
 			wp_send_json_success( false );
-
 		}
-
 	}
 
 	/**
@@ -194,7 +188,6 @@ class Media_Explorer extends MEXP_Plugin {
 	 * @return null
 	 */
 	public function action_enqueue_media() {
-
 		$mexp = array(
 			'_nonce'    => wp_create_nonce( 'mexp_request' ),
 			'labels'    => array(
@@ -208,13 +201,13 @@ class Media_Explorer extends MEXP_Plugin {
 		foreach ( $this->get_services() as $service_id => $service ) {
 			$service->load();
 
-			$tabs = apply_filters( 'mexp_tabs', array() );
+			$tabs   = apply_filters( 'mexp_tabs', array() );
 			$labels = apply_filters( 'mexp_labels', array() );
 
-			$mexp['services'][$service_id] = array(
+			$mexp['services'][ $service_id ] = array(
 				'id'     => $service_id,
-				'labels' => $labels[$service_id],
-				'tabs'   => $tabs[$service_id],
+				'labels' => $labels[ $service_id ],
+				'tabs'   => $tabs[ $service_id ],
 			);
 		}
 
@@ -240,7 +233,6 @@ class Media_Explorer extends MEXP_Plugin {
 			array( /*'wp-admin'*/ ),
 			$this->plugin_ver( 'css/mexp.css' )
 		);
-
 	}
 
 	/**
@@ -261,14 +253,13 @@ class Media_Explorer extends MEXP_Plugin {
 	 * @return null
 	 */
 	public function action_init() {
-
 		load_plugin_textdomain( 'mexp', false, dirname( $this->plugin_base() ) . '/languages/' );
 
 		foreach ( apply_filters( 'mexp_services', array() ) as $service_id => $service ) {
-			if ( is_a( $service, 'MEXP_Service' ) )
-				$this->services[$service_id] = $service;
+			if ( is_a( $service, 'MEXP_Service' ) ) {
+				$this->services[ $service_id ] = $service;
+			}
 		}
-
 	}
 
 	/**
@@ -278,14 +269,13 @@ class Media_Explorer extends MEXP_Plugin {
 	 * @return Media_Explorer
 	 */
 	public static function init( $file = null ) {
-
 		static $instance = null;
 
-		if ( !$instance )
+		if ( ! $instance ) {
 			$instance = new Media_Explorer( $file );
+		}
 
 		return $instance;
-
 	}
 
 }
