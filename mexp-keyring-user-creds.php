@@ -21,8 +21,7 @@ GNU General Public License for more details.
 add_filter( 'mexp_instagram_user_credentials', 'mexp_instagram_user_credentials_callback' );
 
 function mexp_instagram_user_credentials_callback( $credentials ) {
-	
-	if ( ! class_exists( 'Keyring') ) {
+	if ( ! class_exists( 'Keyring' ) ) {
 		return $credentials;
 	}
 
@@ -43,23 +42,20 @@ function mexp_instagram_user_credentials_callback( $credentials ) {
 		if ( in_array( 'instagram', $users_tokens ) ) {
 			$credentials['access_token'] = $users_tokens['instagram'][0]->token;
 		}
-		
 	} elseif ( method_exists( $keyring_store, 'get_tokens' ) ) {
 		
 		// The released version uses the get_tokens method
 		$users_tokens = $keyring_store->get_tokens(
-				array(
-					'service' => 'instagram',
-					'user_id' => get_current_user_id(),
-				)
-			);
+			array(
+				'service' => 'instagram',
+				'user_id' => get_current_user_id(),
+			)
+		);
 		
 		if ( count( $users_tokens ) > 0 ) {
 			$credentials['access_token'] = $users_tokens[0]->token;
 		}
-		
 	}
 	
 	return $credentials;
-
 }

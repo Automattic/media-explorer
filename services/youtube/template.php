@@ -20,7 +20,7 @@ class MEXP_YouTube_Template extends MEXP_Template {
 						{{ data.content }}
 					</div>
 					<div class="mexp-item-channel">
-						<?php _e( 'by', 'mexp' ) ?> {{ data.meta.user }}
+						<?php _e( 'by', 'mexp' ); ?> {{ data.meta.user }}
 					</div>
 					<div class="mexp-item-date">
 						{{ data.date }}
@@ -46,8 +46,7 @@ class MEXP_YouTube_Template extends MEXP_Template {
 	 * @param string $tab the tab were the user is right now
 	 */
 	public function search( $id, $tab ) {
-		switch ( $tab ) 
-		{
+		switch ( $tab ) {
 			case 'all':
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix tab-all">
@@ -66,11 +65,11 @@ class MEXP_YouTube_Template extends MEXP_Template {
 						<option value="video"><?php esc_html_e( 'Videos', 'mexp' ); ?></option>
 						<option value="playlist"><?php esc_html_e( 'Playlists', 'mexp' ); ?></option>
 					</select>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp' ); ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
-			break;
+				break;
 			
 			case 'by_user':
 				?>
@@ -86,11 +85,11 @@ class MEXP_YouTube_Template extends MEXP_Template {
 					>
 					<input type="hidden" name="tab" value="by_user">
 					<input type="hidden" name="page_token" value="" id="page_token" class="by_user"/>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp' ); ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
-			break;
+				break;
 		}
 	}
 

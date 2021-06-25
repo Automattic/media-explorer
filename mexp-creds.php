@@ -21,14 +21,12 @@ GNU General Public License for more details.
 add_filter( 'mexp_twitter_credentials', 'mexp_twitter_credentials_callback' );
 
 function mexp_twitter_credentials_callback() {
-
 	return array(
 		'consumer_key'       => '',
 		'consumer_secret'    => '',
 		'oauth_token'        => '',
-		'oauth_token_secret' => ''
+		'oauth_token_secret' => '',
 	);
-
 }
 
 add_filter( 'mexp_youtube_developer_key', 'mexp_youtube_developer_key_callback' );
@@ -38,7 +36,6 @@ function mexp_youtube_developer_key_callback() {
 	// Add your developer key here.
 	// Get your developer key at: <https://code.google.com/apis/console>
 	return '';
-
 }
 
 add_filter( 'mexp_instagram_credentials', 'mexp_instagram_credentials_callback' );
@@ -50,5 +47,4 @@ function mexp_instagram_credentials_callback( $credentials ) {
 	return array( 
 		'access_token' => '',
 	);
-
 }
