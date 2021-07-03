@@ -210,11 +210,18 @@ class Media_Explorer extends MEXP_Plugin {
 
 			$tabs = apply_filters( 'mexp_tabs', array() );
 			$labels = apply_filters( 'mexp_labels', array() );
+			$js = apply_filters( "mexp_js_{$service_id}", array(
+				'item'       => 'media.view.MEXPItem',
+				'toolbar'    => 'media.view.Toolbar.MEXP',
+				'view'       => 'media.view.MEXP',
+				'controller' => 'media.controller.MEXP'
+			) );
 
 			$mexp['services'][$service_id] = array(
 				'id'     => $service_id,
 				'labels' => $labels[$service_id],
 				'tabs'   => $tabs[$service_id],
+				'js'     => $js
 			);
 		}
 
