@@ -61,5 +61,11 @@
 	"support": {
 		"issues": "https://github.com/Automattic/media-explorer/issues",
 		"source": "https://github.com/Automattic/media-explorer"
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }
