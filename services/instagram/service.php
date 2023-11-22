@@ -16,20 +16,17 @@ defined( 'ABSPATH' ) or die();
 
 class MEXP_Instagram_Service extends MEXP_Service {
 
-	public $user_credentials = null;
+	public $user_credentials    = null;
 	public $generic_credentials = null;
 	
 	public function __construct() {
-
 		require_once dirname( __FILE__ ) . '/template.php';
 
 		// Go!
-		$this->set_template( new MEXP_Instagram_Template );
-
+		$this->set_template( new MEXP_Instagram_Template() );
 	}
 
 	public function load() {
-
 		add_action( 'mexp_enqueue', array( $this, 'enqueue_statics' ) );
 
 		add_filter( 'mexp_tabs', array( $this, 'tabs' ), 10, 1 );
@@ -38,7 +35,6 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	}
 
 	public function enqueue_statics() {
-
 		$mexp = Media_Explorer::init();
 
 		wp_enqueue_script(
@@ -54,12 +50,11 @@ class MEXP_Instagram_Service extends MEXP_Service {
 			array(),
 			$mexp->plugin_ver( 'services/instagram/style.css' )
 		);
-
 	}
 
 	public function request( array $request ) {
 		$params = $request['params'];
-		$tab 	= $request['tab'];
+		$tab    = $request['tab'];
 
 		$query_params = array();
 
@@ -73,20 +68,20 @@ class MEXP_Instagram_Service extends MEXP_Service {
 				break;
 
 			case 'by_user':
-				$user_id = $this->get_user_id( $q );
+				$user_id  = $this->get_user_id( $q );
 				$endpoint = "users/{$user_id}/media/recent";
 				break;
 
 			case 'mine':
-				$credentials = $this->get_user_credentials();
+				$credentials                  = $this->get_user_credentials();
 				$query_params['access_token'] = $credentials['access_token'];
-				$endpoint = 'users/self/media/recent';
+				$endpoint                     = 'users/self/media/recent';
 				break;
 
 			case 'feed':
-				$credentials = $this->get_user_credentials();
+				$credentials                  = $this->get_user_credentials();
 				$query_params['access_token'] = $credentials['access_token'];
-				$endpoint = 'users/self/feed';
+				$endpoint                     = 'users/self/feed';
 				break;
 
 			case 'popular':
@@ -94,37 +89,31 @@ class MEXP_Instagram_Service extends MEXP_Service {
 				$endpoint = 'media/popular';
 		}
 
-		if ( !empty( $request['max_id'] ) ) {
+		if ( ! empty( $request['max_id'] ) ) {
 			$query_params['max_id'] = $request['max_id'];
 		}
 		
 		$response = $this->do_request( $endpoint, $query_params );
 
 		if ( is_wp_error( $response ) ) {
-			
 			return $response;
-			
 		} elseif ( 200 == $response['code'] || 400 == $response['code'] ) {
-
 			return $this->response( $response );
-
 		} else {
-
 			return new WP_Error(
 				'mexp_instagram_failed_request',
-				sprintf( __( 'Could not connect to Instagram (error %s).', 'mexp' ),
+				sprintf(
+					__( 'Could not connect to Instagram (error %s).', 'mexp' ),
 					esc_html( $response['code'] )
 				)
 			);
-
 		}
-
 	}
 
 	public function do_request( $endpoint, $params = array() ) {
-		$host = 'https://api.instagram.com';
+		$host    = 'https://api.instagram.com';
 		$version = 'v1';
-		if ( !isset( $params['access_token'] ) ) {
+		if ( ! isset( $params['access_token'] ) ) {
 			$credentials = $this->get_generic_credentials();
 
 			if ( ! isset( $credentials['access_token'] ) ) {
@@ -152,7 +141,6 @@ class MEXP_Instagram_Service extends MEXP_Service {
 			'code' => $code,
 			'data' => $data,
 		);
-
 	}
 
 	public function get_user_id( $username ) {
@@ -170,15 +158,14 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	}
 
 	public function response( $r ) {
-
 		if ( empty( $r['data'] ) ) {
 			return false;
 		}
 
-		$response = new MEXP_Response;
+		$response = new MEXP_Response();
 
 		foreach ( $r['data']->data as $result ) {
-			$item = new MEXP_Response_Item;
+			$item = new MEXP_Response_Item();
 
 			$item->set_id( $result->id );
 			$item->set_url( $result->link );
@@ -192,16 +179,18 @@ class MEXP_Instagram_Service extends MEXP_Service {
 			$item->set_date( $result->created_time );
 			$item->set_date_format( 'g:i A - j M y' );
 
-			$item->add_meta( 'user', array(
-				'username' => $result->user->username,
-			) );
+			$item->add_meta(
+				'user',
+				array(
+					'username' => $result->user->username,
+				) 
+			);
 
 			$response->add_item( $item );
-
 		}
 
 		// Pagination details
-		if ( !empty( $r['data']->pagination ) ) {
+		if ( ! empty( $r['data']->pagination ) ) {
 			if ( isset( $r['data']->pagination->next_max_id ) ) {
 				$response->add_meta( 'max_id', $r['data']->pagination->next_max_id );
 			}
@@ -212,7 +201,6 @@ class MEXP_Instagram_Service extends MEXP_Service {
 		}
 
 		return $response;
-
 	}
 
 	public function tabs( array $tabs ) {
@@ -221,26 +209,26 @@ class MEXP_Instagram_Service extends MEXP_Service {
 		$user_creds = $this->get_user_credentials();
 		if ( ! empty( $user_creds ) ) {
 			$tabs['instagram']['mine'] = array(
-				'text'       => _x( 'My Instagrams', 'Tab title', 'mexp' ),
-				'defaultTab' => true,
+				'text'          => _x( 'My Instagrams', 'Tab title', 'mexp' ),
+				'defaultTab'    => true,
 				'fetchOnRender' => true,
 			);
 			$tabs['instagram']['feed'] = array(
-				'text'       => _x( 'My Feed', 'Tab title', 'mexp' ),
+				'text'          => _x( 'My Feed', 'Tab title', 'mexp' ),
 				'fetchOnRender' => true,
 			);
 		}
 
 		$tabs['instagram']['popular'] = array(
-			'text'       => _x( 'Browse Popular', 'Tab title', 'mexp'),
-			'defaultTab' => empty( $tabs['instagram'] ),
+			'text'          => _x( 'Browse Popular', 'Tab title', 'mexp' ),
+			'defaultTab'    => empty( $tabs['instagram'] ),
 			'fetchOnRender' => true,
 		);
-		$tabs['instagram']['tag'] = array(
-			'text' => _x( 'With Tag', 'Tab title', 'mexp'),
+		$tabs['instagram']['tag']     = array(
+			'text' => _x( 'With Tag', 'Tab title', 'mexp' ),
 		);
 		$tabs['instagram']['by_user'] = array(
-			'text' => _x( 'By User', 'Tab title', 'mexp'),
+			'text' => _x( 'By User', 'Tab title', 'mexp' ),
 		);
 
 		return $tabs;
@@ -259,23 +247,19 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	}
 
 	private function get_generic_credentials() {
-
 		if ( is_null( $this->generic_credentials ) ) {
 			$this->generic_credentials = (array) apply_filters( 'mexp_instagram_credentials', array() );
 		}
 
 		return $this->generic_credentials;
-
 	}
 
 	private function get_user_credentials() {
-		
 		if ( is_null( $this->user_credentials ) ) {
 			$this->user_credentials = (array) apply_filters( 'mexp_instagram_user_credentials', array() );
 		}
 
 		return $this->user_credentials;
-
 	}
 
 }
@@ -283,7 +267,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 add_filter( 'mexp_services', 'mexp_service_instagram' );
 
 function mexp_service_instagram( array $services ) {
-	$services['instagram'] = new MEXP_Instagram_Service;
+	$services['instagram'] = new MEXP_Instagram_Service();
 
 	return $services;
 }

@@ -2,7 +2,7 @@
 
 class MEXP_YouTube_Client {
 
-	private $developer_key='';
+	private $developer_key = '';
 
 	private $api_url = 'https://www.googleapis.com/youtube/v3';
 
@@ -35,14 +35,14 @@ class MEXP_YouTube_Client {
 	 * @return string
 	 */
 	public function get_videos_from_channel( $query ) {
-
 		$channel_url_query = $this->create_url( $query, 'channels' );
 
 		// First request, in which we are trying to get the uploads playlist id of the user
 		$channel_response = self::get_json_as_array( $channel_url_query );
 
-		if ( $channel_response['pageInfo']['totalResults'] == 0 )
+		if ( $channel_response['pageInfo']['totalResults'] == 0 ) {
 			return false;
+		}
 
 		// Every YouTube channel has a "uploads" playlist, containing all the uploads of the channel
 		$playlist_params['uploads_id'] = $channel_response['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
@@ -57,7 +57,7 @@ class MEXP_YouTube_Client {
 	/**
 	 * This method creates an url from an array of parameters
 	 *
-	 * @param array $query an array containing the parameters for the request
+	 * @param array  $query an array containing the parameters for the request
 	 * @param string $resource a string containing the endpoint of the API
 	 * @return string
 	 */
@@ -71,8 +71,9 @@ class MEXP_YouTube_Client {
 		// URL for playlists
 		if ( $resource == 'playlistItems' ) {
 			$playlist_url_query = sprintf( '%s/playlistItems?maxResults=%s&playlistId=%s&part=snippet&key=%s', $this->api_url, MEXP_YouTube_Service::DEFAULT_MAX_RESULTS, $query['uploads_id'], $this->developer_key );
-			if ( isset( $query['page_token'] ) && '' != $query['page_token'] )
+			if ( isset( $query['page_token'] ) && '' != $query['page_token'] ) {
 				$playlist_url_query .= '&pageToken=' . $query['page_token'];
+			}
 			return $playlist_url_query;
 		}
 
@@ -82,28 +83,32 @@ class MEXP_YouTube_Client {
 			$params[] = 'pageToken=' . $query['page_token'];
 		}
 
-		if ( isset( $query['q'] ) )
+		if ( isset( $query['q'] ) ) {
 			$params[] = 'q=' . urlencode( $query['q'] );
+		}
 
 		// Allow searching for playlists or videos
-		if ( isset( $query['type'] ) && $query['type'] == 'playlist' )
+		if ( isset( $query['type'] ) && $query['type'] == 'playlist' ) {
 			$params[] = 'type=playlist';
-		else
+		} else {
 			$params[] = 'type=video';
+		}
 
 		// Number of results we want to return
-		if ( isset( $query['maxResults'] ) )
+		if ( isset( $query['maxResults'] ) ) {
 			$params[] = 'maxResults=' . (int) $query['maxResults'];
-		else
+		} else {
 			$params[] = 'maxResults=' . MEXP_YouTube_Service::DEFAULT_MAX_RESULTS;
+		}
 
 		// Mandatory field "part"
-		if ( isset( $query['part'] ) )
+		if ( isset( $query['part'] ) ) {
 			$params[] = 'part=' . urlencode( $query['part'] );
-		else
+		} else {
 			$params[] = 'part=snippet';
+		}
 
-		return $this->api_url . '/' . $resource . '?'. implode( '&', $params ) . '&key=' . $this->developer_key;
+		return $this->api_url . '/' . $resource . '?' . implode( '&', $params ) . '&key=' . $this->developer_key;
 	}
 
 	/**
@@ -114,9 +119,10 @@ class MEXP_YouTube_Client {
 	 */
 	private static function get_json_as_array( $url ) {
 		$response = (array) wp_remote_get( $url );
-		if ( !isset( $response['response']['code'] ) || 200 != $response['response']['code'] )
+		if ( ! isset( $response['response']['code'] ) || 200 != $response['response']['code'] ) {
 			return false;
-		else
+		} else {
 			return json_decode( $response['body'], true );
+		}
 	}
 }

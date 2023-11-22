@@ -47,11 +47,8 @@ class MEXP_Twitter_Template extends MEXP_Template {
 	}
 
 	public function search( $id, $tab ) {
-
 		switch ( $tab ) {
-
 			case 'hashtag':
-
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
@@ -62,7 +59,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'mexp' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp' ); ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -70,7 +67,6 @@ class MEXP_Twitter_Template extends MEXP_Template {
 				break;
 
 			case 'by_user':
-
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
@@ -81,7 +77,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'mexp' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp' ); ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -89,7 +85,6 @@ class MEXP_Twitter_Template extends MEXP_Template {
 				break;
 
 			case 'to_user':
-
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
@@ -100,7 +95,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'mexp' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp' ); ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -108,7 +103,6 @@ class MEXP_Twitter_Template extends MEXP_Template {
 				break;
 
 			case 'location':
-
 				?>
 				<div id="mexp_twitter_map_canvas"></div>
 				<form action="#" class="mexp-toolbar-container clearfix">
@@ -163,7 +157,6 @@ class MEXP_Twitter_Template extends MEXP_Template {
 			case 'images':
 			case 'all':
 			default:
-
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
 					<input
@@ -174,15 +167,13 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						size="40"
 						placeholder="<?php esc_attr_e( 'Search Twitter', 'mexp' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp' ); ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
 
 				break;
-
 		}
-
 	}
 
 }
