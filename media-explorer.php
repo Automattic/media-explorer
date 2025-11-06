@@ -3,6 +3,8 @@
 Plugin Name: Media Explorer
 Description: Extends the Media Manager to add support for external media services (currently Twitter, YouTube, and Instagram).
 Version:     1.2
+Requires at least: 6.4
+Requires PHP: 5.6
 Author:      Code For The People Ltd, Automattic
 Text Domain: mexp
 Domain Path: /languages/
