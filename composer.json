@@ -19,15 +19,15 @@
 		"source": "https://github.com/Automattic/media-explorer"
 	},
 	"require": {
-		"php": ">=5.6",
+		"php": ">=7.4",
 		"composer/installers": "^1.0 || ^2.0"
 	},
 	"require-dev": {
 		"automattic/vipwpcs": "^3",
 		"php-parallel-lint/php-parallel-lint": "^1.0",
 		"phpcompatibility/phpcompatibility-wp": "^2.1",
-		"phpunit/phpunit": "^4 || ^5 || ^6 || ^7",
-		"yoast/phpunit-polyfills": "^0.2.0"
+		"phpunit/phpunit": "^9.6",
+		"yoast/wp-test-utils": "^1.2"
 	},
 	"config": {
 		"allow-plugins": {
@@ -38,11 +38,9 @@
 	},
 	"scripts": {
 		"coverage": [
-			"@php ./vendor/bin/phpunit --coverage-html ./build/coverage-html"
+			"@php ./vendor/bin/phpunit --coverage-html ./.phpunit.cache/coverage-html"
 		],
-		"coverage-ci": [
-			"@php ./vendor/bin/phpunit"
-		],
+		"coverage-ci": "wp-env run tests-cli --env-cwd=wp-content/plugins/media-explorer ./vendor/bin/phpunit --testsuite integration",
 		"cs": [
 			"@php ./vendor/bin/phpcs -q"
 		],
@@ -56,27 +54,18 @@
 		"lint-ci": [
 			"@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git --checkstyle"
 		],
-		"prepare-ci": [
-			"bash bin/install-wp-tests.sh wordpress_test root root localhost"
-		],
-		"test": [
-			"@php ./vendor/bin/phpunit --testsuite WP_Tests"
-		],
-		"test-ms": [
-			"@putenv WP_MULTISITE=1",
-			"@composer test"
-		]
+		"test:integration": "wp-env run tests-cli --env-cwd=wp-content/plugins/media-explorer ./vendor/bin/phpunit --testsuite integration",
+		"test:integration-ms": "wp-env run tests-cli --env-cwd=wp-content/plugins/media-explorer /bin/bash -c 'WP_MULTISITE=1 ./vendor/bin/phpunit --testsuite integration'"
 	},
 	"scripts-descriptions": {
 		"coverage": "Run tests with code coverage reporting",
-		"coverage-ci": "Run tests with code coverage reporting and send results to stdout",
+		"coverage-ci": "Run integration tests with code coverage reporting in wp-env",
 		"cs": "Run PHP Code Sniffer",
 		"cs-fix": "Run PHP Code Sniffer and fix violations",
 		"i18n": "Generate a POT file for translation",
 		"lint": "Run PHP linting",
 		"lint-ci": "Run PHP linting and send results to stdout",
-		"prepare-ci": "Prepare the environment for integration tests",
-		"test": "Run all tests for the Media Explorer plugin",
-		"test-ms": "Run integration tests for the Media Explorer plugin in multisite mode"
+		"test:integration": "Run integration tests in wp-env",
+		"test:integration-ms": "Run integration tests in multisite mode in wp-env"
 	}
 }
