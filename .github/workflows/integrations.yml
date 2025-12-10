@@ -1,80 +1,82 @@
 name: Run PHPUnit
 
 on:
-  # Run on all pushes and on all pull requests.
-  # Prevent the "push" build from running when there are only irrelevant changes.
   push:
-    paths-ignore:
-      - "**.md"
+    branches:
+      - develop
+      - master
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'phpunit.xml.dist'
+      - '.wp-env.json'
+      - '.github/workflows/integrations.yml'
   pull_request:
-  # Allow manually triggering the workflow.
+    branches:
+      - develop
+      - master
+    paths:
+      - '**.php'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'phpunit.xml.dist'
+      - '.wp-env.json'
+      - '.github/workflows/integrations.yml'
   workflow_dispatch:
+
+# Cancel any existing runs of this workflow on the same branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   test:
     name: WP ${{ matrix.wordpress }} on PHP ${{ matrix.php }}
-    # Ubuntu-20.x includes MySQL 8.0, which causes `caching_sha2_password` issues with PHP < 7.4
-    # https://www.php.net/manual/en/mysqli.requirements.php
-    # TODO: change to ubuntu-latest when we no longer support PHP < 7.4
-    runs-on: ubuntu-18.04
-
-    env:
-      WP_VERSION: ${{ matrix.wordpress }}
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        wordpress: ["6.4", "latest"]
-        php: ["7.4", "8.0"]
-        include:
-          - php: "8.0"
-            extensions: pcov
-            ini-values: pcov.directory=., "pcov.exclude=\"~(vendor|tests)~\""
-            coverage: pcov
+        wordpress: ['6.4', 'master']
+        php: ['7.4', '8.3']
       fail-fast: false
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Setup PHP ${{ matrix.php }}
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401 # v2.32.0
         with:
           php-version: ${{ matrix.php }}
-          extensions: ${{ matrix.extensions }}
-          ini-values: ${{ matrix.ini-values }}
-          coverage: ${{ matrix.coverage }}
+          coverage: none
 
       - name: Setup problem matchers for PHP
         run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-
-      # Setup PCOV since we're using PHPUnit < 8 which has it integrated. Requires PHP 7.1.
-      # Ignore platform reqs to make it install on PHP 8.
-      # https://github.com/krakjoe/pcov-clobber
-      - name: Setup PCOV
-        if: ${{ matrix.php == 8.0 }}
-        run: |
-          composer require pcov/clobber --ignore-platform-reqs
-          vendor/bin/pcov clobber
 
       - name: Setup Problem Matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          composer-options: "${{ matrix.composer-options }}"
+          node-version: 'lts/*'
 
-      - name: Start MySQL Service
-        run: sudo systemctl start mysql.service
-
-      - name: Prepare environment for integration tests
-        run: composer prepare-ci
+      - name: Install npm dependencies and start wp-env
+        run: |
+          npm -g install @wordpress/env
+          WP_ENV_PHP_VERSION=${{ matrix.php }} WP_ENV_CORE=WordPress/WordPress#${{ matrix.wordpress }} wp-env start
 
       - name: Run integration tests (single site)
-        if: ${{ matrix.php != 8.0 }}
-        run: composer test
-      - name: Run integration tests (single site with code coverage)
-        if: ${{ matrix.php == 8.0 }}
-        run: composer coverage-ci
+        run: composer test:integration
+
       - name: Run integration tests (multisite)
-        run: composer test-ms
+        run: composer test:integration-ms
