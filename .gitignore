@@ -1,2 +1,30 @@
-composer.lock
-/vendor
+# Dependencies
+/vendor/
+/node_modules/
+
+# WordPress
+/wordpress/
+/wp-content/
+/.wp-env/
+.wp-env.override.json
+
+# Build
+/build/
+/dist/
+
+# Tests
+/coverage/
+/.phpunit.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+/.idea/
+/.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Composer
+/composer.lock
