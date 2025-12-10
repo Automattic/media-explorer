@@ -1,22 +1,54 @@
 <?php
+/**
+ * PHPUnit bootstrap file for Media Explorer plugin tests.
+ *
+ * @package Automattic\MediaExplorer
+ */
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
-	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+declare( strict_types=1 );
+
+namespace MediaExplorer\Tests;
+
+use Yoast\WPTestUtils\WPIntegration;
+
+require_once dirname( __DIR__ ) . '/vendor/yoast/wp-test-utils/src/WPIntegration/bootstrap-functions.php';
+
+// Check for a `--testsuite integration` or `--testsuite=integration` arg when calling phpunit,
+// and use it to conditionally load up WordPress.
+$argv_local     = $GLOBALS['argv'] ?? [];
+$key            = (int) array_search( '--testsuite', $argv_local, true );
+$is_integration = false;
+
+// Check for --testsuite integration (two separate args).
+if ( $key && isset( $argv_local[ $key + 1 ] ) && 'integration' === $argv_local[ $key + 1 ] ) {
+	$is_integration = true;
 }
-if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
-	echo "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	exit( 1 );
+
+// Check for --testsuite=integration (single arg with equals).
+foreach ( $argv_local as $arg ) {
+	if ( '--testsuite=integration' === $arg ) {
+		$is_integration = true;
+		break;
+	}
 }
 
-require_once $_tests_dir . '/includes/functions.php';
+if ( $is_integration ) {
+	$_tests_dir = WPIntegration\get_path_to_wp_test_dir();
 
-function _manually_load_plugin() {
-	require dirname( __FILE__ ) . '/../media-explorer.php';
+	// Give access to tests_add_filter() function.
+	require_once $_tests_dir . '/includes/functions.php';
+
+	// Manually load the plugin being tested.
+	\tests_add_filter(
+		'muplugins_loaded',
+		function (): void {
+			require dirname( __DIR__ ) . '/media-explorer.php';
+		}
+	);
+
+	/*
+	 * Bootstrap WordPress. This will also load the Composer autoload file, the PHPUnit Polyfills
+	 * and the custom autoloader for the TestCase and the mock object classes.
+	 */
+	WPIntegration\bootstrap_it();
 }
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
-
-require $_tests_dir . '/includes/bootstrap.php';
-
-require dirname( __FILE__ ) . '/media-explorer-testcase.php';
-
