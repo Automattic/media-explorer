@@ -54,6 +54,7 @@
 		"lint-ci": [
 			"@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --exclude vendor --exclude .git --checkstyle"
 		],
+		"test:unit": "@php ./vendor/bin/phpunit --testsuite Unit",
 		"test:integration": "wp-env run tests-cli --env-cwd=wp-content/plugins/media-explorer ./vendor/bin/phpunit --testsuite integration",
 		"test:integration-ms": "wp-env run tests-cli --env-cwd=wp-content/plugins/media-explorer /bin/bash -c 'WP_MULTISITE=1 ./vendor/bin/phpunit --testsuite integration'"
 	},
@@ -65,6 +66,7 @@
 		"i18n": "Generate a POT file for translation",
 		"lint": "Run PHP linting",
 		"lint-ci": "Run PHP linting and send results to stdout",
+		"test:unit": "Run unit tests (no WordPress required)",
 		"test:integration": "Run integration tests in wp-env",
 		"test:integration-ms": "Run integration tests in multisite mode in wp-env"
 	}

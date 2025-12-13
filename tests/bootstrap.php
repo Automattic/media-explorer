@@ -11,28 +11,48 @@ namespace MediaExplorer\Tests;
 
 use Yoast\WPTestUtils\WPIntegration;
 
-require_once dirname( __DIR__ ) . '/vendor/yoast/wp-test-utils/src/WPIntegration/bootstrap-functions.php';
+// Composer autoloader.
+require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
 // Check for a `--testsuite integration` or `--testsuite=integration` arg when calling phpunit,
 // and use it to conditionally load up WordPress.
 $argv_local     = $GLOBALS['argv'] ?? [];
 $key            = (int) array_search( '--testsuite', $argv_local, true );
 $is_integration = false;
+$is_unit        = false;
 
 // Check for --testsuite integration (two separate args).
-if ( $key && isset( $argv_local[ $key + 1 ] ) && 'integration' === $argv_local[ $key + 1 ] ) {
-	$is_integration = true;
+if ( $key && isset( $argv_local[ $key + 1 ] ) ) {
+	if ( 'integration' === $argv_local[ $key + 1 ] ) {
+		$is_integration = true;
+	} elseif ( 'Unit' === $argv_local[ $key + 1 ] ) {
+		$is_unit = true;
+	}
 }
 
-// Check for --testsuite=integration (single arg with equals).
+// Check for --testsuite=integration or --testsuite=Unit (single arg with equals).
 foreach ( $argv_local as $arg ) {
 	if ( '--testsuite=integration' === $arg ) {
 		$is_integration = true;
 		break;
 	}
+	if ( '--testsuite=Unit' === $arg ) {
+		$is_unit = true;
+		break;
+	}
+}
+
+if ( $is_unit ) {
+	// Unit tests use Brain Monkey - no WordPress loaded.
+	// Load plugin classes that can be tested without WordPress.
+	require_once dirname( __DIR__ ) . '/class.response.php';
+	require_once __DIR__ . '/Unit/TestCase.php';
+	return;
 }
 
 if ( $is_integration ) {
+	require_once dirname( __DIR__ ) . '/vendor/yoast/wp-test-utils/src/WPIntegration/bootstrap-functions.php';
+
 	$_tests_dir = WPIntegration\get_path_to_wp_test_dir();
 
 	// Give access to tests_add_filter() function.
