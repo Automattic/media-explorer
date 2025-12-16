@@ -40,9 +40,17 @@ jobs:
 
     strategy:
       matrix:
-        wordpress: ['6.4', 'master']
-        php: ['7.4', '8.3']
+        include:
+          # Check lowest supported WP version, with the lowest supported PHP.
+          - wordpress: '6.4'
+            php: '7.4'
+          # Check latest WP with the latest PHP.
+          - wordpress: 'master'
+            php: 'latest'
       fail-fast: false
+
+    env:
+      WP_ENV_CORE: WordPress/WordPress#${{ matrix.wordpress }}
 
     steps:
       - name: Checkout code
@@ -73,7 +81,7 @@ jobs:
       - name: Install npm dependencies and start wp-env
         run: |
           npm -g install @wordpress/env
-          WP_ENV_PHP_VERSION=${{ matrix.php }} WP_ENV_CORE=WordPress/WordPress#${{ matrix.wordpress }} wp-env start
+          wp-env start
 
       - name: Run integration tests (single site)
         run: composer test:integration
