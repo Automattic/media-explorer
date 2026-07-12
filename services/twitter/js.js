@@ -11,135 +11,137 @@ GNU General Public License for more details.
 
 */
 
-var mexp_twitter_location_js_loaded = false;
-var mexp_twitter_location_map       = null;
-var mexp_twitter_location_marker    = null;
-var mexp_twitter_location_timeout   = null;
-var pf = wp.media.view.MediaFrame.Post;
+(function( window, $ ) {
 
-wp.media.view.MediaFrame.Post = pf.extend({
+	var mexp_twitter_location_js_loaded = false;
+	var mexp_twitter_location_map       = null;
+	var mexp_twitter_location_marker    = null;
+	var mexp_twitter_location_timeout   = null;
+	var pf = wp.media.view.MediaFrame.Post;
 
-	initialize: function() {
+	wp.media.view.MediaFrame.Post = pf.extend({
 
-		pf.prototype.initialize.apply( this, arguments );
+		initialize: function() {
 
-		this.on( 'content:render:mexp-service-twitter-content-location', _.bind( function() {
+			pf.prototype.initialize.apply( this, arguments );
 
-			this.state().frame.content.get().on( 'loaded', function( response ) {
+			this.on( 'content:render:mexp-service-twitter-content-location', _.bind( function() {
 
-				if ( ! response || ! response.meta || ! response.meta.coords )
-					return;
+				this.state().frame.content.get().on( 'loaded', function( response ) {
 
-				var ll = new google.maps.LatLng( response.meta.coords.lat, response.meta.coords.lng );
+					if ( ! response || ! response.meta || ! response.meta.coords )
+						return;
 
-				mexp_twitter_location_marker.setPosition( ll );
-				mexp_twitter_location_map.panTo( ll );
+					var ll = new google.maps.LatLng( response.meta.coords.lat, response.meta.coords.lng );
 
-			} );
+					mexp_twitter_location_marker.setPosition( ll );
+					mexp_twitter_location_map.panTo( ll );
 
-			if ( !mexp_twitter_location_js_loaded ) {
+				} );
 
-				$('#mexp_twitter_map_canvas').css( 'background-image', 'url(' + mexp.admin_url + '/images/wpspin_light.gif)');
+				if ( !mexp_twitter_location_js_loaded ) {
 
-				var script = document.createElement("script");
-				script.type = "text/javascript";
-				script.src = mexp.services.twitter.labels.gmaps_url + '?sensor=false&callback=mexp_twitter_location_initialize';
-				document.body.appendChild(script);
+					$('#mexp_twitter_map_canvas').css( 'background-image', 'url(' + mexp.admin_url + '/images/wpspin_light.gif)');
 
-			} else {
+					var script = document.createElement("script");
+					script.type = "text/javascript";
+					script.src = mexp.services.twitter.labels.gmaps_url + '?sensor=false&callback=mexp_twitter_location_initialize';
+					document.body.appendChild(script);
 
-				mexp_twitter_location_initialize();
+				} else {
 
-			}
+					mexp_twitter_location_initialize();
 
-		}, this ) );
+				}
+
+			}, this ) );
+
+		}
+
+	});
+
+	function mexp_twitter_location_initialize() {
+
+		var callback = function() {
+			mexp_twitter_location_fetch( mexp_twitter_location_load );
+		};
+
+		if ( navigator.geolocation ) {
+			navigator.geolocation.getCurrentPosition( mexp_twitter_location_load, callback );
+			mexp_twitter_location_timeout = window.setTimeout( callback, 8000 );
+		} else {
+			mexp_twitter_location_fetch( callback );
+		}
+
+		mexp_twitter_location_js_loaded = true;
 
 	}
 
-});
+	function mexp_twitter_location_fetch( callback ) {
 
-function mexp_twitter_location_initialize() {
+		callback( {
+			coords : google.loader.ClientLocation
+		} );
 
-	var callback = function() {
-		mexp_twitter_location_fetch( mexp_twitter_location_load );
-	};
-
-	if ( navigator.geolocation ) {
-		navigator.geolocation.getCurrentPosition( mexp_twitter_location_load, callback );
-		mexp_twitter_location_timeout = window.setTimeout( callback, 8000 );
-	} else {
-		mexp_twitter_location_fetch( callback );
 	}
 
-	mexp_twitter_location_js_loaded = true;
+	function mexp_twitter_location_load( position ) {
 
-}
+		var lat, lng;
 
-function mexp_twitter_location_fetch( callback ) {
+		window.clearTimeout( mexp_twitter_location_timeout );
 
-	callback( {
-		coords : google.loader.ClientLocation
-	} );
+		// Enable the visual refresh
+		google.maps.visualRefresh = true;
 
-}
+		var loc = $('#mexp-twitter-search-location-coords').val();
 
-function mexp_twitter_location_load( position ) {
+		if ( loc ) {
+			ll = loc.split( ',' );
+			lat = ll[0];
+			lng = ll[1];
+		} else {
+			lat = position.coords.latitude;
+			lng = position.coords.longitude;
+			$('#mexp-twitter-search-location-coords').val( lat + ',' + lng );
+		}
 
-	var lat, lng;
-	$ = jQuery;
+		var radius = $('#mexp-twitter-search-location-radius').val();
+		var mapOptions = {
+			center            : new google.maps.LatLng( lat, lng ),
+			zoom              : 10,
+			mapTypeId         : google.maps.MapTypeId.ROADMAP,
+			mapTypeControl    : false,
+			streetViewControl : false
+		};
+		mexp_twitter_location_map = new google.maps.Map( document.getElementById( 'mexp_twitter_map_canvas' ), mapOptions );
+		mexp_twitter_location_marker = new google.maps.Marker({
+			position  : new google.maps.LatLng( lat, lng ),
+			draggable : true,
+			map       : mexp_twitter_location_map
+		});
+		var circle = new google.maps.Circle({
+			map          : mexp_twitter_location_map,
+			radius       : ( radius * 1000 ), // metres
+			strokeWeight : 1,
+			fillColor    : 'blue',
+			fillOpacity  : 0.15,
+			strokeColor  : '#fff'
+		});
+		circle.bindTo( 'center', mexp_twitter_location_marker, 'position' );
 
-	window.clearTimeout( mexp_twitter_location_timeout );
+		$('#mexp-twitter-search-location-radius').on('change',function(){
+			circle.setRadius( $(this).val() * 1000 );
+		});
+		$('#mexp-twitter-search-location-name').on('change',function(){
+			$('#mexp-twitter-search-location-coords').val('');
+		});
 
-	// Enable the visual refresh
-	google.maps.visualRefresh = true;
+		google.maps.event.addListener(mexp_twitter_location_marker, 'dragend', function() {
+			p = mexp_twitter_location_marker.getPosition();
+			mexp_twitter_location_map.panTo( p );
+			$('#mexp-twitter-search-location-coords').val( p.lat() + ',' + p.lng() ).closest('form').submit();
+		});
 
-	var loc = $('#mexp-twitter-search-location-coords').val();
-
-	if ( loc ) {
-		ll = loc.split( ',' );
-		lat = ll[0];
-		lng = ll[1];
-	} else {
-		lat = position.coords.latitude;
-		lng = position.coords.longitude;
-		$('#mexp-twitter-search-location-coords').val( lat + ',' + lng );
 	}
-
-	var radius = $('#mexp-twitter-search-location-radius').val();
-	var mapOptions = {
-		center            : new google.maps.LatLng( lat, lng ),
-		zoom              : 10,
-		mapTypeId         : google.maps.MapTypeId.ROADMAP,
-		mapTypeControl    : false,
-		streetViewControl : false
-	};
-	mexp_twitter_location_map = new google.maps.Map( document.getElementById( 'mexp_twitter_map_canvas' ), mapOptions );
-	mexp_twitter_location_marker = new google.maps.Marker({
-		position  : new google.maps.LatLng( lat, lng ),
-		draggable : true,
-		map       : mexp_twitter_location_map
-	});
-	var circle = new google.maps.Circle({
-		map          : mexp_twitter_location_map,
-		radius       : ( radius * 1000 ), // metres
-		strokeWeight : 1,
-		fillColor    : 'blue',
-		fillOpacity  : 0.15,
-		strokeColor  : '#fff'
-	});
-	circle.bindTo( 'center', mexp_twitter_location_marker, 'position' );
-
-	$('#mexp-twitter-search-location-radius').on('change',function(){
-		circle.setRadius( $(this).val() * 1000 );
-	});
-	$('#mexp-twitter-search-location-name').on('change',function(){
-		$('#mexp-twitter-search-location-coords').val('');
-	});
-
-	google.maps.event.addListener(mexp_twitter_location_marker, 'dragend', function() {
-		p = mexp_twitter_location_marker.getPosition();
-		mexp_twitter_location_map.panTo( p );
-		$('#mexp-twitter-search-location-coords').val( p.lat() + ',' + p.lng() ).closest('form').submit();
-	});
-
-}
+)( window, jQuery );
