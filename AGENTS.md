@@ -62,7 +62,7 @@ composer coverage          # Run tests with HTML coverage report
 Follow the standards documented in `~/code/plugin-standards/` for full details. Key points:
 
 - **Commits**: Use the `/commit` skill. Favour explaining "why" over "what".
-- **PRs**: Use the `/pr` skill. Squash and merge by default.
+- **PRs**: Use the `/pr` skill. Merged with a merge commit (squash and rebase are disabled).
 - **Branch naming**: `feature/description`, `fix/description` from `develop`.
 - **Testing**: Write integration tests for WordPress-dependent behaviour, unit tests for isolated logic. Use `Yoast\WPTestUtils\WPIntegration\TestCase` for integration, `Yoast\WPTestUtils\BrainMonkey\YoastTestCase` for unit.
 - **Code style**: WordPress coding standards via PHPCS. Tabs for indentation.
