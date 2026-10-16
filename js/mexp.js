@@ -214,7 +214,7 @@ media.view.MEXP = media.View.extend({
 
 	toggleSelectionHandler: function( event ) {
 
-		if ( event.target.href )
+		if ( 'A' === event.target.nodeName && event.target.href )
 			return;
 
 		var target = jQuery( '#' + event.currentTarget.id );
