@@ -170,7 +170,9 @@ media.view.MEXP = media.View.extend({
 
 	renderItem : function( model ) {
 
-		var view = new media.view.MEXPItem({
+		var item = stringToFunction( this.service.js.item );
+
+		var view = new item({
 			model   : model,
 			service : this.service,
 			tab     : this.tab
@@ -458,8 +460,10 @@ media.view.MediaFrame.Post = post_frame.extend({
 
 			}
 
+			var mexpController = stringToFunction( service.js.controller );
+
 			this.states.add([
-				new media.controller.MEXP( controller )
+				new mexpController( controller )
 			]);
 
 			// Tabs
@@ -504,8 +508,9 @@ media.view.MediaFrame.Post = post_frame.extend({
 	mexpContentRender : function( service, tab ) {
 
 		/* called when a tab becomes active */
+		var view = stringToFunction( service.js.view );
 
-		this.content.set( new media.view.MEXP( {
+		this.content.set( new view( {
 			service    : service,
 			controller : this,
 			model      : this.state().props.get( tab ),
@@ -516,8 +521,11 @@ media.view.MediaFrame.Post = post_frame.extend({
 	},
 
 	mexpToolbarCreate : function( toolbar ) {
+		var serviceId = this.state().id.replace( 'mexp-service-', '' ),
+			viewId = mexp['services'][serviceId]['js']['toolbar'],
+			view = stringToFunction( viewId );
 
-		toolbar.view = new media.view.Toolbar.MEXP( {
+		toolbar.view = new view( {
 			controller : this
 		} );
 
@@ -580,3 +588,20 @@ media.controller.MEXP = media.controller.State.extend({
 	}
 
 });
+
+// Instantiate a javascript object using a string.
+// @link http://stackoverflow.com/a/2441972
+var stringToFunction = function( str ) {
+	var arr = str.split( "." );
+
+	var fn = ( window || this );
+	for ( var i = 0, len = arr.length; i < len; i++ ) {
+		fn = fn[arr[i]];
+	}
+
+	if ( typeof fn !== "function" ) {
+		throw new Error( "function not found" );
+	}
+
+	return fn;
+};
