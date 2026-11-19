@@ -73,7 +73,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 			}
 		}
 
-		# operators: https://dev.twitter.com/docs/using-search
+		# Uses X API v1.1 standard search operators.
 		# @TODO +exclude:retweets
 
 		$q = array();
@@ -124,7 +124,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 			return new WP_Error(
 				'mexp_twitter_failed_request',
-				sprintf( __( 'Could not connect to Twitter (error %s).', 'mexp' ),
+				sprintf( __( 'Could not connect to X (error %s).', 'mexp' ),
 					esc_html( $connection->http_code )
 				)
 			);
@@ -270,12 +270,12 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 	public function labels( array $labels ) {
 		$labels['twitter'] = array(
-			'title'     => __( 'Insert Tweet', 'mexp' ),
+			'title'     => __( 'Insert X post', 'mexp' ),
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
-			'insert'    => __( 'Insert Tweet', 'mexp' ),
-			'noresults' => __( 'No tweets matched your search query', 'mexp' ),
+			'insert'    => __( 'Insert X post', 'mexp' ),
+			'noresults' => __( 'No X posts matched your search query', 'mexp' ),
 			'gmaps_url' => set_url_scheme( 'https://maps.google.com/maps/api/js', 'https' ),
-			'loadmore'  => __( 'Load more tweets', 'mexp' ),
+			'loadmore'  => __( 'Load more X posts', 'mexp' ),
 		);
 
 		return $labels;
@@ -291,19 +291,12 @@ class MEXP_Twitter_Service extends MEXP_Service {
 		#
 		# If the time comes that application-only authentication is made available for search, the
 		# use of the oauth_token and oauth_token_secret fields below can simply be removed.
-		#
-		# Further bedtime reading:
-		#
-		# https://dev.twitter.com/discussions/11079
-		# https://dev.twitter.com/discussions/13210
-		# https://dev.twitter.com/discussions/14016
-		# https://dev.twitter.com/discussions/15744
 
 		foreach ( array( 'consumer_key', 'consumer_secret', 'oauth_token', 'oauth_token_secret' ) as $field ) {
 			if ( !isset( $credentials[$field] ) or empty( $credentials[$field] ) ) {
 				return new WP_Error(
 					'mexp_twitter_no_connection',
-					__( 'oAuth connection to Twitter not found.', 'mexp' )
+					__( 'oAuth connection to X not found.', 'mexp' )
 				);
 			}
 		}

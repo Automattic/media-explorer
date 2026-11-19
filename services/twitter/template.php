@@ -79,7 +79,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.by_user }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter an X username', 'mexp' ); ?>"
 					>
 					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
@@ -98,7 +98,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.to_user }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter a Twitter Username', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter an X username', 'mexp' ); ?>"
 					>
 					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
@@ -124,7 +124,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.q }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search X', 'mexp' ); ?>"
 					>
 					<label for="<?php echo esc_attr( $id ); ?>-name">
 						<?php esc_attr_e( 'Location:', 'mexp' ); ?>
@@ -143,7 +143,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						type="text"
 						name="radius"
 						class="mexp-input-text mexp-input-select"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search X', 'mexp' ); ?>"
 					>
 						<?php foreach ( array( 1, 5, 10, 20, 50, 100, 200 ) as $km ) { ?>
 							<option value="<?php echo absint( $km ); ?>"><?php printf( esc_html__( 'Within %skm', 'mexp' ), $km ); ?></option>
@@ -172,7 +172,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.q }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search Twitter', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search X', 'mexp' ); ?>"
 					>
 					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
 					<div class="spinner"></div>
