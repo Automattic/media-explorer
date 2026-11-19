@@ -40,7 +40,21 @@ Developers can add their own services by extending `MEXP_Service`. See [Adding a
    - **X**: create an app in the [X developer portal](https://developer.x.com/) and note its consumer key and secret, and its access token and secret.
    - **YouTube**: in the [Google Cloud console](https://console.cloud.google.com/), create a project (or use an existing one), enable the **YouTube Data API v3**, and create an API key.
    - **Instagram**: get an access token for the account whose photos you want to browse.
-4. Supply the credentials through the filters below, from your theme or a plugin of your own.
+4. Supply the credentials through environment variables, or through filters from your theme or a plugin of your own.
+
+### Environment variables
+
+Set these as environment variables on the server. On WordPress VIP, set them as [environment variables](https://docs.wpvip.com/infrastructure/environments/manage-environment-variables/), which the plugin reads with `vip_get_env_var()`.
+
+| Service | Environment variables |
+|---|---|
+| X | `MEXP_TWITTER_CONSUMER_KEY`, `MEXP_TWITTER_CONSUMER_SECRET`, `MEXP_TWITTER_OAUTH_TOKEN`, `MEXP_TWITTER_OAUTH_TOKEN_SECRET` |
+| YouTube | `MEXP_YOUTUBE_DEVELOPER_KEY` |
+| Instagram | `MEXP_INSTAGRAM_ACCESS_TOKEN` |
+
+### Filters
+
+The filters receive the values from the environment variables, so a filter overrides them.
 
 ~~~php
 add_filter( 'mexp_twitter_credentials', function () {
@@ -75,7 +89,7 @@ No. Media Explorer adds its services to the classic editor's **Add Media** windo
 
 ### Why does a service show an error instead of results?
 
-Usually because its credentials are missing. Check that the filter for that service returns non-empty values.
+Usually because its credentials are missing. Check that the environment variables or the filter for that service supply non-empty values.
 
 ### Do all the services still work?
 

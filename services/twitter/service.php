@@ -321,7 +321,17 @@ class MEXP_Twitter_Service extends MEXP_Service {
 	private function get_credentials() {
 
 		if ( is_null( $this->credentials ) )
-			$this->credentials = (array) apply_filters( 'mexp_twitter_credentials', array() );
+			$this->credentials = (array) apply_filters(
+				'mexp_twitter_credentials',
+				array_filter(
+					array(
+						'consumer_key'       => $this->get_env_var( 'MEXP_TWITTER_CONSUMER_KEY' ),
+						'consumer_secret'    => $this->get_env_var( 'MEXP_TWITTER_CONSUMER_SECRET' ),
+						'oauth_token'        => $this->get_env_var( 'MEXP_TWITTER_OAUTH_TOKEN' ),
+						'oauth_token_secret' => $this->get_env_var( 'MEXP_TWITTER_OAUTH_TOKEN_SECRET' ),
+					)
+				)
+			);
 
 		return $this->credentials;
 
