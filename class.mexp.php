@@ -132,7 +132,14 @@ class Media_Explorer extends MEXP_Plugin {
 
 		check_ajax_referer( 'mexp_request', '_nonce' );
 
-		$service = $this->get_service( stripslashes( $_POST['service'] ) );
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( array(
+				'error_code'    => 'mexp_forbidden',
+				'error_message' => __( 'Sorry, you are not allowed to search media services.', 'mexp' ),
+			), 403 );
+		}
+
+		$service = $this->get_service( isset( $_POST['service'] ) ? sanitize_text_field( wp_unslash( $_POST['service'] ) ) : '' );
 
 		if ( is_wp_error( $service ) ) {
 			do_action( 'mexp_ajax_request_error', $service );
