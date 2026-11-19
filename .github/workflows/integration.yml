@@ -12,6 +12,8 @@ on:
       - 'phpunit.xml.dist'
       - '.wp-env.json'
       - '.github/workflows/integration.yml'
+      - 'package.json'
+      - 'package-lock.json'
   pull_request:
     branches:
       - develop
@@ -23,6 +25,8 @@ on:
       - 'phpunit.xml.dist'
       - '.wp-env.json'
       - '.github/workflows/integration.yml'
+      - 'package.json'
+      - 'package-lock.json'
   workflow_dispatch:
 
 # Cancel any existing runs of this workflow on the same branch.
@@ -83,11 +87,13 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 'lts/*'
+          cache: npm
 
-      - name: Install npm dependencies and start wp-env
-        run: |
-          npm -g install @wordpress/env
-          wp-env start
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Start wp-env
+        run: npx --no wp-env start
 
       - name: Run integration tests (single site)
         run: composer test:integration
