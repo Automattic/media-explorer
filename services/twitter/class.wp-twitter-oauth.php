@@ -3,12 +3,12 @@
  * WordPressified and namespaced version of TwitterOAuth by Abraham Williams
  * See: https://github.com/abraham/twitteroauth
  *
- * Uses Twitter API v1.1
+ * Uses X (formerly Twitter) API v1.1
  *
  */
 
 /**
- * Twitter OAuth class
+ * X (formerly Twitter) OAuth class
  */
 class WP_Twitter_OAuth {
   /* Contains the last HTTP status code returned. */
@@ -56,7 +56,7 @@ class WP_Twitter_OAuth {
 
 
   /**
-   * Get a request_token from Twitter
+   * Get a request_token from X
    *
    * @returns a key/value array containing oauth_token and oauth_token_secret
    */
