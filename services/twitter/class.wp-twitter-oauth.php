@@ -20,7 +20,7 @@ class WP_Twitter_OAuth {
   /* Set timeout default. */
   public $timeout = 30;
   /* Verify SSL Cert. */
-  public $ssl_verifypeer = FALSE;
+  public $ssl_verifypeer = TRUE;
   /* Respons format. */
   public $format = 'json';
   /* Decode returned json data. */

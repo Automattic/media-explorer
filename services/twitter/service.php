@@ -181,7 +181,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 		$text = $status->text;
 
 		# @TODO more processing (hashtags, @s etc)
-		$text = make_clickable( $text );
+		$text = make_clickable( esc_html( $text ) );
 		$text = str_replace( ' href="', ' target="_blank" href="', $text );
 
 		return $text;
