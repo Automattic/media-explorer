@@ -56,6 +56,7 @@ class Media_Explorer extends MEXP_Plugin {
 
 		return new WP_Error(
 			'invalid_service',
+			/* translators: %s: Service ID. */
 			sprintf( __( 'Media service "%s" was not found', 'media-explorer' ), esc_html( $service_id ) )
 		);
 

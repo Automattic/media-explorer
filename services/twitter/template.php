@@ -146,7 +146,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						placeholder="<?php esc_attr_e( 'Search X', 'media-explorer' ); ?>"
 					>
 						<?php foreach ( array( 1, 5, 10, 20, 50, 100, 200 ) as $km ) { ?>
-							<option value="<?php echo absint( $km ); ?>"><?php printf( esc_html__( 'Within %skm', 'media-explorer' ), $km ); ?></option>
+							<option value="<?php echo absint( $km ); ?>"><?php /* translators: %s: Search radius in kilometers. */ printf( esc_html__( 'Within %skm', 'media-explorer' ), $km ); ?></option>
 						<?php } ?>
 					</select>
 					<input

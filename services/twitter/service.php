@@ -124,6 +124,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 			return new WP_Error(
 				'mexp_twitter_failed_request',
+				/* translators: %s: HTTP status code. */
 				sprintf( __( 'Could not connect to X (error %s).', 'media-explorer' ),
 					esc_html( $connection->http_code )
 				)

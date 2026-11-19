@@ -112,6 +112,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 			return new WP_Error(
 				'mexp_instagram_failed_request',
+				/* translators: %s: HTTP status code. */
 				sprintf( __( 'Could not connect to Instagram (error %s).', 'media-explorer' ),
 					esc_html( $response['code'] )
 				)
