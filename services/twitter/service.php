@@ -124,7 +124,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 			return new WP_Error(
 				'mexp_twitter_failed_request',
-				sprintf( __( 'Could not connect to X (error %s).', 'mexp' ),
+				sprintf( __( 'Could not connect to X (error %s).', 'media-explorer' ),
 					esc_html( $connection->http_code )
 				)
 			);
@@ -145,7 +145,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 		$error = new WP_Error(
 			'mexp_twitter_failed_location',
-			__( 'Could not find your requested location.', 'mexp' )
+			__( 'Could not find your requested location.', 'media-explorer' )
 		);
 
 		if ( 200 != wp_remote_retrieve_response_code( $result ) )
@@ -239,23 +239,23 @@ class MEXP_Twitter_Service extends MEXP_Service {
 	public function tabs( array $tabs ) {
 		$tabs['twitter'] = array(
 			'all' => array(
-				'text'       => _x( 'All', 'Tab title', 'mexp'),
+				'text'       => _x( 'All', 'Tab title', 'media-explorer'),
 				'defaultTab' => true
 			),
 			'hashtag' => array(
-				'text' => _x( 'With Hashtag', 'Tab title', 'mexp'),
+				'text' => _x( 'With Hashtag', 'Tab title', 'media-explorer'),
 			),
 			#'images' => array(
-			#	'text' => _x( 'With Images', 'Tab title', 'mexp'),
+			#	'text' => _x( 'With Images', 'Tab title', 'media-explorer'),
 			#),
 			'by_user' => array(
-				'text' => _x( 'By User', 'Tab title', 'mexp'),
+				'text' => _x( 'By User', 'Tab title', 'media-explorer'),
 			),
 			'to_user' => array(
-				'text' => _x( 'To User', 'Tab title', 'mexp'),
+				'text' => _x( 'To User', 'Tab title', 'media-explorer'),
 			),
 			'location' => array(
-				'text' => _x( 'By Location', 'Tab title', 'mexp'),
+				'text' => _x( 'By Location', 'Tab title', 'media-explorer'),
 			),
 		);
 
@@ -270,12 +270,12 @@ class MEXP_Twitter_Service extends MEXP_Service {
 
 	public function labels( array $labels ) {
 		$labels['twitter'] = array(
-			'title'     => __( 'Insert X post', 'mexp' ),
+			'title'     => __( 'Insert X post', 'media-explorer' ),
 			# @TODO the 'insert' button text gets reset when selecting items. find out why.
-			'insert'    => __( 'Insert X post', 'mexp' ),
-			'noresults' => __( 'No X posts matched your search query', 'mexp' ),
+			'insert'    => __( 'Insert X post', 'media-explorer' ),
+			'noresults' => __( 'No X posts matched your search query', 'media-explorer' ),
 			'gmaps_url' => set_url_scheme( 'https://maps.google.com/maps/api/js', 'https' ),
-			'loadmore'  => __( 'Load more X posts', 'mexp' ),
+			'loadmore'  => __( 'Load more X posts', 'media-explorer' ),
 		);
 
 		return $labels;
@@ -296,7 +296,7 @@ class MEXP_Twitter_Service extends MEXP_Service {
 			if ( !isset( $credentials[$field] ) or empty( $credentials[$field] ) ) {
 				return new WP_Error(
 					'mexp_twitter_no_connection',
-					__( 'oAuth connection to X not found.', 'mexp' )
+					__( 'oAuth connection to X not found.', 'media-explorer' )
 				);
 			}
 		}

@@ -56,7 +56,7 @@ class Media_Explorer extends MEXP_Plugin {
 
 		return new WP_Error(
 			'invalid_service',
-			sprintf( __( 'Media service "%s" was not found', 'mexp' ), esc_html( $service_id ) )
+			sprintf( __( 'Media service "%s" was not found', 'media-explorer' ), esc_html( $service_id ) )
 		);
 
 	}
@@ -135,7 +135,7 @@ class Media_Explorer extends MEXP_Plugin {
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_send_json_error( array(
 				'error_code'    => 'mexp_forbidden',
-				'error_message' => __( 'Sorry, you are not allowed to search media services.', 'mexp' ),
+				'error_message' => __( 'Sorry, you are not allowed to search media services.', 'media-explorer' ),
 			), 403 );
 		}
 
@@ -204,8 +204,8 @@ class Media_Explorer extends MEXP_Plugin {
 		$mexp = array(
 			'_nonce'    => wp_create_nonce( 'mexp_request' ),
 			'labels'    => array(
-				'insert'   => __( 'Insert into post', 'mexp' ),
-				'loadmore' => __( 'Load more', 'mexp' ),
+				'insert'   => __( 'Insert into post', 'media-explorer' ),
+				'loadmore' => __( 'Load more', 'media-explorer' ),
 			),
 			'base_url'  => untrailingslashit( $this->plugin_url() ),
 			'admin_url' => untrailingslashit( admin_url() ),
@@ -268,7 +268,7 @@ class Media_Explorer extends MEXP_Plugin {
 	 */
 	public function action_init() {
 
-		load_plugin_textdomain( 'mexp', false, dirname( $this->plugin_base() ) . '/languages/' );
+		load_plugin_textdomain( 'media-explorer', false, dirname( $this->plugin_base() ) . '/languages/' );
 
 		foreach ( apply_filters( 'mexp_services', array() ) as $service_id => $service ) {
 			if ( is_a( $service, 'MEXP_Service' ) )

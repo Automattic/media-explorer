@@ -21,7 +21,7 @@ class MEXP_Instagram_Template extends MEXP_Template {
 				</div>
 			</div>
 		</div>
-		<a href="#" id="mexp-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'mexp' ); ?>">
+		<a href="#" id="mexp-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'media-explorer' ); ?>">
 			<div class="media-modal-icon"></div>
 		</a>
 		<?php
@@ -40,9 +40,9 @@ class MEXP_Instagram_Template extends MEXP_Template {
 						value="{{ data.params.tag }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter a tag', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter a tag', 'media-explorer' ); ?>"
 						>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'media-explorer') ?>">
 					<input type="hidden" name="type" value="tag">
 					<div class="spinner"></div>
 				</form>
@@ -59,9 +59,9 @@ class MEXP_Instagram_Template extends MEXP_Template {
 						value="{{ data.params.by_user }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter an Instagram Username', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter an Instagram Username', 'media-explorer' ); ?>"
 						>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'media-explorer') ?>">
 					<input type="hidden" name="type" value="by_user">
 					<div class="spinner"></div>
 				</form>
@@ -71,7 +71,7 @@ class MEXP_Instagram_Template extends MEXP_Template {
 			case 'mine':
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
-					<span class="description"><?php _e( 'A selection of your own recent Instagrams.', 'mexp' ) ?></span>
+					<span class="description"><?php _e( 'A selection of your own recent Instagrams.', 'media-explorer' ) ?></span>
 					<input type="hidden" name="type" value="mine">
 					<div class="spinner"></div>
 				</form>
@@ -81,7 +81,7 @@ class MEXP_Instagram_Template extends MEXP_Template {
 			case 'feed':
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
-					<span class="description"><?php _e( 'The latest Instagrams from your personal feed.', 'mexp' ) ?></span>
+					<span class="description"><?php _e( 'The latest Instagrams from your personal feed.', 'media-explorer' ) ?></span>
 					<input type="hidden" name="type" value="mine">
 					<div class="spinner"></div>
 				</form>
@@ -91,7 +91,7 @@ class MEXP_Instagram_Template extends MEXP_Template {
 			case 'popular':
 				?>
 				<form action="#" class="mexp-toolbar-container clearfix">
-					<span class="description"><?php _e( 'A selection of trending content on Instagram.', 'mexp' ) ?></span>
+					<span class="description"><?php _e( 'A selection of trending content on Instagram.', 'media-explorer' ) ?></span>
 					<input type="hidden" name="type" value="popular">
 					<div class="spinner"></div>
 				</form>

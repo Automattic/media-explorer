@@ -20,7 +20,7 @@ class MEXP_YouTube_Template extends MEXP_Template {
 						{{ data.content }}
 					</div>
 					<div class="mexp-item-channel">
-						<?php _e( 'by', 'mexp' ) ?> {{ data.meta.user }}
+						<?php _e( 'by', 'media-explorer' ) ?> {{ data.meta.user }}
 					</div>
 					<div class="mexp-item-date">
 						{{ data.date }}
@@ -28,7 +28,7 @@ class MEXP_YouTube_Template extends MEXP_Template {
 				</div>
 			</div>
 		</div>
-		<a href="#" id="mexp-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'mexp' ); ?>">
+		<a href="#" id="mexp-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'media-explorer' ); ?>">
 			<div class="media-modal-icon"></div>
 		</a>
 		<?php
@@ -57,16 +57,16 @@ class MEXP_YouTube_Template extends MEXP_Template {
 						value="{{ data.params.q }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search YouTube', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search YouTube', 'media-explorer' ); ?>"
 					>
 					<input type="hidden" name="tab" value="all" />
 					<input type="hidden" name="page_token" value="" id="page_token" class="all"/>
-					<label for="type" style="display: none"><?php _e( 'Type:', 'mexp' ); ?></label>
+					<label for="type" style="display: none"><?php _e( 'Type:', 'media-explorer' ); ?></label>
 					<select name="type">
-						<option value="video"><?php esc_html_e( 'Videos', 'mexp' ); ?></option>
-						<option value="playlist"><?php esc_html_e( 'Playlists', 'mexp' ); ?></option>
+						<option value="video"><?php esc_html_e( 'Videos', 'media-explorer' ); ?></option>
+						<option value="playlist"><?php esc_html_e( 'Playlists', 'media-explorer' ); ?></option>
 					</select>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'media-explorer') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -82,11 +82,11 @@ class MEXP_YouTube_Template extends MEXP_Template {
 						value="{{ data.params.q }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter Username', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter Username', 'media-explorer' ); ?>"
 					>
 					<input type="hidden" name="tab" value="by_user">
 					<input type="hidden" name="page_token" value="" id="page_token" class="by_user"/>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'media-explorer') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php

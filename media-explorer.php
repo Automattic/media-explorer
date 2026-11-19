@@ -6,7 +6,7 @@ Version:     1.2
 Requires at least: 6.4
 Requires PHP: 7.4
 Author:      Code For The People Ltd, Automattic
-Text Domain: mexp
+Text Domain: media-explorer
 Domain Path: /languages/
 License:     GPL v2 or later
 
