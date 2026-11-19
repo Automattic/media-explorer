@@ -130,8 +130,7 @@ class Media_Explorer extends MEXP_Plugin {
 	 */
 	public function ajax_request() {
 
-		if ( !isset( $_POST['_nonce'] ) or !wp_verify_nonce( $_POST['_nonce'], 'mexp_request' ) )
-			die( '-1' );
+		check_ajax_referer( 'mexp_request', '_nonce' );
 
 		$service = $this->get_service( stripslashes( $_POST['service'] ) );
 
