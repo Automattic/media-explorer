@@ -19,7 +19,7 @@ It does not work in the block editor. See [Does it work with the block editor?](
 
 It ships with three services:
 
-- **X (formerly Twitter)**: search posts by keyword, by hashtag, by or to a user, or by location. Reposts are left out of the results.
+- **X**: search posts by keyword, by hashtag, by or to a user, or by location. Reposts are left out of the results.
 - **YouTube**: search videos by keyword or by user.
 - **Instagram**: browse popular photos, or search by tag or user. With a user's own access token (see [Keyring](#installation)), it also shows their photos and feed.
 
@@ -79,7 +79,7 @@ Usually because its credentials are missing. Check that the filter for that serv
 
 ### Do all the services still work?
 
-The X service uses version 1.1 of the X (formerly Twitter) API, and the Instagram service uses Instagram's original API. Both platforms have since restricted or retired those APIs, so these services may not return results without changes. The YouTube service uses the current YouTube Data API v3.
+The X service uses version 1.1 of the X API, and the Instagram service uses Instagram's original API. Both platforms have since restricted or retired those APIs, so these services may not return results without changes. The YouTube service uses the current YouTube Data API v3.
 
 ### Where can I report a bug or contribute?
 
