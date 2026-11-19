@@ -21,7 +21,7 @@ It ships with three services:
 
 - **X**: search posts by keyword, by hashtag, by or to a user, or by location. Reposts are left out of the results.
 - **YouTube**: search videos by keyword or by user.
-- **Instagram**: browse popular photos, or search by tag or user. With a user's own access token (see [Keyring](#installation)), it also shows their photos and feed.
+- **Instagram**: browse popular photos, or search by tag or user. With a user's own access token, supplied through the `mexp_instagram_user_credentials` filter, it also shows their photos and feed.
 
 Each service needs API credentials before it can return results. See [Installation](#installation).
 
@@ -76,10 +76,6 @@ add_filter( 'mexp_instagram_credentials', function () {
 	);
 } );
 ~~~
-
-The plugin also includes `mexp-creds.php`, which registers these filters as a separate plugin, **MEXP oAuth Credentials**. You can fill in your credentials there and activate it instead, but your changes will be overwritten when you update Media Explorer, so the filters above are the better choice.
-
-If you use the [Keyring](https://wordpress.org/plugins/keyring/) plugin, activate **MEXP Keyring Credentials** (`mexp-keyring-user-creds.php`) to have the Instagram service use each user's own Keyring connection.
 
 ## Frequently Asked Questions
 
