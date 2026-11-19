@@ -21,7 +21,7 @@ It ships with three services:
 
 - **X**: search posts by keyword, by hashtag, by or to a user, or by location. Reposts are left out of the results.
 - **YouTube**: search videos by keyword or by user.
-- **Instagram**: browse popular photos, or search by tag or user. With a user's own access token (see [Keyring](#installation)), it also shows their photos and feed.
+- **Instagram**: browse popular photos, or search by tag or user. With a user's own access token, supplied through the `mexp_instagram_user_credentials` filter, it also shows their photos and feed.
 
 Each service needs API credentials before it can return results. See [Installation](#installation).
 
@@ -40,7 +40,21 @@ Developers can add their own services by extending `MEXP_Service`. See [Adding a
    - **X**: create an app in the [X developer portal](https://developer.x.com/) and note its consumer key and secret, and its access token and secret.
    - **YouTube**: in the [Google Cloud console](https://console.cloud.google.com/), create a project (or use an existing one), enable the **YouTube Data API v3**, and create an API key.
    - **Instagram**: get an access token for the account whose photos you want to browse.
-4. Supply the credentials through the filters below, from your theme or a plugin of your own.
+4. Supply the credentials through environment variables, or through filters from your theme or a plugin of your own.
+
+### Environment variables
+
+Set these as environment variables on the server. On WordPress VIP, set them as [environment variables](https://docs.wpvip.com/infrastructure/environments/manage-environment-variables/), which the plugin reads with `vip_get_env_var()`.
+
+| Service | Environment variables |
+|---|---|
+| X | `MEXP_TWITTER_CONSUMER_KEY`, `MEXP_TWITTER_CONSUMER_SECRET`, `MEXP_TWITTER_OAUTH_TOKEN`, `MEXP_TWITTER_OAUTH_TOKEN_SECRET` |
+| YouTube | `MEXP_YOUTUBE_DEVELOPER_KEY` |
+| Instagram | `MEXP_INSTAGRAM_ACCESS_TOKEN` |
+
+### Filters
+
+The filters receive the values from the environment variables, so a filter overrides them.
 
 ~~~php
 add_filter( 'mexp_twitter_credentials', function () {
@@ -63,10 +77,6 @@ add_filter( 'mexp_instagram_credentials', function () {
 } );
 ~~~
 
-The plugin also includes `mexp-creds.php`, which registers these filters as a separate plugin, **MEXP oAuth Credentials**. You can fill in your credentials there and activate it instead, but your changes will be overwritten when you update Media Explorer, so the filters above are the better choice.
-
-If you use the [Keyring](https://wordpress.org/plugins/keyring/) plugin, activate **MEXP Keyring Credentials** (`mexp-keyring-user-creds.php`) to have the Instagram service use each user's own Keyring connection.
-
 ## Frequently Asked Questions
 
 ### Does it work with the block editor?
@@ -75,7 +85,7 @@ No. Media Explorer adds its services to the classic editor's **Add Media** windo
 
 ### Why does a service show an error instead of results?
 
-Usually because its credentials are missing. Check that the filter for that service returns non-empty values.
+Usually because its credentials are missing. Check that the environment variables or the filter for that service supply non-empty values.
 
 ### Do all the services still work?
 
