@@ -18,6 +18,20 @@ GNU General Public License for more details.
 abstract class MEXP_Plugin {
 
 	/**
+	 * The plugin's main file path.
+	 *
+	 * @var string
+	 */
+	public $file;
+
+	/**
+	 * Cached plugin URL, path and basename, keyed by 'url', 'path' and 'base'.
+	 *
+	 * @var array<string, string>
+	 */
+	public $plugin;
+
+	/**
 	 * Class constructor
 	 *
 	 * @param string $file The plugin's file path.

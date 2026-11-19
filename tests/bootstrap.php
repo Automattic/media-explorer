@@ -71,4 +71,7 @@ if ( $is_integration ) {
 	 * and the custom autoloader for the TestCase and the mock object classes.
 	 */
 	WPIntegration\bootstrap_it();
+
+	// The test environment hides deprecations, which PHPUnit should turn into failures.
+	error_reporting( E_ALL );
 }

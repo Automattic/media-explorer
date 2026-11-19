@@ -29,6 +29,12 @@ class WP_Twitter_OAuth {
   public $http_headers;
   /* Set the useragnet. */
   public $useragent = 'WP_TwitterOAuth';
+  /* Signature method, consumer and token used to sign requests. */
+  public $sha1_method;
+  public $consumer;
+  public $token;
+  /* Contains the HTTP headers parsed by getHeader(). */
+  public $http_header;
   /* Immediately retry the API call if the response was not successful. */
   //public $retry = TRUE;
 
