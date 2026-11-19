@@ -12,6 +12,7 @@ You will need [Composer](https://getcomposer.org/), [Node.js](https://nodejs.org
 git clone https://github.com/Automattic/media-explorer.git
 cd media-explorer
 composer install
+npm ci
 npx wp-env start
 ```
 

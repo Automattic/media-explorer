@@ -79,7 +79,7 @@ Follow the standards documented in `~/code/plugin-standards/` for full details. 
 
 - Do not edit WordPress core files or bundled dependencies in `vendor/`.
 - Run `composer cs` before committing. CI will reject code standard violations.
-- Integration tests require `npx wp-env start` running first.
+- Integration tests require `npx --no wp-env start` running first. Run `npm ci` before it, so `npx` uses the `@wordpress/env` pinned in `package.json`. Always keep `--no`: without an installed `@wordpress/env`, plain `npx wp-env` fetches the unrelated `wp-env` package from npm.
 - Do not rename `class.*.php` files to follow PSR-4 conventions — this would break backward compatibility for anyone loading these files directly.
 - The WordPress media modal JavaScript API is largely undocumented. Test UI changes thoroughly in the browser, not just with automated tests.
 - OAuth tokens for external services may expire. Test OAuth flows end-to-end when making authentication changes.
