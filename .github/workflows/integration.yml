@@ -11,7 +11,7 @@ on:
       - 'composer.lock'
       - 'phpunit.xml.dist'
       - '.wp-env.json'
-      - '.github/workflows/integrations.yml'
+      - '.github/workflows/integration.yml'
   pull_request:
     branches:
       - develop
@@ -22,7 +22,7 @@ on:
       - 'composer.lock'
       - 'phpunit.xml.dist'
       - '.wp-env.json'
-      - '.github/workflows/integrations.yml'
+      - '.github/workflows/integration.yml'
   workflow_dispatch:
 
 # Cancel any existing runs of this workflow on the same branch.
@@ -41,16 +41,22 @@ jobs:
     strategy:
       matrix:
         include:
-          # Check lowest supported WP version, with the lowest supported PHP.
+          # The lowest supported WP, with the lowest supported PHP.
           - wordpress: '6.4'
             php: '7.4'
-          # Check latest WP with the latest PHP.
+          # The WP version in the readme's "Tested up to", with the latest PHP.
+          - wordpress: '7.1'
+            php: '8.5'
+          # The next WP version, with the latest PHP.
           - wordpress: 'master'
-            php: 'latest'
+            php: '8.5'
       fail-fast: false
 
     env:
       WP_ENV_CORE: WordPress/WordPress#${{ matrix.wordpress }}
+      # Without this, the tests run on the PHP version in .wp-env.json,
+      # whatever the matrix says.
+      WP_ENV_PHP_VERSION: ${{ matrix.php }}
 
     steps:
       - name: Checkout code
