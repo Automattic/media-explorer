@@ -112,7 +112,8 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 			return new WP_Error(
 				'mexp_instagram_failed_request',
-				sprintf( __( 'Could not connect to Instagram (error %s).', 'mexp' ),
+				/* translators: %s: HTTP status code. */
+				sprintf( __( 'Could not connect to Instagram (error %s).', 'media-explorer' ),
 					esc_html( $response['code'] )
 				)
 			);
@@ -130,7 +131,7 @@ class MEXP_Instagram_Service extends MEXP_Service {
 			if ( ! isset( $credentials['access_token'] ) ) {
 				return new WP_Error(
 					'mexp_instagram_no_connection',
-					__( 'oAuth connection to Instagram not found.', 'mexp' )
+					__( 'oAuth connection to Instagram not found.', 'media-explorer' )
 				);
 			}
 
@@ -221,26 +222,26 @@ class MEXP_Instagram_Service extends MEXP_Service {
 		$user_creds = $this->get_user_credentials();
 		if ( ! empty( $user_creds ) ) {
 			$tabs['instagram']['mine'] = array(
-				'text'       => _x( 'My Instagrams', 'Tab title', 'mexp' ),
+				'text'       => _x( 'My Instagrams', 'Tab title', 'media-explorer' ),
 				'defaultTab' => true,
 				'fetchOnRender' => true,
 			);
 			$tabs['instagram']['feed'] = array(
-				'text'       => _x( 'My Feed', 'Tab title', 'mexp' ),
+				'text'       => _x( 'My Feed', 'Tab title', 'media-explorer' ),
 				'fetchOnRender' => true,
 			);
 		}
 
 		$tabs['instagram']['popular'] = array(
-			'text'       => _x( 'Browse Popular', 'Tab title', 'mexp'),
+			'text'       => _x( 'Browse Popular', 'Tab title', 'media-explorer'),
 			'defaultTab' => empty( $tabs['instagram'] ),
 			'fetchOnRender' => true,
 		);
 		$tabs['instagram']['tag'] = array(
-			'text' => _x( 'With Tag', 'Tab title', 'mexp'),
+			'text' => _x( 'With Tag', 'Tab title', 'media-explorer'),
 		);
 		$tabs['instagram']['by_user'] = array(
-			'text' => _x( 'By User', 'Tab title', 'mexp'),
+			'text' => _x( 'By User', 'Tab title', 'media-explorer'),
 		);
 
 		return $tabs;
@@ -248,11 +249,11 @@ class MEXP_Instagram_Service extends MEXP_Service {
 
 	public function labels( array $labels ) {
 		$labels['instagram'] = array(
-			'title'     => __( 'Insert Instagram', 'mexp' ),
+			'title'     => __( 'Insert Instagram', 'media-explorer' ),
 			// @TODO the 'insert' button text gets reset when selecting items. find out why.
-			'insert'    => __( 'Insert Instagram', 'mexp' ),
-			'noresults' => __( 'No pics matched your search query', 'mexp' ),
-			'loadmore'  => __( 'Load more pics', 'mexp' ),
+			'insert'    => __( 'Insert Instagram', 'media-explorer' ),
+			'noresults' => __( 'No pics matched your search query', 'media-explorer' ),
+			'loadmore'  => __( 'Load more pics', 'media-explorer' ),
 		);
 
 		return $labels;

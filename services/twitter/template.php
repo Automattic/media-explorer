@@ -35,7 +35,7 @@ class MEXP_Twitter_Template extends MEXP_Template {
 				</div>
 			</div>
 		</div>
-		<a href="#" id="mexp-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'mexp' ); ?>">
+		<a href="#" id="mexp-check-{{ data.id }}" data-id="{{ data.id }}" class="check" title="<?php esc_attr_e( 'Deselect', 'media-explorer' ); ?>">
 			<div class="media-modal-icon"></div>
 		</a>
 		<?php
@@ -60,9 +60,9 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.hashtag }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter a Hashtag', 'media-explorer' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'media-explorer') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -79,9 +79,9 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.by_user }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter an X username', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter an X username', 'media-explorer' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'media-explorer') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -98,9 +98,9 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.to_user }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter an X username', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter an X username', 'media-explorer' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'media-explorer') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php
@@ -124,10 +124,10 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.q }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search X', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search X', 'media-explorer' ); ?>"
 					>
 					<label for="<?php echo esc_attr( $id ); ?>-name">
-						<?php esc_attr_e( 'Location:', 'mexp' ); ?>
+						<?php esc_attr_e( 'Location:', 'media-explorer' ); ?>
 					</label>
 					<input
 						type="text"
@@ -136,23 +136,23 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.q }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Enter location', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Enter location', 'media-explorer' ); ?>"
 					>
 					<select
 						id="<?php echo esc_attr( $id ); ?>-radius"
 						type="text"
 						name="radius"
 						class="mexp-input-text mexp-input-select"
-						placeholder="<?php esc_attr_e( 'Search X', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search X', 'media-explorer' ); ?>"
 					>
 						<?php foreach ( array( 1, 5, 10, 20, 50, 100, 200 ) as $km ) { ?>
-							<option value="<?php echo absint( $km ); ?>"><?php printf( esc_html__( 'Within %skm', 'mexp' ), $km ); ?></option>
+							<option value="<?php echo absint( $km ); ?>"><?php /* translators: %s: Search radius in kilometers. */ printf( esc_html__( 'Within %skm', 'media-explorer' ), $km ); ?></option>
 						<?php } ?>
 					</select>
 					<input
 						type="submit"
 						class="button button-large"
-						value="<?php esc_attr_e( 'Search', 'mexp' ); ?>"
+						value="<?php esc_attr_e( 'Search', 'media-explorer' ); ?>"
 					>
 					<div class="spinner"></div>
 				</form>
@@ -172,9 +172,9 @@ class MEXP_Twitter_Template extends MEXP_Template {
 						value="{{ data.params.q }}"
 						class="mexp-input-text mexp-input-search"
 						size="40"
-						placeholder="<?php esc_attr_e( 'Search X', 'mexp' ); ?>"
+						placeholder="<?php esc_attr_e( 'Search X', 'media-explorer' ); ?>"
 					>
-					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'mexp') ?>">
+					<input class="button button-large" type="submit" value="<?php esc_attr_e( 'Search', 'media-explorer') ?>">
 					<div class="spinner"></div>
 				</form>
 				<?php

@@ -108,11 +108,11 @@ class MEXP_YouTube_Service extends MEXP_Service {
 	public function tabs( array $tabs ) {
 		$tabs['youtube'] = array(
 			'all' => array(
-				'text'       => _x( 'All', 'Tab title', 'mexp'),
+				'text'       => _x( 'All', 'Tab title', 'media-explorer'),
 				'defaultTab' => true
 			),
 			'by_user' => array(
-				'text'       => _x( 'By User', 'Tab title', 'mexp'),
+				'text'       => _x( 'By User', 'Tab title', 'media-explorer'),
 			),
 		);
 		return $tabs;
@@ -127,7 +127,7 @@ class MEXP_YouTube_Service extends MEXP_Service {
 		if ( empty( $developer_key ) ) {
 			return new WP_Error(
 				'mexp_youtube_no_connection',
-				__( 'API connection to YouTube not found.', 'mexp' )
+				__( 'API connection to YouTube not found.', 'media-explorer' )
 			);
 		}
 
@@ -137,9 +137,9 @@ class MEXP_YouTube_Service extends MEXP_Service {
 	public function labels( array $labels ) {
 
 		$labels['youtube'] = array(
-			'title'     => __( 'Insert YouTube', 'mexp' ),
-			'insert'    => __( 'Insert', 'mexp' ),
-			'noresults' => __( 'No videos matched your search query.', 'mexp' ),
+			'title'     => __( 'Insert YouTube', 'media-explorer' ),
+			'insert'    => __( 'Insert', 'media-explorer' ),
+			'noresults' => __( 'No videos matched your search query.', 'media-explorer' ),
 		);
 
 		return $labels;
