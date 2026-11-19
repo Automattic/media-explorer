@@ -392,7 +392,7 @@ media.view.MEXP = media.View.extend({
 		if( 0 == this.collection.length )
 			return;
 
-		var page = this.model.get( 'page' ) || 1;
+		var page = this.model.get( 'page' ) || 0;
 
 		this.model.set( 'page', page + 1 );
 		this.trigger( 'change:page' );
