@@ -262,7 +262,10 @@ class MEXP_Instagram_Service extends MEXP_Service {
 	private function get_generic_credentials() {
 
 		if ( is_null( $this->generic_credentials ) ) {
-			$this->generic_credentials = (array) apply_filters( 'mexp_instagram_credentials', array() );
+			$this->generic_credentials = (array) apply_filters(
+				'mexp_instagram_credentials',
+				array_filter( array( 'access_token' => $this->get_env_var( 'MEXP_INSTAGRAM_ACCESS_TOKEN' ) ) )
+			);
 		}
 
 		return $this->generic_credentials;

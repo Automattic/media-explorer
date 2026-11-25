@@ -28,10 +28,30 @@ final class BundledServicesTest extends TestCase {
 	 */
 	private $requested_urls = array();
 
+	/**
+	 * Environment variables the services read credentials from.
+	 */
+	private const ENV_VARS = array(
+		'MEXP_TWITTER_CONSUMER_KEY',
+		'MEXP_TWITTER_CONSUMER_SECRET',
+		'MEXP_TWITTER_OAUTH_TOKEN',
+		'MEXP_TWITTER_OAUTH_TOKEN_SECRET',
+		'MEXP_YOUTUBE_DEVELOPER_KEY',
+		'MEXP_INSTAGRAM_ACCESS_TOKEN',
+	);
+
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->requested_urls = array();
+	}
+
+	protected function tearDown(): void {
+		foreach ( self::ENV_VARS as $name ) {
+			putenv( $name );
+		}
+
+		parent::tearDown();
 	}
 
 	/**
@@ -186,6 +206,63 @@ final class BundledServicesTest extends TestCase {
 		$output = $result->output();
 		$this->assertSame( 'https://www.youtube.com/watch?v=up1', $output['items'][0]['url'] );
 		$this->assertSame( 'Latest upload', $output['items'][0]['content'] );
+	}
+
+	/**
+	 * @covers \MEXP_YouTube_Service::request
+	 * @covers \MEXP_Service::get_env_var
+	 */
+	public function test_youtube_reads_the_api_key_from_an_environment_variable(): void {
+		putenv( 'MEXP_YOUTUBE_DEVELOPER_KEY=env-key' );
+		$this->respond_to_http_requests_with( '/search?', array( 'items' => array() ) );
+
+		( new MEXP_YouTube_Service() )->request( $this->youtube_search( 'cats' ) );
+
+		$this->assertCount( 1, $this->requested_urls );
+		$this->assertStringContainsString( 'key=env-key', $this->requested_urls[0] );
+	}
+
+	/**
+	 * @covers \MEXP_Twitter_Service::request
+	 * @covers \MEXP_Service::get_env_var
+	 */
+	public function test_twitter_reads_credentials_from_environment_variables(): void {
+		putenv( 'MEXP_TWITTER_CONSUMER_KEY=key' );
+		putenv( 'MEXP_TWITTER_CONSUMER_SECRET=secret' );
+		putenv( 'MEXP_TWITTER_OAUTH_TOKEN=token' );
+		putenv( 'MEXP_TWITTER_OAUTH_TOKEN_SECRET=token-secret' );
+		// The AJAX handler loads this through MEXP_Twitter_Service::requires().
+		require_once dirname( __DIR__, 2 ) . '/class.oauth.php';
+		$this->respond_to_http_requests_with( '/search/tweets.json', array( 'statuses' => array() ) );
+
+		$result = ( new MEXP_Twitter_Service() )->request(
+			array(
+				'params' => array( 'q' => 'cats' ),
+				'tab'    => 'all',
+			)
+		);
+
+		$this->assertNotInstanceOf( WP_Error::class, $result );
+		$this->assertCount( 1, $this->requested_urls );
+	}
+
+	/**
+	 * @covers \MEXP_Instagram_Service::request
+	 * @covers \MEXP_Service::get_env_var
+	 */
+	public function test_instagram_reads_the_access_token_from_an_environment_variable(): void {
+		putenv( 'MEXP_INSTAGRAM_ACCESS_TOKEN=env-token' );
+		$this->respond_to_http_requests_with( 'api.instagram.com', array( 'data' => array() ) );
+
+		( new MEXP_Instagram_Service() )->request(
+			array(
+				'params' => array(),
+				'tab'    => 'popular',
+			)
+		);
+
+		$this->assertCount( 1, $this->requested_urls );
+		$this->assertStringContainsString( 'access_token=env-token', $this->requested_urls[0] );
 	}
 
 	/**

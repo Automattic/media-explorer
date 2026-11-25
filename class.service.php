@@ -82,5 +82,21 @@ abstract class MEXP_Service {
 
 	}
 
+	/**
+	 * Returns the value of an environment variable, or an empty string if it isn't set.
+	 *
+	 * On WordPress VIP, environment variables are read with vip_get_env_var().
+	 *
+	 * @param string $name Environment variable name.
+	 * @return string The value of the environment variable.
+	 */
+	final protected function get_env_var( $name ) {
+		if ( function_exists( 'vip_get_env_var' ) ) {
+			return (string) vip_get_env_var( $name, '' );
+		}
+
+		return (string) getenv( $name );
+	}
+
 }
 

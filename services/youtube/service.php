@@ -122,7 +122,7 @@ class MEXP_YouTube_Service extends MEXP_Service {
 		// Add the Google API classes to the runtime
 		require_once plugin_dir_path( __FILE__) . '/class.wp-youtube-client.php';
 
-		$developer_key = (string) apply_filters( 'mexp_youtube_developer_key', '' ) ;
+		$developer_key = (string) apply_filters( 'mexp_youtube_developer_key', $this->get_env_var( 'MEXP_YOUTUBE_DEVELOPER_KEY' ) );
 
 		if ( empty( $developer_key ) ) {
 			return new WP_Error(
